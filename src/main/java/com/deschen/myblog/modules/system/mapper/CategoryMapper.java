@@ -16,6 +16,9 @@ public interface CategoryMapper {
 
     int insertSelective(Category record);
 
+    // 自定义sql
+    int insertCategorysSelective(@Param("categories") List<Category> categories);
+
     List<Category> selectByExample(CategoryExample example);
 
     Category selectByPrimaryKey(Long categoryId);
@@ -27,4 +30,6 @@ public interface CategoryMapper {
     int updateByPrimaryKeySelective(Category record);
 
     int updateByPrimaryKey(Category record);
+
+
 }

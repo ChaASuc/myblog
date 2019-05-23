@@ -1,12 +1,10 @@
 package com.deschen.myblog.modules.system.dto;
 
 import com.deschen.myblog.modules.system.entity.Article;
-import com.deschen.myblog.modules.system.entity.ArticleWithBLOBs;
 import com.deschen.myblog.modules.system.entity.Tag;
 import lombok.Data;
 
 import java.io.Serializable;
-import java.util.Date;
 import java.util.List;
 
 /**

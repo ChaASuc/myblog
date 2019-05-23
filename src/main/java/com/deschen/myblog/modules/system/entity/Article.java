@@ -3,13 +3,14 @@ package com.deschen.myblog.modules.system.entity;
 import java.util.Date;
 
 public class Article {
+
     private Long articleId;
 
     private String articleTitle;
 
     private Integer state;
 
-    private Long articleCategoryId;
+    private Long categoryId;
 
     private Date createTime;
 
@@ -39,12 +40,12 @@ public class Article {
         this.state = state;
     }
 
-    public Long getArticleCategoryId() {
-        return articleCategoryId;
+    public Long getCategoryId() {
+        return categoryId;
     }
 
-    public void setArticleCategoryId(Long articleCategoryId) {
-        this.articleCategoryId = articleCategoryId;
+    public void setCategoryId(Long categoryId) {
+        this.categoryId = categoryId;
     }
 
     public Date getCreateTime() {

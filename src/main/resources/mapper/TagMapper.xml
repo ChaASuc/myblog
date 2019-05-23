@@ -158,6 +158,60 @@
       </if>
     </trim>
   </insert>
+
+  <!--自定义sql-->
+  <insert id="insertTagsSelective" parameterType="java.util.List">
+    insert into blog_tag
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="tags.get(0).tagId != null">
+        tag_id,
+      </if>
+      <if test="tags.get(0).tagName != null">
+        tag_name,
+      </if>
+      <if test="tags.get(0).state != null">
+        state,
+      </if>
+      <if test="tags.get(0).hot != null">
+        hot,
+      </if>
+      <if test="tags.get(0).createTime != null">
+        create_time,
+      </if>
+      <if test="tags.get(0).updateTime != null">
+        update_time,
+      </if>
+      <if test="tags.get(0).categoryId != null">
+        category_id,
+      </if>
+    </trim>
+    VALUES
+    <foreach collection="tags" item="tag" separator=",">
+      <trim prefix="(" suffix=")" suffixOverrides=",">
+        <if test="tag.tagId != null">
+          #{tag.tagId,jdbcType=BIGINT},
+        </if>
+        <if test="tag.tagName != null">
+          #{tag.tagName,jdbcType=VARCHAR},
+        </if>
+        <if test="tag.state != null">
+          #{tag.state,jdbcType=TINYINT},
+        </if>
+        <if test="tag.hot != null">
+          #{tag.hot,jdbcType=INTEGER},
+        </if>
+        <if test="tag.createTime != null">
+          #{tag.createTime,jdbcType=TIMESTAMP},
+        </if>
+        <if test="tag.updateTime != null">
+          #{tag.updateTime,jdbcType=TIMESTAMP},
+        </if>
+        <if test="tag.categoryId != null">
+          #{tag.categoryId,jdbcType=BIGINT},
+        </if>
+      </trim>
+    </foreach>
+  </insert>
   <select id="countByExample" parameterType="com.deschen.myblog.modules.system.entity.TagExample" resultType="java.lang.Long">
     select count(*) from blog_tag
     <if test="_parameter != null">

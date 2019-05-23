@@ -165,66 +165,6 @@ public class ImageExample {
             return (Criteria) this;
         }
 
-        public Criteria andImageArticleIdIsNull() {
-            addCriterion("image_article_id is null");
-            return (Criteria) this;
-        }
-
-        public Criteria andImageArticleIdIsNotNull() {
-            addCriterion("image_article_id is not null");
-            return (Criteria) this;
-        }
-
-        public Criteria andImageArticleIdEqualTo(Long value) {
-            addCriterion("image_article_id =", value, "imageArticleId");
-            return (Criteria) this;
-        }
-
-        public Criteria andImageArticleIdNotEqualTo(Long value) {
-            addCriterion("image_article_id <>", value, "imageArticleId");
-            return (Criteria) this;
-        }
-
-        public Criteria andImageArticleIdGreaterThan(Long value) {
-            addCriterion("image_article_id >", value, "imageArticleId");
-            return (Criteria) this;
-        }
-
-        public Criteria andImageArticleIdGreaterThanOrEqualTo(Long value) {
-            addCriterion("image_article_id >=", value, "imageArticleId");
-            return (Criteria) this;
-        }
-
-        public Criteria andImageArticleIdLessThan(Long value) {
-            addCriterion("image_article_id <", value, "imageArticleId");
-            return (Criteria) this;
-        }
-
-        public Criteria andImageArticleIdLessThanOrEqualTo(Long value) {
-            addCriterion("image_article_id <=", value, "imageArticleId");
-            return (Criteria) this;
-        }
-
-        public Criteria andImageArticleIdIn(List<Long> values) {
-            addCriterion("image_article_id in", values, "imageArticleId");
-            return (Criteria) this;
-        }
-
-        public Criteria andImageArticleIdNotIn(List<Long> values) {
-            addCriterion("image_article_id not in", values, "imageArticleId");
-            return (Criteria) this;
-        }
-
-        public Criteria andImageArticleIdBetween(Long value1, Long value2) {
-            addCriterion("image_article_id between", value1, value2, "imageArticleId");
-            return (Criteria) this;
-        }
-
-        public Criteria andImageArticleIdNotBetween(Long value1, Long value2) {
-            addCriterion("image_article_id not between", value1, value2, "imageArticleId");
-            return (Criteria) this;
-        }
-
         public Criteria andImageUrlIsNull() {
             addCriterion("image_url is null");
             return (Criteria) this;

@@ -17,6 +17,8 @@ public interface TagArticleMapper {
 
     int insertSelective(TagArticle record);
 
+    int insertTagArticlesSelective(@Param("tagArticles") List<TagArticle> tagArticles);
+
     List<TagArticle> selectByExample(TagArticleExample example);
 
     TagArticle selectByPrimaryKey(Long tagArticleId);

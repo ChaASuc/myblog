@@ -162,6 +162,52 @@
       </if>
     </trim>
   </insert>
+  <insert id="insertTagArticlesSelective" parameterType="java.util.List">
+    insert into blog_tag_article
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="tagArticles.get(0).tagArticleId != null">
+        tag_article_id,
+      </if>
+      <if test="tagArticles.get(0).tagId != null">
+        tag_id,
+      </if>
+      <if test="tagArticles.get(0).articleId != null">
+        article_id,
+      </if>
+      <if test="tagArticles.get(0).state != null">
+        state,
+      </if>
+      <if test="tagArticles.get(0).createTime != null">
+        create_time,
+      </if>
+      <if test="tagArticles.get(0).updateTime != null">
+        update_time,
+      </if>
+    </trim>
+    VALUES
+    <foreach collection="tagArticles" item="tagArticle" separator=",">
+      <trim prefix="(" suffix=")" suffixOverrides=",">
+        <if test="tagArticle.tagArticleId != null">
+          #{tagArticle.tagArticleId,jdbcType=BIGINT},
+        </if>
+        <if test="tagArticle.tagId != null">
+          #{tagArticle.tagId,jdbcType=BIGINT},
+        </if>
+        <if test="tagArticle.articleId != null">
+          #{tagArticle.articleId,jdbcType=BIGINT},
+        </if>
+        <if test="tagArticle.state != null">
+          #{tagArticle.state,jdbcType=TINYINT},
+        </if>
+        <if test="tagArticle.createTime != null">
+          #{tagArticle.createTime,jdbcType=TIMESTAMP},
+        </if>
+        <if test="tagArticle.updateTime != null">
+          #{tagArticle.updateTime,jdbcType=TIMESTAMP},
+        </if>
+      </trim>
+    </foreach>
+  </insert>
   <select id="countByExample" parameterType="com.deschen.myblog.modules.system.entity.TagArticleExample" resultType="java.lang.Long">
     select count(*) from blog_tag_article
     <if test="_parameter != null">

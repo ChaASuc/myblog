@@ -5,8 +5,6 @@ import java.util.Date;
 public class Image {
     private Long imageId;
 
-    private Long imageArticleId;
-
     private String imageUrl;
 
     private Integer state;
@@ -21,14 +19,6 @@ public class Image {
 
     public void setImageId(Long imageId) {
         this.imageId = imageId;
-    }
-
-    public Long getImageArticleId() {
-        return imageArticleId;
-    }
-
-    public void setImageArticleId(Long imageArticleId) {
-        this.imageArticleId = imageArticleId;
     }
 
     public String getImageUrl() {

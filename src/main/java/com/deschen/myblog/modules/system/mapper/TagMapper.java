@@ -16,6 +16,8 @@ public interface TagMapper {
 
     int insertSelective(Tag record);
 
+    int insertTagsSelective(@Param("tags") List<Tag> tags);
+
     List<Tag> selectByExample(TagExample example);
 
     Tag selectByPrimaryKey(Long tagId);

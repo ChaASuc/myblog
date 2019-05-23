@@ -2,8 +2,9 @@ package com.deschen.myblog.modules.system.mapper;
 
 import com.deschen.myblog.modules.system.entity.Image;
 import com.deschen.myblog.modules.system.entity.ImageExample;
-import java.util.List;
 import org.apache.ibatis.annotations.Param;
+
+import java.util.List;
 
 public interface ImageMapper {
     long countByExample(ImageExample example);

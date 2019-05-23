@@ -3,7 +3,7 @@ package com.deschen.myblog.modules.system.service;
 import com.deschen.myblog.modules.system.dto.ArticleDto;
 import com.deschen.myblog.modules.system.dto.ArticleWithBLOBsDto;
 import com.deschen.myblog.modules.system.entity.ArticleWithBLOBs;
-import com.github.pagehelper.PageInfo;
+import com.deschen.myblog.modules.system.form.ArticleForm;
 
 import java.util.List;
 
@@ -17,11 +17,20 @@ public interface ArticleDtoService {
 
     List<ArticleDto> selectArticleDtoByCategoryId(Long categoryId, Integer state, String sort);
 
+    List<ArticleDto> selectArticleDtoByCategoryIdAndTagId(Long categoryId, Long tagId, Integer state, String sort);
+
     List<ArticleDto> selectArticleDtoByCategoryIds(List<Long> categoryIds, Integer state, String sort);
 
     ArticleWithBLOBsDto selectArticleWithBLOBsDtoByArticleId(Long articleId);
 
-    boolean insertArticleWithBLOBs(ArticleWithBLOBs articleWithBLOBs);
+    boolean insertArticleWithBLOBs(ArticleForm articleForm);
 
-    boolean updateArticleWithBLOBs(ArticleWithBLOBs articleWithBLOBs);
+    boolean insertTagArticle(ArticleForm articleForm);
+
+    boolean updateArticleWithBLOBs(ArticleForm articleForm);
+
+    boolean updateTagArticle(ArticleForm articleForm);
+
+//    updateA
+
 }

@@ -151,6 +151,53 @@
       </if>
     </trim>
   </insert>
+  <insert id="insertCategorysSelective" parameterType="java.lang.Long">
+    insert into blog_category
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="categories.get(0).categoryId != null">
+        category_id,
+      </if>
+      <if test="categories.get(0).categoryName != null">
+        category_name,
+      </if>
+      <if test="categories.get(0).state != null">
+        state,
+      </if>
+      <if test="categories.get(0).hot != null">
+        hot,
+      </if>
+      <if test="categories.get(0).createTime != null">
+        create_time,
+      </if>
+      <if test="categories.get(0).updateTime != null">
+        update_time,
+      </if>
+    </trim>
+    VALUES
+    <foreach collection="categories" item="category" separator=",">
+      <trim prefix="(" suffix=")" suffixOverrides=",">
+        <if test="category.categoryId != null">
+          #{category.categoryId,jdbcType=BIGINT},
+        </if>
+        <if test="category.categoryName != null">
+          #{category.categoryName,jdbcType=VARCHAR},
+        </if>
+        <if test="category.state != null">
+          #{category.state,jdbcType=TINYINT},
+        </if>
+        <if test="category.hot != null">
+          #{category.hot,jdbcType=INTEGER},
+        </if>
+        <if test="category.createTime != null">
+          #{category.createTime,jdbcType=TIMESTAMP},
+        </if>
+        <if test="category.updateTime != null">
+          #{category.updateTime,jdbcType=TIMESTAMP},
+        </if>
+      </trim>
+    </foreach>
+
+  </insert>
   <select id="countByExample" parameterType="com.deschen.myblog.modules.system.entity.CategoryExample" resultType="java.lang.Long">
     select count(*) from blog_category
     <if test="_parameter != null">

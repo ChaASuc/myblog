@@ -5,10 +5,12 @@ import com.deschen.myblog.modules.system.dto.ArticleWithBLOBsDto;
 import com.deschen.myblog.modules.system.entity.Article;
 import com.deschen.myblog.modules.system.entity.ArticleExample;
 import com.deschen.myblog.modules.system.entity.ArticleWithBLOBs;
-import java.util.List;
 import org.apache.ibatis.annotations.Param;
 
+import java.util.List;
+
 public interface ArticleMapper {
+
     long countByExample(ArticleExample example);
 
     int deleteByExample(ArticleExample example);
@@ -43,6 +45,13 @@ public interface ArticleMapper {
             @Param("sort") String sort
     );
 
+    List<ArticleDto> selectArticleDtoByCategoryIdAndTagIdSortDesc(
+            @Param("categoryId") Long categoryId,
+            @Param("tagId") Long tagId,
+            @Param("state") Integer state,
+            @Param("sort") String sort
+    );
+
     List<ArticleDto> selectArticleDtoByCategoryIdsSortDesc(
             List<Long> categoryIds,
             @Param("state") Integer state,
@@ -52,4 +61,6 @@ public interface ArticleMapper {
     ArticleWithBLOBsDto selectArticleWithBLOBsDtoByArticleId(
             @Param("articleId") Long articleId
     );
+
+
 }

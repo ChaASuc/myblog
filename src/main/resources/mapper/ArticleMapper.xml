@@ -5,7 +5,7 @@
     <id column="article_id" jdbcType="BIGINT" property="articleId" />
     <result column="article_title" jdbcType="VARCHAR" property="articleTitle" />
     <result column="state" jdbcType="TINYINT" property="state" />
-    <result column="article_category_id" jdbcType="BIGINT" property="articleCategoryId" />
+    <result column="category_id" jdbcType="BIGINT" property="categoryId" />
     <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
     <result column="update_time" jdbcType="TIMESTAMP" property="updateTime" />
   </resultMap>
@@ -13,6 +13,7 @@
     <result column="article_html" jdbcType="LONGVARCHAR" property="articleHtml" />
     <result column="article_content" jdbcType="LONGVARCHAR" property="articleContent" />
   </resultMap>
+
   <!--自定义-->
   <resultMap extends="BaseResultMap" id="ResultMapDto" type="com.deschen.myblog.modules.system.dto.ArticleDto">
     <result column="category_name" jdbcType="VARCHAR" property="categoryName" />
@@ -26,6 +27,7 @@
     <result column="visit_count" jdbcType="INTEGER" property="visitCount" />
     <result column="comment_count" jdbcType="INTEGER" property="commentCount" />
   </resultMap>
+
   <sql id="Example_Where_Clause">
     <where>
       <foreach collection="oredCriteria" item="criteria" separator="or">
@@ -85,7 +87,7 @@
     </where>
   </sql>
   <sql id="Base_Column_List">
-    article_id, article_title, state, article_category_id, create_time, update_time
+    article_id, article_title, state, category_id, create_time, update_time
   </sql>
   <sql id="Blob_Column_List">
     article_html, article_content
@@ -140,10 +142,10 @@
   </delete>
   <insert id="insert" parameterType="com.deschen.myblog.modules.system.entity.ArticleWithBLOBs">
     insert into blog_article (article_id, article_title, state, 
-      article_category_id, create_time, update_time, 
+      category_id, create_time, update_time, 
       article_html, article_content)
     values (#{articleId,jdbcType=BIGINT}, #{articleTitle,jdbcType=VARCHAR}, #{state,jdbcType=TINYINT}, 
-      #{articleCategoryId,jdbcType=BIGINT}, #{createTime,jdbcType=TIMESTAMP}, #{updateTime,jdbcType=TIMESTAMP}, 
+      #{categoryId,jdbcType=BIGINT}, #{createTime,jdbcType=TIMESTAMP}, #{updateTime,jdbcType=TIMESTAMP}, 
       #{articleHtml,jdbcType=LONGVARCHAR}, #{articleContent,jdbcType=LONGVARCHAR})
   </insert>
   <insert id="insertSelective" parameterType="com.deschen.myblog.modules.system.entity.ArticleWithBLOBs">
@@ -158,8 +160,8 @@
       <if test="state != null">
         state,
       </if>
-      <if test="articleCategoryId != null">
-        article_category_id,
+      <if test="categoryId != null">
+        category_id,
       </if>
       <if test="createTime != null">
         create_time,
@@ -184,8 +186,8 @@
       <if test="state != null">
         #{state,jdbcType=TINYINT},
       </if>
-      <if test="articleCategoryId != null">
-        #{articleCategoryId,jdbcType=BIGINT},
+      <if test="categoryId != null">
+        #{categoryId,jdbcType=BIGINT},
       </if>
       <if test="createTime != null">
         #{createTime,jdbcType=TIMESTAMP},
@@ -212,7 +214,7 @@
     SELECT article.*, category_name, visit_count, thumbup_count, comment_count
     FROM blog_article article
     LEFT JOIN blog_category category
-    on article.article_category_id = category.category_id
+    on article.category_id = category.category_id
     LEFT JOIN blog_visit visit
     on article.article_id = visit.article_id
     LEFT JOIN blog_comment comment
@@ -235,11 +237,42 @@
     </if>
   </select>
 
+
+  <select id="selectArticleDtoByCategoryIdAndTagIdSortDesc" parameterType="map" resultMap="ResultMapDto">
+    SELECT article.*, category_name, visit_count, thumbup_count, comment_count
+    FROM blog_article article
+    LEFT JOIN blog_category category
+    on article.category_id = category.category_id
+    LEFT JOIN blog_visit visit
+    on article.article_id = visit.article_id
+    LEFT JOIN blog_comment comment
+    on article.article_id = comment.article_id
+    LEFT JOIN blog_thumbup thumbup
+    on article.article_id = thumbup.article_id
+    LEFT JOIN blog_tag_article tag_article
+    on article.article_id = tag_article.article_id
+    WHERE category.category_id = #{categoryId}
+    and tag_article.tag_id = #{tagId}
+    and tag_article.state = #{state}
+    <if test="sort == null">
+      ORDER BY visit.visit_count,thumbup.thumbup_count,comment.comment_count DESC
+    </if>
+    <if test="sort == 'hot'">
+      ORDER BY visit.visit_count,thumbup.thumbup_count,comment.comment_count DESC
+    </if>
+    <if test="sort == 'newest'">
+      ORDER BY article.update_time DESC
+    </if>
+    <if test="sort == 'comment'">
+      ORDER BY comment.comment_count DESC
+    </if>
+  </select>
+
   <select id="selectArticleDtoByCategoryIdsSortDesc" parameterType="map" resultMap="ResultMapDto">
     SELECT article.*, category_name, visit_count, thumbup_count, comment_count
     FROM blog_article article
     LEFT JOIN blog_category category
-    on article.article_category_id = category.category_id
+    on article.category_id = category.category_id
     LEFT JOIN blog_visit visit
     on article.article_id = visit.article_id
     LEFT JOIN blog_comment comment
@@ -269,7 +302,7 @@
     SELECT article.*, category_name, visit_count, thumbup_count, comment_count
     FROM blog_article article
     LEFT JOIN blog_category category
-    on article.article_category_id = category.category_id
+    on article.category_id = category.category_id
     LEFT JOIN blog_visit visit
     on article.article_id = visit.article_id
     LEFT JOIN blog_comment comment
@@ -278,6 +311,7 @@
     on article.article_id = thumbup.article_id
     WHERE article.article_id = #{articleId}
   </select>
+
   <update id="updateByExampleSelective" parameterType="map">
     update blog_article
     <set>
@@ -290,8 +324,8 @@
       <if test="record.state != null">
         state = #{record.state,jdbcType=TINYINT},
       </if>
-      <if test="record.articleCategoryId != null">
-        article_category_id = #{record.articleCategoryId,jdbcType=BIGINT},
+      <if test="record.categoryId != null">
+        category_id = #{record.categoryId,jdbcType=BIGINT},
       </if>
       <if test="record.createTime != null">
         create_time = #{record.createTime,jdbcType=TIMESTAMP},
@@ -315,7 +349,7 @@
     set article_id = #{record.articleId,jdbcType=BIGINT},
       article_title = #{record.articleTitle,jdbcType=VARCHAR},
       state = #{record.state,jdbcType=TINYINT},
-      article_category_id = #{record.articleCategoryId,jdbcType=BIGINT},
+      category_id = #{record.categoryId,jdbcType=BIGINT},
       create_time = #{record.createTime,jdbcType=TIMESTAMP},
       update_time = #{record.updateTime,jdbcType=TIMESTAMP},
       article_html = #{record.articleHtml,jdbcType=LONGVARCHAR},
@@ -329,7 +363,7 @@
     set article_id = #{record.articleId,jdbcType=BIGINT},
       article_title = #{record.articleTitle,jdbcType=VARCHAR},
       state = #{record.state,jdbcType=TINYINT},
-      article_category_id = #{record.articleCategoryId,jdbcType=BIGINT},
+      category_id = #{record.categoryId,jdbcType=BIGINT},
       create_time = #{record.createTime,jdbcType=TIMESTAMP},
       update_time = #{record.updateTime,jdbcType=TIMESTAMP}
     <if test="_parameter != null">
@@ -345,8 +379,8 @@
       <if test="state != null">
         state = #{state,jdbcType=TINYINT},
       </if>
-      <if test="articleCategoryId != null">
-        article_category_id = #{articleCategoryId,jdbcType=BIGINT},
+      <if test="categoryId != null">
+        category_id = #{categoryId,jdbcType=BIGINT},
       </if>
       <if test="createTime != null">
         create_time = #{createTime,jdbcType=TIMESTAMP},
@@ -367,7 +401,7 @@
     update blog_article
     set article_title = #{articleTitle,jdbcType=VARCHAR},
       state = #{state,jdbcType=TINYINT},
-      article_category_id = #{articleCategoryId,jdbcType=BIGINT},
+      category_id = #{categoryId,jdbcType=BIGINT},
       create_time = #{createTime,jdbcType=TIMESTAMP},
       update_time = #{updateTime,jdbcType=TIMESTAMP},
       article_html = #{articleHtml,jdbcType=LONGVARCHAR},
@@ -378,7 +412,7 @@
     update blog_article
     set article_title = #{articleTitle,jdbcType=VARCHAR},
       state = #{state,jdbcType=TINYINT},
-      article_category_id = #{articleCategoryId,jdbcType=BIGINT},
+      category_id = #{categoryId,jdbcType=BIGINT},
       create_time = #{createTime,jdbcType=TIMESTAMP},
       update_time = #{updateTime,jdbcType=TIMESTAMP}
     where article_id = #{articleId,jdbcType=BIGINT}
