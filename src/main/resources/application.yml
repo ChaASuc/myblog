@@ -14,3 +14,14 @@ server:
 idworker:
   workerId: 1
   datacenterId: 1
+mybatis:
+  mapper-locations: classpath:/mapper/*.xml
+  mybatis.config-location: classpath:/mybatis-config.xml
+  mybatis.type-aliases-package: com.deschen.myblog.modules.system.entity
+# pageHelper\u63D2\u4EF6\u914D\u7F6E
+pagehelper:
+  helperDialect: mysql
+  reasonable: true
+  supportMethodsArguments: true
+  params: count=countSql
+  page-size-zero: true

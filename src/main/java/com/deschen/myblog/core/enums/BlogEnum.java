@@ -13,6 +13,10 @@ public enum BlogEnum implements IEnum {
     TAG_NOT_EXIST(101, "标签不存在"),
 
     SORT_ERROR(102, "排序字符串错误"),
+
+    ARTICLE_INSERT_ERROR(103, "文章存到数据库失败"),
+
+    ARTICLE_UPDATE_ERROR(104, "文章更新失败");
     ;
     private Integer code;
 

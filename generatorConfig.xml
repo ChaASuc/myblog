@@ -5,13 +5,13 @@ PUBLIC "-//mybatis.org//DTD MyBatis Generator Configuration 1.0//EN"
 
 <generatorConfiguration>
 
-    <!--<properties resource="application.yml" />-->
+    <properties resource="application.yml" />
     <!--&lt;!&ndash; mysql驱动的位置 这个是MySQL连接的jar包，你需要指定你自己计算机上的jar包的位置&ndash;&gt;-->
-    <!--<classPathEntry location="D:\Tools\Repositories\maven\mysql\mysql-connector-java\8.0.13\mysql-connector-java-8.0.13.jar" />-->
+    <classPathEntry location="D:\Tools\Repositories\maven\mysql\mysql-connector-java\8.0.13\mysql-connector-java-8.0.13.jar" />
 
     <context id="Tables" targetRuntime="MyBatis3">
 
-        <!-- 注释 -->
+        <!--&lt;!&ndash; 注释 &ndash;&gt;-->
         <commentGenerator>
             <!-- 是否生成注释代时间戳 -->
             <property name="suppressDate" value="true"/>
@@ -59,59 +59,59 @@ PUBLIC "-//mybatis.org//DTD MyBatis Generator Configuration 1.0//EN"
         <!-- schema即为数据库名 tableName为对应的数据库表 domainObjectName是要生成的实体类 enable*ByExample
             是否生成 example类 -->
 
-        <table schema="" tableName="blog_article" domainObjectName="Article">
-            <!-- 指定java类型 -->
+        <!--<table schema="" tableName="blog_article" domainObjectName="Article">
+            &lt;!&ndash; 指定java类型 &ndash;&gt;
             <columnOverride column="state" javaType="java.lang.Integer" jdbcType="TINYINT" />
-            <columnOverride column="create_time" javaType="java.time.LocalDate" jdbcType="DATETIME" />
-            <columnOverride column="update_time" javaType="java.time.LocalDate" jdbcType="DATETIME" />
+            &lt;!&ndash;<columnOverride column="create_time" javaType="java.time.LocalDate" jdbcType="DATETIME" />&ndash;&gt;
+            &lt;!&ndash;<columnOverride column="update_time" javaType="java.time.LocalDate" jdbcType="DATETIME" />&ndash;&gt;
         </table>
 
         <table schema="" tableName="blog_category" domainObjectName="Category">
-            <!-- 指定java类型 -->
+            &lt;!&ndash; 指定java类型 &ndash;&gt;
             <columnOverride column="state" javaType="java.lang.Integer" jdbcType="TINYINT" />
-            <columnOverride column="create_time" javaType="java.time.LocalDate" jdbcType="DATETIME" />
-            <columnOverride column="update_time" javaType="java.time.LocalDate" jdbcType="DATETIME" />
+            &lt;!&ndash;<columnOverride column="create_time" javaType="java.time.LocalDate" jdbcType="DATETIME" />&ndash;&gt;
+            &lt;!&ndash;<columnOverride column="update_time" javaType="java.time.LocalDate" jdbcType="DATETIME" />&ndash;&gt;
         </table>
 
         <table schema="" tableName="blog_comment" domainObjectName="Comment">
-            <!-- 指定java类型 -->
-            <!--<columnOverride column="state" javaType="java.lang.Integer" jdbcType="TINYINT" />-->
-            <columnOverride column="create_time" javaType="java.time.LocalDate" jdbcType="DATETIME" />
-            <columnOverride column="update_time" javaType="java.time.LocalDate" jdbcType="DATETIME" />
+            &lt;!&ndash; 指定java类型 &ndash;&gt;
+            &lt;!&ndash;<columnOverride column="state" javaType="java.lang.Integer" jdbcType="TINYINT" />&ndash;&gt;
+            &lt;!&ndash;<columnOverride column="create_time" javaType="java.time.LocalDate" jdbcType="DATETIME" />&ndash;&gt;
+            &lt;!&ndash;<columnOverride column="update_time" javaType="java.time.LocalDate" jdbcType="DATETIME" />&ndash;&gt;
         </table>
 
         <table schema="" tableName="blog_image" domainObjectName="Image">
-            <!-- 指定java类型 -->
+            &lt;!&ndash; 指定java类型 &ndash;&gt;
             <columnOverride column="state" javaType="java.lang.Integer" jdbcType="TINYINT" />
-            <columnOverride column="create_time" javaType="java.time.LocalDate" jdbcType="DATETIME" />
-            <columnOverride column="update_time" javaType="java.time.LocalDate" jdbcType="DATETIME" />
+            &lt;!&ndash;<columnOverride column="create_time" javaType="java.time.LocalDate" jdbcType="DATETIME" />&ndash;&gt;
+            &lt;!&ndash;<columnOverride column="update_time" javaType="java.time.LocalDate" jdbcType="DATETIME" />&ndash;&gt;
         </table>
 
         <table schema="" tableName="blog_tag" domainObjectName="Tag">
-            <!-- 指定java类型 -->
+            &lt;!&ndash; 指定java类型 &ndash;&gt;
             <columnOverride column="state" javaType="java.lang.Integer" jdbcType="TINYINT" />
-            <columnOverride column="create_time" javaType="java.time.LocalDate" jdbcType="DATETIME" />
-            <columnOverride column="update_time" javaType="java.time.LocalDate" jdbcType="DATETIME" />
-        </table>
+            &lt;!&ndash;<columnOverride column="create_time" javaType="java.time.LocalDate" jdbcType="DATETIME" />&ndash;&gt;
+            &lt;!&ndash;<columnOverride column="update_time" javaType="java.time.LocalDate" jdbcType="DATETIME" />&ndash;&gt;
+        </table>-->
 
         <table schema="" tableName="blog_tag_article" domainObjectName="TagArticle">
             <!-- 指定java类型 -->
             <columnOverride column="state" javaType="java.lang.Integer" jdbcType="TINYINT" />
-            <columnOverride column="create_time" javaType="java.time.LocalDate" jdbcType="DATETIME" />
-            <columnOverride column="update_time" javaType="java.time.LocalDate" jdbcType="DATETIME" />
+            <!--<columnOverride column="create_time" javaType="java.time.LocalDate" jdbcType="DATETIME" />-->
+            <!--<columnOverride column="update_time" javaType="java.time.LocalDate" jdbcType="DATETIME" />-->
         </table>
 
-        <table schema="" tableName="blog_thumbup" domainObjectName="Thumbup">
-            <!-- 指定java类型 -->
-            <columnOverride column="create_time" javaType="java.time.LocalDate" jdbcType="DATETIME" />
-            <columnOverride column="update_time" javaType="java.time.LocalDate" jdbcType="DATETIME" />
+        <!--<table schema="" tableName="blog_thumbup" domainObjectName="Thumbup">
+            &lt;!&ndash; 指定java类型 &ndash;&gt;
+            &lt;!&ndash;<columnOverride column="create_time" javaType="java.time.LocalDate" jdbcType="DATETIME" />&ndash;&gt;
+            &lt;!&ndash;<columnOverride column="update_time" javaType="java.time.LocalDate" jdbcType="DATETIME" />&ndash;&gt;
         </table>
 
         <table schema="" tableName="blog_visit" domainObjectName="Visit">
-            <!-- 指定java类型 -->
-            <columnOverride column="create_time" javaType="java.time.LocalDate" jdbcType="DATETIME" />
-            <columnOverride column="update_time" javaType="java.time.LocalDate" jdbcType="DATETIME" />
-        </table>
+            &lt;!&ndash; 指定java类型 &ndash;&gt;
+            &lt;!&ndash;<columnOverride column="create_time" javaType="java.time.LocalDate" jdbcType="DATETIME" />&ndash;&gt;
+            &lt;!&ndash;<columnOverride column="update_time" javaType="java.time.LocalDate" jdbcType="DATETIME" />&ndash;&gt;
+        </table>-->
 
     </context>
 </generatorConfiguration>
