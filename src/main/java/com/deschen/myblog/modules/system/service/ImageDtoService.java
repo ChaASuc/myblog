@@ -30,4 +30,6 @@ public interface ImageDtoService {
     List<Dir> selectDirs();
 
     List<Image> selectImagesByDirId(Long dirId);
+
+    Image selectRandomImage(Long dirId);
 }

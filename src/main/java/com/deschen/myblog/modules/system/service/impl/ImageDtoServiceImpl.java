@@ -18,6 +18,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.Random;
 
 /**
  * @Author deschen
@@ -187,5 +188,29 @@ public class ImageDtoServiceImpl implements ImageDtoService {
         imageExample.createCriteria().andDirIdEqualTo(dirId);
         List<Image> images = imageMapper.selectByExample(imageExample);
         return images;
+    }
+
+    @Override
+
+    /**
+     * @Param: []
+     * @Return:com.deschen.myblog.modules.system.entity.Image
+     * @Author: deschen
+     * @Date: 2019/5/30 0:33
+     * @Description: 根据文件夹id随机生成图片（无代表默认用户文件夹的图片）
+     */
+    public Image selectRandomImage(Long dirId) {
+        if (dirId == null) {
+            // 默认是用户文件夹
+            dirId = BlogConstant.DEFAULT_DIRID;
+        }
+        ImageExample imageExample = new ImageExample();
+        imageExample.createCriteria()
+                .andDirIdEqualTo(dirId)
+                .andStateEqualTo(BlogConstant.RECORD_VALID);
+        List<Image> images =
+                imageMapper.selectByExample(imageExample);
+        int imageIndex = new Random().nextInt(images.size());
+        return images.get(imageIndex);
     }
 }
