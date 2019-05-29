@@ -24,11 +24,41 @@ public enum BlogEnum implements IEnum {
 
     TAG_ARTICLE_INSERT_ERROR(107, "文章及其标签关系保存到数据库失败"),
 
-    TAG_ARTICLE_UPDATE_ERROR(108,"文章及其标签关系更新到数据库失败" ),
+    TAG_ARTICLE_UPDATE_ERROR(108, "文章及其标签关系更新到数据库失败"),
 
     CATEGORY_UPDATE_ERROR(109, "种类更新失败"),
 
-    TAG_UPDATE_ERROR(110, "标签更新失败");
+    TAG_UPDATE_ERROR(110, "标签更新失败"),
+
+    PARROR_EMPTY_ERROR(111, "参数不为空"),
+
+    VISIT_ERROR(112, "文章的访问量异常"),
+
+    VISIT_UPDATE_ERROR(113, "文章的访问量更新失败"),
+
+    VISIT_INSERT_ERROR(114, "文章浏览量创建失败"),
+
+    THUMBUP_INSERT_ERROR(115, "文章点赞量创建失败"),
+
+    COMMENT_INSERT_ERROR(116, "文章评论量创建失败"),
+
+    DIR_INSERT_ERROR(117, "文件夹创建失败"),
+
+    IMAGE_INSERT_ERROR(118, "图片创建失败"),
+
+    IMAGE_UPDATE_ERROR(119, "图片更新失败"),
+
+    DIR_UPDATE_ERROR(119, "文件更新失败"),
+
+    FILE_NOT_EXIST(120, "文件不存在"),
+
+    IMAGE_UPLOAD_ERROR(121, "图片上传失败"),
+
+    DIR_NOT_EXIST(122, "文件夹不存在"),
+
+    IMAGE_NOT_EXIST(123, "图片不存在"),
+
+    THUMBUP_UPDATE_ERROR(124, "点赞量更新失败");
     private Integer code;
 
     private String message;

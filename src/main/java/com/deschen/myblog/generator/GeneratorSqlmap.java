@@ -12,7 +12,7 @@ import java.util.List;
 /**
  * @Author deschen
  * @Create 2019/5/23
- * @Description
+ * @Description Mybatis逆向工程生成类
  * @Since 1.0.0
  */
 public class GeneratorSqlmap {

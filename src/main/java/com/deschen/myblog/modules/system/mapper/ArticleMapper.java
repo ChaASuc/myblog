@@ -39,28 +39,50 @@ public interface ArticleMapper {
 
     int updateByPrimaryKey(Article record);
 
+    /**
+     * @Modify: 2019/5/26 状态码查询由一个到批量查询
+     */
     List<ArticleDto> selectArticleDtoByCategoryIdSortDesc(
             @Param("categoryId") Long categoryId,
-            @Param("state") Integer state,
+            @Param("states") List<Integer> states,
             @Param("sort") String sort
     );
 
+    /**
+     * @Modify: 2019/5/26 状态码查询由一个到批量查询
+     */
     List<ArticleDto> selectArticleDtoByCategoryIdAndTagIdSortDesc(
             @Param("categoryId") Long categoryId,
             @Param("tagId") Long tagId,
-            @Param("state") Integer state,
+            @Param("states") List<Integer> states,
             @Param("sort") String sort
     );
 
-    List<ArticleDto> selectArticleDtoByCategoryIdsSortDesc(
-            List<Long> categoryIds,
-            @Param("state") Integer state,
+    List<ArticleDto> selectArticleDtoByTagIdSortDesc(
+            @Param("tagId") Long tagId,
+            @Param("states") List<Integer> states,
+            @Param("sort") String sort);
+
+    /**
+     * @Modify: 2019/5/26 状态码查询由一个到批量查询
+     */
+    List<ArticleDto> selectArticleDtoSortDesc(
+            @Param("states") List<Integer> states,
             @Param("sort") String sort
     );
+
+    /**
+     * @Modify: 2019/5/26 状态码查询由一个到批量查询
+     */
+    List<ArticleDto> selectArticleDtoByCategoryIdsSortDesc(
+            @Param("categoryIds") List<Long> categoryIds,
+            @Param("states") List<Integer> states,
+            @Param("sort") String sort
+    );
+
 
     ArticleWithBLOBsDto selectArticleWithBLOBsDtoByArticleId(
             @Param("articleId") Long articleId
     );
-
 
 }

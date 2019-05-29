@@ -1,7 +1,9 @@
 package com.deschen.myblog.core.handler;
 
 
-import com.deschen.myblog.core.utils.ResultUtil;
+import com.deschen.myblog.core.exceptions.GlobalException;
+
+import com.deschen.myblog.core.utils.ResultVOUtil;
 import com.deschen.myblog.modules.system.vo.ResultVO;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -19,10 +21,17 @@ import javax.servlet.http.HttpServletRequest;
 @Slf4j
 public class GlobalExceptionHandler {
 
+    // 拦截异常
+    @ExceptionHandler({GlobalException.class})
+    public ResultVO handGlobalException(GlobalException e, HttpServletRequest request) {
+        ResultVO error = ResultVOUtil.error(e.getCode(), e.getMessage());
+        log.error("【GlobalException】 error url = {}", request.getRequestURL());
+        return error;
+    }
     //拦截全局异常
     @ExceptionHandler({Exception.class})
-    public ResultVO handlerGlobalException(Exception e, HttpServletRequest request) {
-        ResultVO error = ResultUtil.error(420, e.getMessage());
+    public ResultVO handlerException(Exception e, HttpServletRequest request) {
+        ResultVO error = ResultVOUtil.error(420, e.getMessage());
         log.error("【系统异常】 error url = {}", request.getRequestURL());
         return error;
     }

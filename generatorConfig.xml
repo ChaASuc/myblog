@@ -59,12 +59,12 @@ PUBLIC "-//mybatis.org//DTD MyBatis Generator Configuration 1.0//EN"
         <!-- schema即为数据库名 tableName为对应的数据库表 domainObjectName是要生成的实体类 enable*ByExample
             是否生成 example类 -->
 
-        <table schema="" tableName="blog_article" domainObjectName="Article">
-            <!-- 指定java类型 -->
-            <columnOverride column="state" javaType="java.lang.Integer" jdbcType="TINYINT" />
-            <!--<columnOverride column="create_time" javaType="java.time.LocalDate" jdbcType="DATETIME" />-->
-            <!--<columnOverride column="update_time" javaType="java.time.LocalDate" jdbcType="DATETIME" />-->
-        </table>
+        <!--<table schema="" tableName="blog_article" domainObjectName="Article">-->
+            <!--&lt;!&ndash; 指定java类型 &ndash;&gt;-->
+            <!--<columnOverride column="state" javaType="java.lang.Integer" jdbcType="TINYINT" />-->
+            <!--&lt;!&ndash;<columnOverride column="create_time" javaType="java.time.LocalDate" jdbcType="DATETIME" />&ndash;&gt;-->
+            <!--&lt;!&ndash;<columnOverride column="update_time" javaType="java.time.LocalDate" jdbcType="DATETIME" />&ndash;&gt;-->
+        <!--</table>-->
 
         <!--<table schema="" tableName="blog_category" domainObjectName="Category">
             &lt;!&ndash; 指定java类型 &ndash;&gt;
@@ -79,13 +79,6 @@ PUBLIC "-//mybatis.org//DTD MyBatis Generator Configuration 1.0//EN"
             &lt;!&ndash;<columnOverride column="create_time" javaType="java.time.LocalDate" jdbcType="DATETIME" />&ndash;&gt;
             &lt;!&ndash;<columnOverride column="update_time" javaType="java.time.LocalDate" jdbcType="DATETIME" />&ndash;&gt;
         </table>-->
-
-        <table schema="" tableName="blog_image" domainObjectName="Image">
-            <!-- 指定java类型 -->
-            <columnOverride column="state" javaType="java.lang.Integer" jdbcType="TINYINT" />
-            <!--<columnOverride column="create_time" javaType="java.time.LocalDate" jdbcType="DATETIME" />-->
-            <!--<columnOverride column="update_time" javaType="java.time.LocalDate" jdbcType="DATETIME" />-->
-        </table>
 
         <!--<table schema="" tableName="blog_tag" domainObjectName="Tag">
             &lt;!&ndash; 指定java类型 &ndash;&gt;
@@ -112,6 +105,17 @@ PUBLIC "-//mybatis.org//DTD MyBatis Generator Configuration 1.0//EN"
             &lt;!&ndash;<columnOverride column="create_time" javaType="java.time.LocalDate" jdbcType="DATETIME" />&ndash;&gt;
             &lt;!&ndash;<columnOverride column="update_time" javaType="java.time.LocalDate" jdbcType="DATETIME" />&ndash;&gt;
         </table>-->
-
+        <table schema="" tableName="blog_image" domainObjectName="Image">
+            <!-- 指定java类型 -->
+            <columnOverride column="state" javaType="java.lang.Integer" jdbcType="TINYINT" />
+            <!--<columnOverride column="create_time" javaType="java.time.LocalDate" jdbcType="DATETIME" />-->
+            <!--<columnOverride column="update_time" javaType="java.time.LocalDate" jdbcType="DATETIME" />-->
+        </table>
+        <table schema="" tableName="blog_dir" domainObjectName="Dir">
+            <!-- 指定java类型 -->
+            <columnOverride column="state" javaType="java.lang.Integer" jdbcType="TINYINT" />
+            <!--<columnOverride column="create_time" javaType="java.time.LocalDate" jdbcType="DATETIME" />-->
+            <!--<columnOverride column="update_time" javaType="java.time.LocalDate" jdbcType="DATETIME" />-->
+        </table>
     </context>
 </generatorConfiguration>

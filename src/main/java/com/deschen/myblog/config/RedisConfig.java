@@ -1,5 +1,6 @@
 package com.deschen.myblog.config;
 
+import com.deschen.myblog.core.utils.RedisUtil;
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.PropertyAccessor;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -47,5 +48,12 @@ public class RedisConfig {
         StringRedisTemplate template = new StringRedisTemplate();
         template.setConnectionFactory(redisConnectionFactory);
         return template;
+    }
+
+    @Bean
+    public RedisUtil redisUtil(RedisTemplate redisTemplate) {
+        RedisUtil redisUtil = new RedisUtil();
+        redisUtil.setRedisTemplate(redisTemplate);
+        return redisUtil;
     }
 }

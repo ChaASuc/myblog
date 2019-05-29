@@ -14,11 +14,24 @@ import java.util.List;
  */
 public interface CategoryDtoService {
 
-    boolean insertTags(List<Tag> tags);
+    List<Long> insertTags(List<Tag> tags);
 
-    boolean insertCategories(List<Category> categories);
+    void insertCategories(List<Category> categories);
 
-    boolean updateCategories(List<Category> categories);
+    /**
+     * @Modify: 一对多修改（集合形式）修改种类及其标签
+     * @param categoryDtos
+     * @return
+     */
+    void updateCategoryDtos(List<CategoryDto> categoryDtos);
 
-    boolean updateTags(List<Tag> tags);
+    List<CategoryDto> selectCategoryDto(Integer state, String sort);
+
+    List<Category> selectCategory(Integer state, String sort);
+
+    List<Tag> selectTag(Long categoryId, Integer state, String sort);
+
+    void transHotFromRedisDB();
+
+    Tag selectTag(Long categoryId, String tagName);
 }

@@ -1,5 +1,7 @@
 package com.deschen.myblog.core.utils;
 
+import com.deschen.myblog.modules.system.entity.Article;
+import com.deschen.myblog.modules.system.entity.Category;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeanUtils;
@@ -56,4 +58,10 @@ public class BaseConverter<POJO, VO> {
     public void convert(POJO from, VO to) {
         BeanUtils.copyProperties(from, to);
     }
+
+//    public static void main(String[] args) {
+//        BaseConverter<Category, Article> categoryArticleBaseConverter = new BaseConverter<>();
+//        Category category = new Category();
+//        categoryArticleBaseConverter.convert(category, Article.class);
+//    }
 }

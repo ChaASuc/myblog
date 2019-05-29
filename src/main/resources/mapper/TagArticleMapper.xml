@@ -223,7 +223,10 @@
     left join blog_article article
     on tag_article.article_id = article.article_id
     WHERE article.article_id = #{articleId}
-    and tag_article.state = #{state}
+    and tag.state in
+    <foreach collection="states" open="(" separator="," close=")" item="state">
+      #{state}
+    </foreach>
   </select>
   <update id="updateByExampleSelective" parameterType="map">
     update blog_tag_article

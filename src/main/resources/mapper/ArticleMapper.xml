@@ -20,12 +20,30 @@
     <result column="thumbup_count" jdbcType="INTEGER" property="thumbupCount" />
     <result column="visit_count" jdbcType="INTEGER" property="visitCount" />
     <result column="comment_count" jdbcType="INTEGER" property="commentCount" />
+    <!--<collection property="tags" ofType="com.deschen.myblog.modules.system.entity.Tag" >
+      <id column="tag_id" jdbcType="BIGINT" property="tagId" />
+      <result column="tag_name" jdbcType="VARCHAR" property="tagName" />
+      <result column="state" jdbcType="TINYINT" property="state" />
+      <result column="hot" jdbcType="INTEGER" property="hot" />
+      <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
+      <result column="update_time" jdbcType="TIMESTAMP" property="updateTime" />
+      <result column="category_id" jdbcType="BIGINT" property="categoryId" />
+    </collection>-->
   </resultMap>
   <resultMap extends="ResultMapWithBLOBs" id="ResultMapWithBLOBsDto" type="com.deschen.myblog.modules.system.dto.ArticleWithBLOBsDto">
     <result column="category_name" jdbcType="VARCHAR" property="categoryName" />
     <result column="thumbup_count" jdbcType="INTEGER" property="thumbupCount" />
     <result column="visit_count" jdbcType="INTEGER" property="visitCount" />
     <result column="comment_count" jdbcType="INTEGER" property="commentCount" />
+    <!--<collection property="tags" ofType="com.deschen.myblog.modules.system.entity.Tag" >
+      <id column="tag_id" jdbcType="BIGINT" property="tagId" />
+      <result column="tag_name" jdbcType="VARCHAR" property="tagName" />
+      <result column="state" jdbcType="TINYINT" property="state" />
+      <result column="hot" jdbcType="INTEGER" property="hot" />
+      <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
+      <result column="update_time" jdbcType="TIMESTAMP" property="updateTime" />
+      <result column="category_id" jdbcType="BIGINT" property="categoryId" />
+    </collection>-->
   </resultMap>
 
   <sql id="Example_Where_Clause">
@@ -222,7 +240,10 @@
     LEFT JOIN blog_thumbup thumbup
     on article.article_id = thumbup.article_id
     WHERE category.category_id = #{categoryId}
-    and article.state = #{state}
+    and article.state in
+    <foreach collection="states" open="(" separator="," close=")" item="state">
+      #{state}
+    </foreach>
     <if test="sort == null">
       ORDER BY visit.visit_count,thumbup.thumbup_count,comment.comment_count DESC
     </if>
@@ -253,7 +274,78 @@
     on article.article_id = tag_article.article_id
     WHERE category.category_id = #{categoryId}
     and tag_article.tag_id = #{tagId}
-    and tag_article.state = #{state}
+    and article.state in
+    <foreach collection="states" open="(" separator="," close=")" item="state">
+      #{state}
+    </foreach>
+    <if test="sort == null">
+      ORDER BY visit.visit_count,thumbup.thumbup_count,comment.comment_count DESC
+    </if>
+    <if test="sort == 'hot'">
+      ORDER BY visit.visit_count,thumbup.thumbup_count,comment.comment_count DESC
+    </if>
+    <if test="sort == 'newest'">
+      ORDER BY article.update_time DESC
+    </if>
+    <if test="sort == 'comment'">
+      ORDER BY comment.comment_count DESC
+    </if>
+  </select>
+
+  <select id="selectArticleDtoByTagIdSortDesc" parameterType="map" resultMap="ResultMapDto">
+    SELECT article.*, category_name, visit_count, thumbup_count, comment_count
+    FROM blog_article article
+    LEFT JOIN blog_category category
+    on article.category_id = category.category_id
+    LEFT JOIN blog_visit visit
+    on article.article_id = visit.article_id
+    LEFT JOIN blog_comment comment
+    on article.article_id = comment.article_id
+    LEFT JOIN blog_thumbup thumbup
+    on article.article_id = thumbup.article_id
+    LEFT JOIN blog_tag_article tag_article
+    on article.article_id = tag_article.article_id
+    WHERE tag_article.tag_id in
+    (
+    SELECT tag_id
+    FROM blog_tag tag
+    WHERE tag.tag_name = (SELECT tag_name FROM blog_tag WHERE tag_id = #{tagId})
+    )
+    and article.state in
+    <foreach collection="states" open="(" separator="," close=")" item="state">
+      #{state}
+    </foreach>
+    <if test="sort == null">
+      ORDER BY visit.visit_count,thumbup.thumbup_count,comment.comment_count DESC
+    </if>
+    <if test="sort == 'hot'">
+      ORDER BY visit.visit_count,thumbup.thumbup_count,comment.comment_count DESC
+    </if>
+    <if test="sort == 'newest'">
+      ORDER BY article.update_time DESC
+    </if>
+    <if test="sort == 'comment'">
+      ORDER BY comment.comment_count DESC
+    </if>
+  </select>
+
+  <select id="selectArticleDtoSortDesc" parameterType="map" resultMap="ResultMapDto">
+    SELECT article.*, category_name, visit_count, thumbup_count, comment_count
+    FROM blog_article article
+    LEFT JOIN blog_category category
+    on article.category_id = category.category_id
+    LEFT JOIN blog_visit visit
+    on article.article_id = visit.article_id
+    LEFT JOIN blog_comment comment
+    on article.article_id = comment.article_id
+    LEFT JOIN blog_thumbup thumbup
+    on article.article_id = thumbup.article_id
+    LEFT JOIN blog_tag_article tag_article
+    on article.article_id = tag_article.article_id
+    WHERE article_state in
+    <foreach collection="states" open="(" separator="," close=")" item="state">
+      #{state}
+    </foreach>
     <if test="sort == null">
       ORDER BY visit.visit_count,thumbup.thumbup_count,comment.comment_count DESC
     </if>
@@ -283,7 +375,10 @@
     <foreach collection="categoryIds" open="(" separator="," close=")" item="categoryId">
       #{categoryId}
     </foreach>
-    and article.state = #{state}
+    and article.state in
+    <foreach collection="states" open="(" separator="," close=")" item="state">
+      #{state}
+    </foreach>
     <if test="sort == null">
       ORDER BY visit.visit_count,thumbup.thumbup_count,comment.comment_count DESC
     </if>

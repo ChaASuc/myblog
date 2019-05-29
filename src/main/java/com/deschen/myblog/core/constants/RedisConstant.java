@@ -8,11 +8,24 @@ package com.deschen.myblog.core.constants;
  */
 public interface RedisConstant {
 
-    String CATEGORYTAG_PREFIX = "category_%s_tag_%s";
+    String CATEGORY_PREFIX = "category_%s";
+
+    String TAG_PREFIX = "tag_%s";
+
+    String VISIT_PREFIX = "visit_%s";
+
+    String THUMBUP_PREFIX = "thumbup_%s";
+
+    String THUMBUPIP_PREFIX = "thumbupip_%s";
+
+    String VISITIP_PREFIX = "visitip_%s";
+
+    String CATEGORY_TAG_PREFIX = "category_%s_tag_%s";
 
     String ARTICLE_PREFIX = "category_%s_tag_%s_sort_%s_article";
 
     String ARTICLE_CONTENT_PREFIX = "article_%s_tag_%s";
+
 
 
 }

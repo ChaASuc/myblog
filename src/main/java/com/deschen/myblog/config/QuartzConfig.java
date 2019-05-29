@@ -21,7 +21,7 @@ public class QuartzConfig {
         SimpleScheduleBuilder scheduleBuilder = SimpleScheduleBuilder.simpleSchedule()
 //                .withIntervalInSeconds(10)  //设置时间周期单位秒
 //                .withIntervalInHours(2)  //两个小时执行一次
-                .withIntervalInSeconds(10)
+                .withIntervalInSeconds(120)
                 .repeatForever();
         return TriggerBuilder.newTrigger().forJob(quartzDetail())
                 .withIdentity(LIKE_TASK_IDENTITY)

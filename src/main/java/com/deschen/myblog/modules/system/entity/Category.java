@@ -1,8 +1,10 @@
 package com.deschen.myblog.modules.system.entity;
 
+import javax.validation.constraints.NotBlank;
+import java.io.Serializable;
 import java.util.Date;
 
-public class Category {
+public class Category implements Serializable {
     private Long categoryId;
 
     private String categoryName;

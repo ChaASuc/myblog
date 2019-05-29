@@ -31,6 +31,11 @@ public interface TagArticleMapper {
 
     int updateByPrimaryKey(TagArticle record);
 
+    /**
+     * @Modify: 2019/5/26 状态码查询由一个到批量查询
+     */
     List<Tag> selectTagsByArticleId(
-            @Param("articleId") Long articleId, @Param("state") Integer state);
+            @Param("articleId") Long articleId,
+            @Param("states") List<Integer> state);
+
 }
