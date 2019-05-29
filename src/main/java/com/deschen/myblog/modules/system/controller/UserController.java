@@ -97,6 +97,7 @@ public class UserController {
             @ApiParam("sort")
             @RequestParam(value = "sort", required = false) Integer sort
     ) {
+
         String categoryPrefix = RedisConstant.CATEGORY_PREFIX;
         String tagPrefix = RedisConstant.TAG_PREFIX;
 
@@ -109,14 +110,17 @@ public class UserController {
         if (categoryId == null && tagId == null) {
             articleDtos = articleDtoService.selectArticleDto(states, sortName);
         } else if (categoryId != null) {
+            categoryDtoService.selectBycategoryIdOrTagId(categoryId, null);
             redisInc(categoryId, categoryPrefix);
             articleDtos = articleDtoService.selectArticleDtoByCategoryId(categoryId, states, sortName);
             if (tagId != null) {
+                categoryDtoService.selectBycategoryIdOrTagId(categoryId, tagId);
                 redisInc(tagId, tagPrefix);
                 articleDtos =
                         articleDtoService.selectArticleDtoByCategoryIdAndTagId(categoryId, tagId, states, sortName);
             }
         } else {
+            categoryDtoService.selectBycategoryIdOrTagId(null, tagId);
             redisInc(tagId, tagPrefix);
             articleDtos = articleDtoService.selectArticleDtoByTagId(tagId, states, sortName);
 
@@ -136,7 +140,7 @@ public class UserController {
 
 
 
-    @ApiOperation(value="文章id获取文章实体类", notes = "")
+    @ApiOperation(value="文章id获取文章实体类", notes = "已测试")
     @GetMapping("/article/{articleId}")
     public ResultVO getArticleWithBLOBsDtoByArticleId(
             @ApiParam(value = "文章id", required = true)
@@ -144,7 +148,7 @@ public class UserController {
             @ApiParam(value = "用户ip", required = true)
             @RequestParam("ip") String ip
     ) {
-
+        articleDtoService.selectArticle(articleId);
         String visitPrefix = RedisConstant.VISIT_PREFIX;
         // 查看ip是否有记录
         ip = String.format(RedisConstant.VISITIP_PREFIX, ip.trim());
@@ -166,6 +170,7 @@ public class UserController {
         return success;
     }
 
+    @ApiOperation(value="图片显示", notes = "已测试")
     @GetMapping("/image/{imageId}")
     public ResponseEntity getImage(
             @PathVariable Long imageId
@@ -182,6 +187,7 @@ public class UserController {
         }
     }
 
+    @ApiOperation(value="文章id点赞", notes = "已测试")
     @PostMapping("/thumbup/{articleId}")
     public ResultVO insertArticleThumbup(
             @ApiParam(value = "登入网页的ip地址", required = true)
@@ -189,7 +195,7 @@ public class UserController {
             @ApiParam(value = "文章id", required = true)
             @PathVariable Long articleId
     ) {
-
+        articleDtoService.selectArticle(articleId);
         // 查看点赞总数是否存在
         String thumbup = String.format(RedisConstant.THUMBUP_PREFIX, articleId);
         if (redisUtil.get(thumbup) == null) {
@@ -204,6 +210,7 @@ public class UserController {
         }else {
             // 存在，就代表取消点赞，点赞数减1
             redisUtil.decr(thumbup, 1);
+            redisUtil.del(ip);
         }
 
         ResultVO success = ResultVOUtil.success();

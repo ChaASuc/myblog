@@ -13,6 +13,7 @@ import com.deschen.myblog.modules.system.service.ArticleDtoService;
 import com.deschen.myblog.modules.system.service.CategoryDtoService;
 import com.deschen.myblog.modules.system.vo.ResultVO;
 import com.sun.org.apache.regexp.internal.RE;
+import io.swagger.annotations.ApiOperation;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -43,6 +44,7 @@ public class AuthorCategoryDtoController {
     private SortUtil sortUtil;
 
 
+    @ApiOperation(value = "获取所有的种类和标签",notes = "已测试")
     @GetMapping("")
     public ResultVO getCategoryDtos(
             @RequestParam(value = "state", required = false) Integer state,
@@ -54,6 +56,8 @@ public class AuthorCategoryDtoController {
         return success;
     }
 
+
+    @ApiOperation(value = "获取状态的种类",notes = "已测试")
     @GetMapping("/category")
     public ResultVO getCategories(
             @RequestParam(value = "state", required = false) Integer state,
@@ -66,6 +70,8 @@ public class AuthorCategoryDtoController {
         return success;
     }
 
+
+    @ApiOperation(value = "获取状态的种类下的标签",notes = "已测试")
     @GetMapping("/tag")
     public ResultVO getTags(
             @RequestParam(value = "categoryId") Long categoryId,
@@ -78,6 +84,7 @@ public class AuthorCategoryDtoController {
         return success;
     }
 
+    @ApiOperation(value = "批量创建种类",notes = "已测试")
     @PostMapping("/categories")
     public ResultVO insertCategories(
             @RequestBody  List<Category> categories) {
@@ -88,6 +95,7 @@ public class AuthorCategoryDtoController {
         return ResultVOUtil.success();
     }
 
+    @ApiOperation(value = "批量创建种类下的标签",notes = "已测试")
     @PostMapping("/tags")
     public ResultVO insertTags(
             @RequestBody List<Tag> tags
@@ -99,6 +107,7 @@ public class AuthorCategoryDtoController {
         return ResultVOUtil.success();
     }
 
+    @ApiOperation(value = "批量更新种类及其标签",notes = "已测试")
     @PutMapping
     @Transactional
     public ResultVO updateCategoryDtos(

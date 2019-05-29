@@ -6,6 +6,7 @@ import com.deschen.myblog.core.exceptions.GlobalException;
 import com.deschen.myblog.core.utils.IdWorker;
 import com.deschen.myblog.core.utils.RedisUtil;
 import com.deschen.myblog.modules.system.entity.*;
+import com.deschen.myblog.modules.system.mapper.ArticleMapper;
 import com.deschen.myblog.modules.system.mapper.CommentMapper;
 import com.deschen.myblog.modules.system.mapper.ThumbupMapper;
 import com.deschen.myblog.modules.system.mapper.VisitMapper;
@@ -37,6 +38,8 @@ public class ArticleModuleServiceImpl implements ArticleModuleService {
 
     @Autowired
     private CommentMapper commentMapper;
+
+
 
     @Autowired
     private RedisUtil redisUtil;
@@ -87,18 +90,32 @@ public class ArticleModuleServiceImpl implements ArticleModuleService {
         Set<String> keys = redisUtil.keys(visitPrefix);
         keys.stream().forEach(
                 key -> {
+                    // 获取文章id
                     Long articleId = Long.valueOf(key.substring(key.lastIndexOf("_") + 1));
+                    // 获取文章id所属的浏览表
                     VisitExample visitExample = new VisitExample();
                     visitExample.createCriteria().andArticleIdEqualTo(articleId);
-                    Integer visitCount = (Integer) redisUtil.get(key);
-                    Visit visit = new Visit();
-                    visit.setVisitCount(visitCount);
-                    int success = visitMapper.updateByExampleSelective(visit, visitExample);
-                    if (success == 0) {
-                        log.info("【redis定时数据库】更新访问量失败，visitId = {}",
-                                visit.getVisitId());
-                        throw new GlobalException(BlogEnum.VISIT_UPDATE_ERROR);
+                    List<Visit> visits = visitMapper.selectByExample(visitExample);
+                    // 如果不存在则跳过
+                    if (visits.size() != 0) {
+                        // 存在
+                        Integer visitCount = (Integer) redisUtil.get(key);
+                        Visit visit = visits.get(0);
+                        if (visit.getVisitCount() > visitCount) {
+                            // reids缓存误删，更新缓存
+                            redisUtil.set(key, visit.getVisitCount());
+                        } else if(visit.getVisitCount() < visitCount){
+                            // 更新浏览表的缓存
+                            visit.setVisitCount(visitCount);
+                            int success = visitMapper.updateByPrimaryKey(visit);
+                            if (success == 0) {
+                                log.info("【redis定时数据库】更新访问量失败，visitId = {}",
+                                        visit.getVisitId());
+                                throw new GlobalException(BlogEnum.VISIT_UPDATE_ERROR);
+                            }
+                        }// 浏览量跟redis相同则跳过
                     }
+
 
                 }
         );
@@ -119,18 +136,32 @@ public class ArticleModuleServiceImpl implements ArticleModuleService {
         Set<String> keys = redisUtil.keys(thumbupPrefix);
         keys.stream().forEach(
                 key -> {
+                    // 获取文章id
                     Long articleId = Long.valueOf(key.substring(key.lastIndexOf("_") + 1));
-                    Integer thumbupCount = (Integer)redisUtil.get(key);
-                    Thumbup thumbup = new Thumbup();
-                    thumbup.setThumbupCount(thumbupCount);
+
+                    // 获取文章id所属的点赞表
                     ThumbupExample thumbupExample = new ThumbupExample();
                     thumbupExample.createCriteria().andArticleIdEqualTo(articleId);
-                    int success = thumbupMapper.updateByExampleSelective(thumbup, thumbupExample);
-                    if (success == 0) {
-                        log.info("【redis定时数据库】更新点赞量失败，articleId = {}",
-                                articleId);
-                        throw new GlobalException(BlogEnum.THUMBUP_UPDATE_ERROR);
+                    List<Thumbup> thumbups = thumbupMapper.selectByExample(thumbupExample);
+                    // 判断是否存在
+                    if (thumbups.size() != 0) {
+                        Integer thumbupCount = (Integer) redisUtil.get(key);
+                        Thumbup thumbup = thumbups.get(0);
+                        // 点赞会减少，不能用只增不减的操作
+//                        if (thumbup.getThumbupCount() > thumbupCount) {
+//                            // redis误删点赞量
+//                            redisUtil.set(key, thumbup.getThumbupCount());
+//                        }else if(thumbup.getThumbupCount() < thumbupCount){
+                            thumbup.setThumbupCount(thumbupCount);
+                            int success = thumbupMapper.updateByPrimaryKey(thumbup);
+                            if (success == 0) {
+                                log.info("【redis定时数据库】更新点赞量失败，articleId = {}",
+                                        articleId);
+                                throw new GlobalException(BlogEnum.THUMBUP_UPDATE_ERROR);
+                            }
+//                        }// 点赞量跟redis相同跳过
                     }
+
                 }
         );
     }

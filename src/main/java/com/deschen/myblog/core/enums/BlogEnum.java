@@ -58,7 +58,13 @@ public enum BlogEnum implements IEnum {
 
     IMAGE_NOT_EXIST(123, "图片不存在"),
 
-    THUMBUP_UPDATE_ERROR(124, "点赞量更新失败");
+    THUMBUP_UPDATE_ERROR(124, "点赞量更新失败"),
+
+    CATEGORY_TAG_NOT_EXIST(125, "种类及其标签不存在"),
+
+    ARTICLE_NOT_EXIST(126, "文章不存在"),
+
+    ;
     private Integer code;
 
     private String message;

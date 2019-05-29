@@ -34,4 +34,6 @@ public interface CategoryDtoService {
     void transHotFromRedisDB();
 
     Tag selectTag(Long categoryId, String tagName);
+
+    void selectBycategoryIdOrTagId(Long categoryId, Long tagId);
 }

@@ -256,8 +256,21 @@ public class ArticleDtoServiceImpl implements ArticleDtoService {
         return tags;
     }
 
+    @Override
 
-
+    /**
+     * @Param: [articleId]
+     * @Return:void
+     * @Author: deschen
+     * @Date: 2019/5/29 14:02
+     * @Description: 该文章是否存在
+     */
+    public void selectArticle(Long articleId) {
+        ArticleWithBLOBs articleWithBLOBs = articleMapper.selectByPrimaryKey(articleId);
+        if (articleWithBLOBs == null || articleWithBLOBs.getState() != BlogConstant.RECORD_VALID) {
+            throw new GlobalException(BlogEnum.ARTICLE_NOT_EXIST);
+        }
+    }
 
 
     /**

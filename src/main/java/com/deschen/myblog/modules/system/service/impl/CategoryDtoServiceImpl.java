@@ -134,20 +134,20 @@ public class CategoryDtoServiceImpl implements CategoryDtoService {
                         throw new GlobalException(BlogEnum.CATEGORY_UPDATE_ERROR);
                     }
 
-                    if (categoryDto.getState() != null) {
+                    if (categoryDto.getState() == BlogConstant.RECORD_VOID) {
                         // 种类状态改变影响标签状态
                         Tag tag = new Tag();
-                        tag.setState(categoryDto.getState());
+                        tag.setState(BlogConstant.RECORD_VOID);
                         TagExample tagExample = new TagExample();
                         tagExample.createCriteria().andCategoryIdEqualTo(categoryDto.getCategoryId());
                         tagMapper.updateByExampleSelective(tag, tagExample);
 
                         // 种类状态影响文章状态
-                        Article article = new Article();
-                        article.setState(categoryDto.getState());
+                        ArticleWithBLOBs article = new ArticleWithBLOBs();
+                        article.setState(BlogConstant.RECORD_VOID);
                         ArticleExample articleExample = new ArticleExample();
                         articleExample.createCriteria().andCategoryIdEqualTo(category.getCategoryId());
-                        articleMapper.updateByExample(article, articleExample);
+                        articleMapper.updateByExampleSelective(article, articleExample);
                     }
         });
 
@@ -166,9 +166,9 @@ public class CategoryDtoServiceImpl implements CategoryDtoService {
                                     throw new GlobalException(BlogEnum.TAG_UPDATE_ERROR);
                                 }
                                 // 标签的状态改变影响文章的状态
-                                if (tag.getState() != null) {
+                                if (tag.getState() == BlogConstant.RECORD_VOID) {
                                     TagArticle tagArticle = new TagArticle();
-                                    tagArticle.setState(tag.getState());
+                                    tagArticle.setState(BlogConstant.RECORD_VOID);
                                     TagArticleExample tagArticleExample = new TagArticleExample();
                                     tagArticleExample.createCriteria().andTagIdEqualTo(tag.getTagId());
                                     tagArticleMapper.updateByExample(tagArticle, tagArticleExample);
@@ -281,6 +281,7 @@ public class CategoryDtoServiceImpl implements CategoryDtoService {
      * @Date: 2019/5/28 19:39
      * @Description: reids点击种类和标签的次数更新相应实体类的hot
      */
+    @Transactional
     public void transHotFromRedisDB() {
         String categoryPrefix = String.format(RedisConstant.CATEGORY_PREFIX, "*");
         String tagPrefix = String.format(RedisConstant.TAG_PREFIX, "*");
@@ -290,31 +291,49 @@ public class CategoryDtoServiceImpl implements CategoryDtoService {
 
         ckeys.stream().forEach(
                 ckey -> {
-                    Long aLong = Long.valueOf(ckey.substring(ckey.lastIndexOf("_") + 1));
+                    // 种类id
+                    Long categoryId = Long.valueOf(ckey.substring(ckey.lastIndexOf("_") + 1));
+                    // redis存的种类热度
                     Integer hot = (Integer) redisUtil.get(ckey);
-                    Category category = new Category();
-                    category.setCategoryId(aLong);
-                    category.setHot(hot);
-                    int success =
-                            categoryMapper.updateByPrimaryKeySelective(category);
-                    if (success == 0) {
-                        throw new GlobalException(BlogEnum.CATEGORY_UPDATE_ERROR);
+                    // 获取种类
+                    Category category = categoryMapper.selectByPrimaryKey(categoryId);
+                    if (category != null) {  // 不存在则跳过，避免不必要报错
+                        if (category.getHot() > hot) {
+                            // 代表redis错误删掉种类热度缓存
+                            redisUtil.set(ckey, category.getHot());
+                        }else if(category.getHot() < hot){
+                            category.setHot(hot);
+                            int success = categoryMapper.updateByPrimaryKey(category);
+                            if (success == 0) {
+                                throw new GlobalException(BlogEnum.CATEGORY_UPDATE_ERROR);
+                            }
+                        }// 相同跳过，提高效率
                     }
+
                 }
         );
 
         tkeys.stream().forEach(
                 tkey -> {
-                    Long aLong = Long.valueOf(tkey.substring(tkey.lastIndexOf("_") + 1));
+                    // 获取标签id
+                    Long tagId = Long.valueOf(tkey.substring(tkey.lastIndexOf("_") + 1));
                     Integer hot = (Integer) redisUtil.get(tkey);
-                    Tag tag = new Tag();
-                    tag.setTagId(aLong);
-                    tag.setHot(hot);
-                    int success =
-                            tagMapper.updateByPrimaryKeySelective(tag);
-                    if (success == 0) {
-                        throw new GlobalException(BlogEnum.TAG_UPDATE_ERROR);
+                    // 获取标签
+                    Tag tag = tagMapper.selectByPrimaryKey(tagId);
+                    if (tag != null) {  // 不存在跳过，避免报错，提高效率
+                        if (tag.getHot() > hot) {
+                            // 标签缓存误删
+                            redisUtil.set(tkey, tag.getHot());
+                        } else if (tag.getHot() < hot){
+                            tag.setHot(hot);
+                            int success =
+                                    tagMapper.updateByPrimaryKey(tag);
+                            if (success == 0) {
+                                throw new GlobalException(BlogEnum.TAG_UPDATE_ERROR);
+                            }
+                        }// 相同跳过，提高效率
                     }
+
                 }
         );
 
@@ -340,6 +359,42 @@ public class CategoryDtoServiceImpl implements CategoryDtoService {
             throw new GlobalException(BlogEnum.TAG_NOT_EXIST);
         }
         return tags.get(0);
+    }
+
+    @Override
+
+    /**
+     * @Param: [categoryId, tagId]
+     * @Return:boolean
+     * @Author: deschen
+     * @Date: 2019/5/29 13:51
+     * @Description: 查看种类，标签id及组合是否存在
+     */
+    public void selectBycategoryIdOrTagId(Long categoryId, Long tagId) {
+        if (categoryId != null) {
+            Category category =
+                    categoryMapper.selectByPrimaryKey(categoryId);
+            if (category == null || category.getState() == BlogConstant.RECORD_VOID) {
+                throw new GlobalException(BlogEnum.CATEGORY_NOT_EXIST);
+            }
+            if (tagId != null) {
+                TagExample tagExample = new TagExample();
+                tagExample.createCriteria().andTagIdEqualTo(tagId)
+                        .andCategoryIdEqualTo(categoryId);
+                List<Tag> tags = tagMapper.selectByExample(tagExample);
+                if (tags.size() == 0 || tags.get(0).getState() == BlogConstant.RECORD_VOID) {
+                    throw new GlobalException(BlogEnum.CATEGORY_TAG_NOT_EXIST);
+                }
+            }
+
+        }
+        if (tagId != null) {
+            Tag tag = tagMapper.selectByPrimaryKey(tagId);
+            if (tag == null || tag.getState() == BlogConstant.RECORD_VOID) {
+                throw new GlobalException(BlogEnum.TAG_NOT_EXIST);
+            }
+        }
+
     }
 
     public static void main(String[] args) {

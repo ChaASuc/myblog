@@ -39,4 +39,5 @@ public interface ArticleDtoService {
     List<Tag> selectTagsByArticleId(Long articleId);
 
 
+    void selectArticle(Long articleId);
 }
