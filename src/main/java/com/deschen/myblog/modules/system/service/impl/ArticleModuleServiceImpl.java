@@ -148,10 +148,10 @@ public class ArticleModuleServiceImpl implements ArticleModuleService {
                         Integer thumbupCount = (Integer) redisUtil.get(key);
                         Thumbup thumbup = thumbups.get(0);
                         // 点赞会减少，不能用只增不减的操作
-//                        if (thumbup.getThumbupCount() > thumbupCount) {
-//                            // redis误删点赞量
-//                            redisUtil.set(key, thumbup.getThumbupCount());
-//                        }else if(thumbup.getThumbupCount() < thumbupCount){
+                        if (thumbupCount == 0) {
+                            // redis误删点赞量
+                            redisUtil.set(key, thumbup.getThumbupCount());
+                        }else {
                             thumbup.setThumbupCount(thumbupCount);
                             int success = thumbupMapper.updateByPrimaryKey(thumbup);
                             if (success == 0) {
@@ -159,7 +159,7 @@ public class ArticleModuleServiceImpl implements ArticleModuleService {
                                         articleId);
                                 throw new GlobalException(BlogEnum.THUMBUP_UPDATE_ERROR);
                             }
-//                        }// 点赞量跟redis相同跳过
+                        }
                     }
 
                 }
