@@ -5,10 +5,12 @@ import com.deschen.myblog.core.constants.BlogConstant;
 import com.deschen.myblog.core.enums.BlogEnum;
 import com.deschen.myblog.core.exceptions.GlobalException;
 import com.deschen.myblog.core.utils.FileUtil;
+import com.deschen.myblog.core.utils.IdWorker;
 import com.deschen.myblog.core.utils.ResultVOUtil;
 import com.deschen.myblog.modules.system.entity.Dir;
 import com.deschen.myblog.modules.system.entity.Image;
 import com.deschen.myblog.modules.system.service.ImageDtoService;
+import com.deschen.myblog.modules.system.vo.ImageVO;
 import com.deschen.myblog.modules.system.vo.ResultVO;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -20,6 +22,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
 import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * @Author deschen
@@ -45,6 +48,8 @@ public class AuthorImageDtoController {
             @ApiParam(value = "文件夹实体类，包含dirName就行了", required = true)
             @RequestBody Dir dir
             ) {
+        long dirId = new IdWorker().nextId();
+        dir.setDirId(dirId);
         imageDtoService.insertDir(dir);
         ResultVO success = ResultVOUtil.success();
         return success;
@@ -72,10 +77,13 @@ public class AuthorImageDtoController {
             throw new GlobalException(BlogEnum.IMAGE_UPLOAD_ERROR);
         }
         Image image = new Image();
+        long imageId = new IdWorker().nextId();
+        image.setImageId(imageId);
         image.setImageUrl(imagePath);
         image.setDirId(dirId);
         imageDtoService.insertImages(image);
-        ResultVO success = ResultVOUtil.success();
+        String imageUrl = BlogConstant.IMAGEURL + image.getImageId();
+        ResultVO success = ResultVOUtil.success(imageUrl);
         return success;
     }
 
@@ -118,14 +126,18 @@ public class AuthorImageDtoController {
             @ApiParam()
             @PathVariable(required = false) Long dirId
     ) {
-//        if (dirId == null) {
-//            List<Dir> dirs = imageDtoService.selectDirs();
-//            Dir dir = dirs.get(0);
-//            dirId = dir.getDirId();
-//        }
         List<Image> images =
                 imageDtoService.selectImagesByDirId(dirId);
-        ResultVO success = ResultVOUtil.success(images);
+        List<ImageVO> imageVOS = images.stream().map(
+                image -> {
+                    ImageVO imageVO = new ImageVO();
+                    imageVO.setImageId(image.getImageId());
+                    imageVO.setState(image.getState());
+                    imageVO.setImageUrl(BlogConstant.IMAGEURL + image.getImageId());
+                    return imageVO;
+                }
+        ).collect(Collectors.toList());
+        ResultVO success = ResultVOUtil.success(imageVOS);
         return success;
     }
 }
