@@ -1,10 +1,16 @@
 package com.deschen.myblog.modules.system.entity;
 
+import com.deschen.myblog.core.serializer.Date2LongSerializer;
+import com.deschen.myblog.core.serializer.Long2StringSerializer;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+
 import javax.validation.constraints.NotBlank;
 import java.io.Serializable;
 import java.util.Date;
 
 public class Category implements Serializable {
+
+    @JsonSerialize(using = Long2StringSerializer.class)
     private Long categoryId;
 
     private String categoryName;
@@ -13,8 +19,10 @@ public class Category implements Serializable {
 
     private Integer hot;
 
+    @JsonSerialize(using = Date2LongSerializer.class)
     private Date createTime;
 
+    @JsonSerialize(using = Date2LongSerializer.class)
     private Date updateTime;
 
     public Long getCategoryId() {

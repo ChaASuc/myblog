@@ -1,5 +1,8 @@
 package com.deschen.myblog.modules.system.vo;
 
+import com.deschen.myblog.core.serializer.Date2LongSerializer;
+import com.deschen.myblog.core.serializer.Long2StringSerializer;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import lombok.Data;
 
 /**
@@ -11,6 +14,7 @@ import lombok.Data;
 @Data
 public class ImageVO {
 
+    @JsonSerialize(using = Long2StringSerializer.class)
     private Long imageId;
 
     private String imageUrl;

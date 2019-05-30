@@ -1,18 +1,28 @@
 package com.deschen.myblog.modules.system.entity;
 
+import com.deschen.myblog.core.serializer.Date2LongSerializer;
+import com.deschen.myblog.core.serializer.Long2StringSerializer;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+
 import java.util.Date;
 
 public class TagArticle {
+
+    @JsonSerialize(using = Long2StringSerializer.class)
     private Long tagArticleId;
 
+    @JsonSerialize(using = Long2StringSerializer.class)
     private Long tagId;
 
+    @JsonSerialize(using = Long2StringSerializer.class)
     private Long articleId;
 
     private Integer state;
 
+    @JsonSerialize(using = Date2LongSerializer.class)
     private Date createTime;
 
+    @JsonSerialize(using = Date2LongSerializer.class)
     private Date updateTime;
 
     public Long getTagArticleId() {
