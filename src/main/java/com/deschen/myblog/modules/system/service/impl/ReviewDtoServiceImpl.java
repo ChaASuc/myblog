@@ -89,7 +89,10 @@ public class ReviewDtoServiceImpl implements ReviewDtoService {
     public List<ReviewDto> selectReviewDto(Long articleId, Integer state, Integer flag) {
         ReviewExample reviewExample = new ReviewExample();
         ReviewExample.Criteria criteria =
-                reviewExample.createCriteria().andArticleIdEqualTo(articleId);
+                reviewExample.createCriteria()
+                        .andArticleIdEqualTo(articleId)
+                        .andReviewParentIsNull();
+
         // 无代表所有状态
         if (state != null) {
             criteria.andStateEqualTo(state);

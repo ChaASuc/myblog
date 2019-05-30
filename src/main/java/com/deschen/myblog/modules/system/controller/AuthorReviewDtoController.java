@@ -64,7 +64,7 @@ public class AuthorReviewDtoController {
                     bindingResult.getFieldError().getDefaultMessage());
         }
 
-        if (!EmailUtil.checkEmaile(reviewForm.getEmail())) {
+        if (reviewForm.getEmail() != null && !EmailUtil.checkEmaile(reviewForm.getEmail())) {
             log.info("【添加评论】邮箱校验失败，email = {}", reviewForm.getEmail());
             throw new GlobalException(BlogEnum.PARROR_EMPTY_ERROR.getCode(),
                     "邮箱格式错误");
