@@ -27,4 +27,10 @@ public interface BlogConstant {
     Integer NEWEST = 2;
 
     Integer COMMENT = 3;
+
+    Long DEFAULT_DIRID = 1133556052961378304L;
+
+    String IMAGEURL = "http://10.79.3.57:8080/myblog/user/image/";
+
+    Long dirId = 1133930737993527296L;
 }

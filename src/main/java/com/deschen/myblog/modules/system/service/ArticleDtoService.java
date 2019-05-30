@@ -30,7 +30,7 @@ public interface ArticleDtoService {
 
     boolean insertArticleWithBLOBs(ArticleWithBLOBs articleWithBLOBs);
 
-    boolean insertTagArticles(Long articleId, List<Tag> tags);
+    void insertTagArticles(Long articleId, List<Long> tagIds);
 
     boolean updateArticleWithBLOBs(ArticleWithBLOBs articleWithBLOBs);
 

@@ -36,6 +36,6 @@ public interface TagArticleMapper {
      */
     List<Tag> selectTagsByArticleId(
             @Param("articleId") Long articleId,
-            @Param("states") List<Integer> state);
+            @Param("states") List<Integer> states);
 
 }

@@ -18,6 +18,6 @@ public class ArticleForm extends ArticleWithBLOBs implements Serializable {
 
 
     // 标签id集合
-    private List<Tag> tags;
+    private List<TagForm> tagForms;
 
 }

@@ -66,6 +66,9 @@ public class ArticleDtoServiceImpl implements ArticleDtoService {
     public List<ArticleDto> selectArticleDtoByCategoryId(Long categoryId, List<Integer> states, String sort) {
         List<ArticleDto> articleDtos =
                 articleMapper.selectArticleDtoByCategoryIdSortDesc(categoryId, states, sort);
+        if (articleDtos.size() == 0) {
+            return null;
+        }
         articleDtoAddTags(articleDtos);
         return articleDtos;
     }
@@ -99,6 +102,9 @@ public class ArticleDtoServiceImpl implements ArticleDtoService {
     public List<ArticleDto> selectArticleDtoByTagId(Long tagId, List<Integer> states, String sort) {
         List<ArticleDto> articleDtos =
                 articleMapper.selectArticleDtoByTagIdSortDesc(tagId, states, sort);
+        if (articleDtos.size() == 0) {
+            return null;
+        }
         articleDtoAddTags(articleDtos);
         return articleDtos;
     }
@@ -168,15 +174,15 @@ public class ArticleDtoServiceImpl implements ArticleDtoService {
      * @Description: 添加文章与标签集合到blog_tag_article表
      */
     @Transactional
-    public boolean insertTagArticles(Long articleId, List<Tag> tags) {
+    public void insertTagArticles(Long articleId, List<Long> tagIds) {
         // 创建标签和文章的联系
-        List<TagArticle> tagArticles = tags.stream().map(
-                tag -> {
+        List<TagArticle> tagArticles = tagIds.stream().map(
+                tagId -> {
                     TagArticle tagArticle = new TagArticle();
                     long tagArticleId = new IdWorker().nextId();
                     tagArticle.setTagArticleId(tagArticleId);
                     tagArticle.setArticleId(articleId);
-                    tagArticle.setTagId(tag.getTagId());
+                    tagArticle.setTagId(tagId);
                     tagArticle.setState(BlogConstant.RECORD_VALID);
                     return tagArticle;
                 }
@@ -186,7 +192,6 @@ public class ArticleDtoServiceImpl implements ArticleDtoService {
         if (successTagArticle == 0) {
             throw new GlobalException(BlogEnum.TAG_ARTICLE_INSERT_ERROR);
         }
-        return true;
     }
 
     @Override
@@ -251,7 +256,7 @@ public class ArticleDtoServiceImpl implements ArticleDtoService {
      */
     public List<Tag> selectTagsByArticleId(Long articleId) {
         List<Integer> states = new ArrayList<>();
-        states.add(BlogConstant.RECORD_VOID);
+        states.add(BlogConstant.RECORD_VALID);
         List<Tag> tags = tagArticleMapper.selectTagsByArticleId(articleId, states);
         return tags;
     }
