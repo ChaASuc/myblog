@@ -57,12 +57,26 @@ public class AuthorImageDtoController {
 
     @ApiOperation(value="上传图片", notes="已测试")
     @PostMapping("/image/{dirId}")
-    public ResultVO imsertImage(
+    public ResultVO insertImageToDirId(
             @ApiParam(value = "文件夹Id", required = true)
             @PathVariable Long dirId,
             @ApiParam(value = "上传文件", required = true)
             @RequestParam MultipartFile file
             ) {
+        return getResultVO(file, dirId);
+    }
+
+    @ApiOperation(value="上传博客文章图片", notes="已测试")
+    @PostMapping("/image")
+    public ResultVO insertImage(
+            @ApiParam(value = "上传文件", required = true)
+            @RequestParam MultipartFile file
+    ) {
+        Long dirId = BlogConstant.ARTICLE_DIRID;
+        return getResultVO(file, dirId);
+    }
+
+    private ResultVO getResultVO(MultipartFile file, Long dirId) {
         if (file == null || file.isEmpty()) {
             throw new GlobalException(BlogEnum.FILE_NOT_EXIST);
         }
@@ -140,4 +154,6 @@ public class AuthorImageDtoController {
         ResultVO success = ResultVOUtil.success(imageVOS);
         return success;
     }
+
+
 }

@@ -19,10 +19,10 @@ public class Category implements Serializable {
 
     private Integer hot;
 
-    @JsonSerialize(using = Date2LongSerializer.class)
+    //@JsonSerialize(using = Date2LongSerializer.class)
     private Date createTime;
 
-    @JsonSerialize(using = Date2LongSerializer.class)
+    //@JsonSerialize(using = Date2LongSerializer.class)
     private Date updateTime;
 
     public Long getCategoryId() {

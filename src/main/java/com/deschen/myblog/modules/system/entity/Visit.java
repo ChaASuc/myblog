@@ -15,10 +15,10 @@ public class Visit {
     @JsonSerialize(using = Long2StringSerializer.class)
     private Long articleId;
 
-    @JsonSerialize(using = Date2LongSerializer.class)
+    //@JsonSerialize(using = Date2LongSerializer.class)
     private Date createTime;
 
-    @JsonSerialize(using = Date2LongSerializer.class)
+    //@JsonSerialize(using = Date2LongSerializer.class)
     private Date updateTime;
 
     public Long getVisitId() {

@@ -13,6 +13,7 @@ import com.deschen.myblog.modules.system.service.ArticleDtoService;
 import com.deschen.myblog.modules.system.service.CategoryDtoService;
 import com.deschen.myblog.modules.system.vo.ResultVO;
 import com.sun.org.apache.regexp.internal.RE;
+import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.beans.BeanUtils;
@@ -30,6 +31,7 @@ import java.util.stream.Collectors;
  * @Description
  * @Since 1.0.0
  */
+@Api(description = "用户种类模块")
 @RestController
 @RequestMapping("/author/categoryDto")
 public class AuthorCategoryDtoController {
@@ -65,8 +67,8 @@ public class AuthorCategoryDtoController {
     ) {
         String sortName = sortUtil.getSort(sort);
         List<Category> categories = categoryDtoService.selectCategory(state, sortName);
-        List<CategoryDto> categoryDtos = categoryDtoService.selectCategoryDto(state, sortName);
-        ResultVO success = ResultVOUtil.success(categoryDtos);
+//        List<CategoryDto> categoryDtos = categoryDtoService.selectCategoryDto(state, sortName);
+        ResultVO success = ResultVOUtil.success(categories);
         return success;
     }
 

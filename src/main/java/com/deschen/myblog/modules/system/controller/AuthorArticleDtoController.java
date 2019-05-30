@@ -73,7 +73,9 @@ public class AuthorArticleDtoController {
     ) {
         List<Integer> stateList = new ArrayList<>();
         if (CollectionUtils.isEmpty(states) || states.size() == 0) {
-            stateList.add(BlogConstant.HOT);
+            stateList.add(BlogConstant.RECORD_VOID);
+            stateList.add(BlogConstant.RECORD_VALID);
+            stateList.add(BlogConstant.RECORD_DRAFT);
         }else {
             stateList = states;
         }

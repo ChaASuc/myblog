@@ -71,8 +71,6 @@ public class ImageDtoServiceImpl implements ImageDtoService {
      * @Description: 插入图片
      */
     public void insertImages(Image image) {
-        long imageId = new IdWorker().nextId();
-        image.setImageId(imageId);
         int success = imageMapper.insertSelective(image);
         if (success == 0) {
             throw new GlobalException(BlogEnum.IMAGE_INSERT_ERROR);

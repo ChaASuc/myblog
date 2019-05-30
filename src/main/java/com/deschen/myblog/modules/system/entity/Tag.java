@@ -17,10 +17,10 @@ public class Tag {
 
     private Integer hot;
 
-    @JsonSerialize(using = Date2LongSerializer.class)
+    //@JsonSerialize(using = Date2LongSerializer.class)
     private Date createTime;
 
-    @JsonSerialize(using = Date2LongSerializer.class)
+    //@JsonSerialize(using = Date2LongSerializer.class)
     private Date updateTime;
 
     @JsonSerialize(using = Long2StringSerializer.class)

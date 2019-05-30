@@ -48,8 +48,8 @@ public class CategoryDtoServiceImpl implements CategoryDtoService {
     @Autowired
     private ArticleMapper articleMapper;
 
-    @Autowired
-    private TagArticleMapper tagArticleMapper;
+//    @Autowired
+//    private TagArticleMapper tagArticleMapper;
 
     @Autowired
     private RedisUtil redisUtil;
@@ -128,7 +128,7 @@ public class CategoryDtoServiceImpl implements CategoryDtoService {
                     Category category = new Category();
                     BeanUtils.copyProperties(categoryDto, category);
                     int success = categoryMapper.updateByPrimaryKeySelective(category);
-                    if (success != 1) {
+                    if (success == 0) {
                         log.info("【更新种类及标签】 种类更新失败，success = {}, categoryId = {}",
                                 success, category.getCategoryId());
                         throw new GlobalException(BlogEnum.CATEGORY_UPDATE_ERROR);
@@ -160,19 +160,19 @@ public class CategoryDtoServiceImpl implements CategoryDtoService {
                     tags.stream().forEach(
                             tag -> {
                                 int success = tagMapper.updateByPrimaryKeySelective(tag);
-                                if (success != 1) {
+                                if (success == 0) {
                                     log.info("【更新种类及标签】 种类标签失败，success = {}, tagId = {}",
                                             success, tag.getTagId());
                                     throw new GlobalException(BlogEnum.TAG_UPDATE_ERROR);
                                 }
-                                // 标签的状态改变影响文章的状态
-                                if (tag.getState() == BlogConstant.RECORD_VOID) {
-                                    TagArticle tagArticle = new TagArticle();
-                                    tagArticle.setState(BlogConstant.RECORD_VOID);
-                                    TagArticleExample tagArticleExample = new TagArticleExample();
-                                    tagArticleExample.createCriteria().andTagIdEqualTo(tag.getTagId());
-                                    tagArticleMapper.updateByExample(tagArticle, tagArticleExample);
-                                }
+//                                // 标签的状态改变影响文章的状态
+//                                if (tag.getState() == BlogConstant.RECORD_VOID) {
+//                                    TagArticle tagArticle = new TagArticle();
+//                                    tagArticle.setState(BlogConstant.RECORD_VOID);
+//                                    TagArticleExample tagArticleExample = new TagArticleExample();
+//                                    tagArticleExample.createCriteria().andTagIdEqualTo(tag.getTagId());
+//                                    tagArticleMapper.updateByExample(tagArticle, tagArticleExample);
+//                                }
                             }
                     );
                 }
@@ -222,7 +222,7 @@ public class CategoryDtoServiceImpl implements CategoryDtoService {
         if (sort.equals("hot")) {
             categoryExample.setOrderByClause("HOT DESC");
         }else if (sort.equals("newest")){
-            categoryExample.setOrderByClause("UPDATETIME  DESC");
+            categoryExample.setOrderByClause("UPDATE_TIME DESC");
         }else {
             throw new GlobalException(BlogEnum.SORT_ERROR);
         }
@@ -254,7 +254,7 @@ public class CategoryDtoServiceImpl implements CategoryDtoService {
         if (sort.equals("hot")) {
             tagExample.setOrderByClause("HOT DESC");
         }else if (sort.equals("newest")){
-            tagExample.setOrderByClause("UPDATETIME  DESC");
+            tagExample.setOrderByClause("UPDATE_TIME DESC");
         }else {
             throw new GlobalException(BlogEnum.SORT_ERROR);
         }

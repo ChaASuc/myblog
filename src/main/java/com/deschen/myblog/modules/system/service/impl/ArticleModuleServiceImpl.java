@@ -165,4 +165,17 @@ public class ArticleModuleServiceImpl implements ArticleModuleService {
                 }
         );
     }
+
+    @Override
+
+    /**
+     * @Param: []
+     * @Return:void
+     * @Author: deschen
+     * @Date: 2019/5/30 22:22
+     * @Description:
+     */
+    public void transCommentCountFromRedisDB() {
+
+    }
 }

@@ -14,10 +14,10 @@ public class Dir {
 
     private Integer state;
 
-    @JsonSerialize(using = Date2LongSerializer.class)
+    //@JsonSerialize(using = Date2LongSerializer.class)
     private Date createTime;
 
-    @JsonSerialize(using = Date2LongSerializer.class)
+    //@JsonSerialize(using = Date2LongSerializer.class)
     private Date updateTime;
 
     private String dirUrl;
