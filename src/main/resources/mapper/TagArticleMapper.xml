@@ -227,6 +227,7 @@
     <foreach collection="states" open="(" separator="," close=")" item="state">
       #{state}
     </foreach>
+    and tag_article.state = 1
   </select>
   <update id="updateByExampleSelective" parameterType="map">
     update blog_tag_article

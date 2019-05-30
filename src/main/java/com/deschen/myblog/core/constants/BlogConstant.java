@@ -28,9 +28,13 @@ public interface BlogConstant {
 
     Integer COMMENT = 3;
 
-    Long DEFAULT_DIRID = 1133556052961378304L;
+    // 默认用户头像图片文件夹
+    Long DEFAULT_DIRID = 1133930631181381632L;
 
     String IMAGEURL = "http://10.79.3.57:8080/myblog/user/image/";
 
-    Long dirId = 1133930737993527296L;
+    // 默认博客文章上传图片文件夹
+    Long ARTICLE_DIRID = 1133930737993527296L;
+
+    Integer FLAGADMIN = 1;
 }

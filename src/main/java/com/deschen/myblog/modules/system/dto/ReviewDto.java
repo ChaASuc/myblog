@@ -23,6 +23,8 @@ public class ReviewDto extends Review implements Serializable {
 
     private String email;
 
+    private String reviewUrl;
+
     @JsonSerialize(using = Long2StringSerializer.class)
     private Long imageId;
 

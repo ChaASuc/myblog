@@ -20,7 +20,7 @@ public class GlobalException extends RuntimeException{
         this.code = code;
     }
 
-    public GlobalException(String message, Integer code) {
+    public GlobalException(Integer code, String message) {
         super(message);
         this.code = code;
     }

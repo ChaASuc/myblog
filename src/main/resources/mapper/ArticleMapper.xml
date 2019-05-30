@@ -315,6 +315,7 @@
     <foreach collection="states" open="(" separator="," close=")" item="state">
       #{state}
     </foreach>
+    and tag_article.state = 1
     <if test="sort == null">
       ORDER BY visit.visit_count,thumbup.thumbup_count,comment.comment_count DESC
     </if>
@@ -340,9 +341,9 @@
     on article.article_id = comment.article_id
     LEFT JOIN blog_thumbup thumbup
     on article.article_id = thumbup.article_id
-    LEFT JOIN blog_tag_article tag_article
-    on article.article_id = tag_article.article_id
-    WHERE article_state in
+--     LEFT JOIN blog_tag_article tag_article
+--     on article.article_id = tag_article.article_id
+    WHERE article.state in
     <foreach collection="states" open="(" separator="," close=")" item="state">
       #{state}
     </foreach>

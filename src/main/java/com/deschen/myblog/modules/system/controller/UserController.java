@@ -10,12 +10,14 @@ import com.deschen.myblog.core.utils.SortUtil;
 import com.deschen.myblog.modules.system.dto.ArticleDto;
 import com.deschen.myblog.modules.system.dto.ArticleWithBLOBsDto;
 import com.deschen.myblog.modules.system.dto.CategoryDto;
+import com.deschen.myblog.modules.system.dto.ReviewDto;
 import com.deschen.myblog.modules.system.entity.Category;
 import com.deschen.myblog.modules.system.entity.Image;
 import com.deschen.myblog.modules.system.entity.Tag;
 import com.deschen.myblog.modules.system.service.ArticleDtoService;
 import com.deschen.myblog.modules.system.service.CategoryDtoService;
 import com.deschen.myblog.modules.system.service.ImageDtoService;
+import com.deschen.myblog.modules.system.service.ReviewDtoService;
 import com.deschen.myblog.modules.system.vo.ResultVO;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -52,6 +54,9 @@ public class UserController {
 
     @Autowired
     private ImageDtoService imageDtoService;
+
+    @Autowired
+    private ReviewDtoService reviewDtoService;
     @Autowired
     private SortUtil sortUtil;
 
@@ -214,6 +219,17 @@ public class UserController {
         }
 
         ResultVO success = ResultVOUtil.success();
+        return success;
+    }
+
+    @ApiOperation(value = "根据文章id获取评论", notes = "已测试")
+    @GetMapping("/review/{articleId}")
+    public ResultVO selectReviewDtos(
+            @PathVariable Long articleId
+    ) {
+        List<ReviewDto> reviewDtos =
+                reviewDtoService.selectReviewDto(articleId, BlogConstant.RECORD_VALID, null);
+        ResultVO success = ResultVOUtil.success(reviewDtos);
         return success;
     }
 

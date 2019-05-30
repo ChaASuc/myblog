@@ -64,6 +64,10 @@ public enum BlogEnum implements IEnum {
 
     ARTICLE_NOT_EXIST(126, "文章不存在"),
 
+    REVIEW_INSERT_ERROR(127, "评论保存失败"),
+
+    USER_INSERT_ERROR(128, "用户保存失败"),
+
     ;
     private Integer code;
 
