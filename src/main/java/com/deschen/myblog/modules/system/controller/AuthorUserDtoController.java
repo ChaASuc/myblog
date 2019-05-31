@@ -48,16 +48,21 @@ public class AuthorUserDtoController {
             @Valid @RequestBody UserForm userForm,
             BindingResult bindingResult
     ) {
-        if (userForm.getEmail() != null && !EmailUtil.checkEmaile(userForm.getEmail())) {
-            log.info("【添加用户】邮箱校验失败，email = {}", userForm.getEmail());
-            throw new GlobalException(BlogEnum.PARROR_EMPTY_ERROR.getCode(),
-                    "邮箱格式错误");
-        }
         if (bindingResult.hasErrors()) {
             log.info("【添加用户】 参数错误");
             throw new GlobalException(BlogEnum.PARROR_EMPTY_ERROR.getCode(),
                     bindingResult.getFieldError().getDefaultMessage());
         }
+
+        if (userForm.getEmail() != null) {
+            String email = userForm.getEmail().trim();
+            if (!email.equals("") && !EmailUtil.checkEmaile(email)) {
+                log.info("【添加用户】邮箱校验失败，email = {}", email);
+                throw new GlobalException(BlogEnum.PARROR_EMPTY_ERROR.getCode(),
+                        "邮箱格式错误");
+            }
+        }
+
         User user = new User();
         long userId = new IdWorker().nextId();
         user.setUserId(userId);
@@ -83,10 +88,14 @@ public class AuthorUserDtoController {
                     "用户名id不为空");
         }
 
-        if (form.getEmail() != null && !EmailUtil.checkEmaile(form.getEmail())) {
-            log.info("【添加评论】邮箱校验失败，email = {}", form.getEmail());
-            throw new GlobalException(BlogEnum.PARROR_EMPTY_ERROR.getCode(),
-                    "邮箱格式错误");
+        if (form.getEmail() != null) {
+
+            String email = form.getEmail();
+            if (!email.trim().equals("") && !EmailUtil.checkEmaile(email)) {
+                log.info("【添加评论】邮箱校验失败，email = {}", email);
+                throw new GlobalException(BlogEnum.PARROR_EMPTY_ERROR.getCode(),
+                        "邮箱格式错误");
+            }
         }
 
         User user = new User();

@@ -6,11 +6,13 @@ import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import java.util.Date;
 
 public class UserConfig {
+
     @JsonSerialize(using = Long2StringSerializer.class)
     private Long configId;
 
-    @JsonSerialize(using = Long2StringSerializer.class)
     private Long userId;
+
+    private Integer articleSum;
 
     private Integer visitSum;
 
@@ -36,6 +38,14 @@ public class UserConfig {
 
     public void setUserId(Long userId) {
         this.userId = userId;
+    }
+
+    public Integer getArticleSum() {
+        return articleSum;
+    }
+
+    public void setArticleSum(Integer articleSum) {
+        this.articleSum = articleSum;
     }
 
     public Integer getVisitSum() {

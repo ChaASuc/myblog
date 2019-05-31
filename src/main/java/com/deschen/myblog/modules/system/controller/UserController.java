@@ -137,7 +137,7 @@ public class UserController {
             }else {
                 categoryDtoService.selectBycategoryIdOrTagId(categoryId, null);
                 redisInc(categoryId, categoryPrefix);
-PageHelper.startPage(pageNum, blogConfig.getPageSize());
+                PageHelper.startPage(pageNum, blogConfig.getPageSize());
                 articleDtos = articleDtoService.selectArticleDtoByCategoryId(categoryId, states, sortName);
             }
         } else {
@@ -272,12 +272,14 @@ PageHelper.startPage(pageNum, blogConfig.getPageSize());
                     bindingResult.getFieldError().getDefaultMessage());
         }
 
-        if (reviewForm.getEmail() != null && !EmailUtil.checkEmaile(reviewForm.getEmail())) {
-            log.info("【添加评论】邮箱校验失败，email = {}", reviewForm.getEmail());
-            throw new GlobalException(BlogEnum.PARROR_EMPTY_ERROR.getCode(),
-                    "邮箱格式错误");
+        if (reviewForm.getEmail() != null) {
+            String email = reviewForm.getEmail().trim();
+            if (!email.equals("") && !EmailUtil.checkEmaile(email)) {
+                log.info("【添加评论】邮箱校验失败，email = {}", email);
+                throw new GlobalException(BlogEnum.PARROR_EMPTY_ERROR.getCode(),
+                        "邮箱格式错误");
+            }
         }
-
 
         // 创建用户
         User user = new User();

@@ -17,6 +17,8 @@ import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.io.ResourceLoader;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -42,6 +44,13 @@ public class AuthorImageDtoController {
     @Autowired
     private ImageConfig imageConfig;
 
+    private final ResourceLoader resourceLoader;
+
+    @Autowired
+    public AuthorImageDtoController(ResourceLoader resourceLoader) {
+        this.resourceLoader = resourceLoader;
+    }
+
     @ApiOperation(value="创建文件夹", notes="已测试")
     @PostMapping("/dir")
     public ResultVO insertDir(
@@ -63,7 +72,7 @@ public class AuthorImageDtoController {
             @ApiParam(value = "上传文件", required = true)
             @RequestParam MultipartFile file
             ) {
-        return getResultVO(file, dirId);
+        return getResultVO(file, dirId, BlogConstant.FLAGADMIN);
     }
 
     @ApiOperation(value="上传博客文章图片", notes="已测试")
@@ -73,10 +82,10 @@ public class AuthorImageDtoController {
             @RequestParam MultipartFile file
     ) {
         Long dirId = BlogConstant.ARTICLE_DIRID;
-        return getResultVO(file, dirId);
+        return getResultVO(file, dirId, null);
     }
 
-    private ResultVO getResultVO(MultipartFile file, Long dirId) {
+    private ResultVO getResultVO(MultipartFile file, Long dirId, Integer flag) {
         if (file == null || file.isEmpty()) {
             throw new GlobalException(BlogEnum.FILE_NOT_EXIST);
         }
@@ -96,7 +105,12 @@ public class AuthorImageDtoController {
         image.setImageUrl(imagePath);
         image.setDirId(dirId);
         imageDtoService.insertImages(image);
-        String imageUrl = BlogConstant.IMAGEURL + image.getImageId();
+        String imageUrl;
+        if (flag != null) {
+            imageUrl = BlogConstant.IMAGE_ADMIN_URL + image.getImageId();
+        }else {
+            imageUrl = BlogConstant.IMAGE_USER_URL + image.getImageId();
+        }
         ResultVO success = ResultVOUtil.success(imageUrl);
         return success;
     }
@@ -147,12 +161,27 @@ public class AuthorImageDtoController {
                     ImageVO imageVO = new ImageVO();
                     imageVO.setImageId(image.getImageId());
                     imageVO.setState(image.getState());
-                    imageVO.setImageUrl(BlogConstant.IMAGEURL + image.getImageId());
+                    imageVO.setImageUrl(BlogConstant.IMAGE_ADMIN_URL + image.getImageId());
                     return imageVO;
                 }
         ).collect(Collectors.toList());
         ResultVO success = ResultVOUtil.success(imageVOS);
         return success;
+    }
+
+    @ApiOperation(value="图片显示", notes = "已测试")
+    @GetMapping("/{imageId}")
+    public ResponseEntity getImage(
+            @PathVariable Long imageId
+    ) {
+        Image image =
+                imageDtoService.selectImageByImageId(imageId);
+
+        try {
+            return ResponseEntity.ok(resourceLoader.getResource("file:" + image.getImageUrl()));
+        } catch (Exception e) {
+            return ResponseEntity.notFound().build();
+        }
     }
 
 

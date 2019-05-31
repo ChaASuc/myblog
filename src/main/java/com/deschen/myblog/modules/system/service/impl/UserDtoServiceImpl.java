@@ -36,6 +36,7 @@ public class UserDtoServiceImpl implements UserDtoService {
     private UserConfigMapper userConfigMapper;
 
 
+
     @Override
 
     /**
@@ -115,7 +116,7 @@ public class UserDtoServiceImpl implements UserDtoService {
             userDto.setThumbupSum(userConfig.getThumbupSum());
             userDto.setVisitSum(userConfig.getVisitSum());
         }
-        String imageUrl = BlogConstant.IMAGEURL + user.getImageId();
+        String imageUrl = BlogConstant.IMAGE_USER_URL + user.getImageId();
         userDto.setImageUrl(imageUrl);
 
         return userDto;
@@ -140,4 +141,5 @@ public class UserDtoServiceImpl implements UserDtoService {
             throw new GlobalException(BlogEnum.USER_NOT_EXIST);
         }
     }
+
 }

@@ -4,6 +4,7 @@
   <resultMap id="BaseResultMap" type="com.deschen.myblog.modules.system.entity.UserConfig">
     <id column="config_id" jdbcType="BIGINT" property="configId" />
     <result column="user_id" jdbcType="BIGINT" property="userId" />
+    <result column="article_sum" jdbcType="INTEGER" property="articleSum" />
     <result column="visit_sum" jdbcType="INTEGER" property="visitSum" />
     <result column="thumbup_sum" jdbcType="INTEGER" property="thumbupSum" />
     <result column="comment_sum" jdbcType="INTEGER" property="commentSum" />
@@ -69,7 +70,8 @@
     </where>
   </sql>
   <sql id="Base_Column_List">
-    config_id, user_id, visit_sum, thumbup_sum, comment_sum, create_time, update_time
+    config_id, user_id, article_sum, visit_sum, thumbup_sum, comment_sum, create_time, 
+    update_time
   </sql>
   <select id="selectByExample" parameterType="com.deschen.myblog.modules.system.entity.UserConfigExample" resultMap="BaseResultMap">
     select
@@ -102,12 +104,12 @@
     </if>
   </delete>
   <insert id="insert" parameterType="com.deschen.myblog.modules.system.entity.UserConfig">
-    insert into blog_user_config (config_id, user_id, visit_sum, 
-      thumbup_sum, comment_sum, create_time, 
-      update_time)
-    values (#{configId,jdbcType=BIGINT}, #{userId,jdbcType=BIGINT}, #{visitSum,jdbcType=INTEGER}, 
-      #{thumbupSum,jdbcType=INTEGER}, #{commentSum,jdbcType=INTEGER}, #{createTime,jdbcType=TIMESTAMP}, 
-      #{updateTime,jdbcType=TIMESTAMP})
+    insert into blog_user_config (config_id, user_id, article_sum, 
+      visit_sum, thumbup_sum, comment_sum, 
+      create_time, update_time)
+    values (#{configId,jdbcType=BIGINT}, #{userId,jdbcType=BIGINT}, #{articleSum,jdbcType=INTEGER}, 
+      #{visitSum,jdbcType=INTEGER}, #{thumbupSum,jdbcType=INTEGER}, #{commentSum,jdbcType=INTEGER}, 
+      #{createTime,jdbcType=TIMESTAMP}, #{updateTime,jdbcType=TIMESTAMP})
   </insert>
   <insert id="insertSelective" parameterType="com.deschen.myblog.modules.system.entity.UserConfig">
     insert into blog_user_config
@@ -117,6 +119,9 @@
       </if>
       <if test="userId != null">
         user_id,
+      </if>
+      <if test="articleSum != null">
+        article_sum,
       </if>
       <if test="visitSum != null">
         visit_sum,
@@ -140,6 +145,9 @@
       </if>
       <if test="userId != null">
         #{userId,jdbcType=BIGINT},
+      </if>
+      <if test="articleSum != null">
+        #{articleSum,jdbcType=INTEGER},
       </if>
       <if test="visitSum != null">
         #{visitSum,jdbcType=INTEGER},
@@ -173,6 +181,9 @@
       <if test="record.userId != null">
         user_id = #{record.userId,jdbcType=BIGINT},
       </if>
+      <if test="record.articleSum != null">
+        article_sum = #{record.articleSum,jdbcType=INTEGER},
+      </if>
       <if test="record.visitSum != null">
         visit_sum = #{record.visitSum,jdbcType=INTEGER},
       </if>
@@ -197,6 +208,7 @@
     update blog_user_config
     set config_id = #{record.configId,jdbcType=BIGINT},
       user_id = #{record.userId,jdbcType=BIGINT},
+      article_sum = #{record.articleSum,jdbcType=INTEGER},
       visit_sum = #{record.visitSum,jdbcType=INTEGER},
       thumbup_sum = #{record.thumbupSum,jdbcType=INTEGER},
       comment_sum = #{record.commentSum,jdbcType=INTEGER},
@@ -211,6 +223,9 @@
     <set>
       <if test="userId != null">
         user_id = #{userId,jdbcType=BIGINT},
+      </if>
+      <if test="articleSum != null">
+        article_sum = #{articleSum,jdbcType=INTEGER},
       </if>
       <if test="visitSum != null">
         visit_sum = #{visitSum,jdbcType=INTEGER},
@@ -233,6 +248,7 @@
   <update id="updateByPrimaryKey" parameterType="com.deschen.myblog.modules.system.entity.UserConfig">
     update blog_user_config
     set user_id = #{userId,jdbcType=BIGINT},
+      article_sum = #{articleSum,jdbcType=INTEGER},
       visit_sum = #{visitSum,jdbcType=INTEGER},
       thumbup_sum = #{thumbupSum,jdbcType=INTEGER},
       comment_sum = #{commentSum,jdbcType=INTEGER},

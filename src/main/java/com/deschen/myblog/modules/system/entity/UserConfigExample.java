@@ -225,6 +225,66 @@ public class UserConfigExample {
             return (Criteria) this;
         }
 
+        public Criteria andArticleSumIsNull() {
+            addCriterion("article_sum is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andArticleSumIsNotNull() {
+            addCriterion("article_sum is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andArticleSumEqualTo(Integer value) {
+            addCriterion("article_sum =", value, "articleSum");
+            return (Criteria) this;
+        }
+
+        public Criteria andArticleSumNotEqualTo(Integer value) {
+            addCriterion("article_sum <>", value, "articleSum");
+            return (Criteria) this;
+        }
+
+        public Criteria andArticleSumGreaterThan(Integer value) {
+            addCriterion("article_sum >", value, "articleSum");
+            return (Criteria) this;
+        }
+
+        public Criteria andArticleSumGreaterThanOrEqualTo(Integer value) {
+            addCriterion("article_sum >=", value, "articleSum");
+            return (Criteria) this;
+        }
+
+        public Criteria andArticleSumLessThan(Integer value) {
+            addCriterion("article_sum <", value, "articleSum");
+            return (Criteria) this;
+        }
+
+        public Criteria andArticleSumLessThanOrEqualTo(Integer value) {
+            addCriterion("article_sum <=", value, "articleSum");
+            return (Criteria) this;
+        }
+
+        public Criteria andArticleSumIn(List<Integer> values) {
+            addCriterion("article_sum in", values, "articleSum");
+            return (Criteria) this;
+        }
+
+        public Criteria andArticleSumNotIn(List<Integer> values) {
+            addCriterion("article_sum not in", values, "articleSum");
+            return (Criteria) this;
+        }
+
+        public Criteria andArticleSumBetween(Integer value1, Integer value2) {
+            addCriterion("article_sum between", value1, value2, "articleSum");
+            return (Criteria) this;
+        }
+
+        public Criteria andArticleSumNotBetween(Integer value1, Integer value2) {
+            addCriterion("article_sum not between", value1, value2, "articleSum");
+            return (Criteria) this;
+        }
+
         public Criteria andVisitSumIsNull() {
             addCriterion("visit_sum is null");
             return (Criteria) this;

@@ -22,4 +22,6 @@ public interface UserDtoService {
     void checkUserByUserNameAndUserPasswordAndSalt(
             String userName, String userPassword, String salt
     );
+
+
 }

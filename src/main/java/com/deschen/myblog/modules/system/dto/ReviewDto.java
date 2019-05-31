@@ -27,5 +27,7 @@ public class ReviewDto extends Review implements Serializable {
 
     private String imageUrl;
 
+    private String replierName;
+
     private List<ReviewDto> reviewDtos;
 }

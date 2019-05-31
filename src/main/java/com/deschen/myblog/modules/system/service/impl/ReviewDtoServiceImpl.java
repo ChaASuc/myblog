@@ -120,7 +120,8 @@ public class ReviewDtoServiceImpl implements ReviewDtoService {
                     }
                     // 该评论回复
                     ReviewExample.Criteria cCriteria = cReviewExample.createCriteria()
-                            .andReviewParentEqualTo(reviewId);
+                            .andArticleIdEqualTo(articleId)
+                            .andReviewParentIsNotNull();
                     if (state != null) {
                         cCriteria.andStateEqualTo(state);
                     }
@@ -128,6 +129,9 @@ public class ReviewDtoServiceImpl implements ReviewDtoService {
                     List<ReviewDto> cReviewDtos = cReviews.stream().map(
                             cReview -> {
                                 ReviewDto cReviewDto = getReviewDto(cReview, flag);
+                                Review review1 = reviewMapper.selectByPrimaryKey(cReview.getReviewParent());
+                                User user = userMapper.selectByPrimaryKey(review1.getUserId());
+                                cReviewDto.setReplierName(user.getUserName());
                                 return cReviewDto;
                             }
                     ).collect(Collectors.toList());
@@ -146,7 +150,7 @@ public class ReviewDtoServiceImpl implements ReviewDtoService {
         }
         User user = userMapper.selectByPrimaryKey(parentReview.getUserId());
         reviewDto.setUserName(user.getUserName());
-        reviewDto.setImageUrl(BlogConstant.IMAGEURL+ user.getImageId());
+        reviewDto.setImageUrl(BlogConstant.IMAGE_USER_URL+ user.getImageId());
 
         return reviewDto;
     }

@@ -1,5 +1,6 @@
 package com.deschen.myblog.modules.system.service.impl;
 
+import com.deschen.myblog.config.BlogConfig;
 import com.deschen.myblog.core.constants.BlogConstant;
 import com.deschen.myblog.core.constants.RedisConstant;
 import com.deschen.myblog.core.enums.BlogEnum;
@@ -39,6 +40,9 @@ public class ArticleModuleServiceImpl implements ArticleModuleService {
 
     @Autowired
     private ReviewMapper reviewMapper;
+
+    @Autowired
+    private ArticleMapper articleMapper;
 
 
 
@@ -204,5 +208,38 @@ public class ArticleModuleServiceImpl implements ArticleModuleService {
                     }
                 }
         );
+    }
+
+    @Override
+
+    /**
+     * @Param: []
+     * @Return:void
+     * @Author: deschen
+     * @Date: 2019/5/31 19:08
+     * @Description: 从浏览量表，评论量表， 点赞量表中的数量累加更新到用户配置表中
+     */
+    public void transUserConfigSumFromRedisDB() {
+        // 创建用户配置信息，用于记录每天的文章总数，浏览量总数，点赞量总数，评论量总数
+        UserConfig userConfig = new UserConfig();
+        long userConfigId = new IdWorker().nextId();
+        userConfig.setConfigId(userConfigId);
+        userConfig.setUserId(BlogConstant.AUTHOR_ID);
+        // 获取有效的文章
+        ArticleExample articleExample = new ArticleExample();
+        articleExample.createCriteria().andStateEqualTo(BlogConstant.RECORD_VALID);
+        List<Article> articles =
+                articleMapper.selectByExample(articleExample);
+        // 判断是否为空
+        if (articles == null) {
+            userConfig.setArticleSum(0);
+        }else {
+            userConfig.setArticleSum(articles.size());
+        }
+
+        // 获取所有文章的评论量表
+        List<Comment> comments =
+                commentMapper.selectByExample(new CommentExample());
+//        comments.stream().map(Comment::getCommentCount).
     }
 }

@@ -15,4 +15,6 @@ public interface ArticleModuleService {
     void transThumbupCountFromRedisDB();
 
     void transCommentCountFromRedisDB();
+
+    void transUserConfigSumFromRedisDB();
 }
