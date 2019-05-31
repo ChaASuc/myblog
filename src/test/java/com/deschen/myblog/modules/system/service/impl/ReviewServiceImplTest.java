@@ -55,7 +55,7 @@ public class ReviewServiceImplTest extends TestUtil {
     @Test
     public void selectReviewDto() throws JsonProcessingException {
         List<ReviewDto> reviewDtos =
-                reviewService.selectReviewDto(1133724118303219712L, null, BlogConstant.FLAGADMIN);
+                reviewService.selectReviewDto(1133724118303219712L, null, BlogConstant.FLAGADMIN, 0);
         log.info("【评论模块】根据文章id获取评论 articleId={}，reviewDtos={}",
                 1133724118303219712L, JsonUtil.obj2string(reviewDtos));
     }

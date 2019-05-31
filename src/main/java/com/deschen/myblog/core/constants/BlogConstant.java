@@ -37,4 +37,7 @@ public interface BlogConstant {
     Long ARTICLE_DIRID = 1133930737993527296L;
 
     Integer FLAGADMIN = 1;
+
+    // 默认博主的用户id
+    Long AUTHOR_ID = 1L;
 }

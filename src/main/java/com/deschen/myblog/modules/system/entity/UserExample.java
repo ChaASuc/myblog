@@ -624,6 +624,136 @@ public class UserExample {
             addCriterion("email not between", value1, value2, "email");
             return (Criteria) this;
         }
+
+        public Criteria andUserSignatureIsNull() {
+            addCriterion("user_signature is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andUserSignatureIsNotNull() {
+            addCriterion("user_signature is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andUserSignatureEqualTo(String value) {
+            addCriterion("user_signature =", value, "userSignature");
+            return (Criteria) this;
+        }
+
+        public Criteria andUserSignatureNotEqualTo(String value) {
+            addCriterion("user_signature <>", value, "userSignature");
+            return (Criteria) this;
+        }
+
+        public Criteria andUserSignatureGreaterThan(String value) {
+            addCriterion("user_signature >", value, "userSignature");
+            return (Criteria) this;
+        }
+
+        public Criteria andUserSignatureGreaterThanOrEqualTo(String value) {
+            addCriterion("user_signature >=", value, "userSignature");
+            return (Criteria) this;
+        }
+
+        public Criteria andUserSignatureLessThan(String value) {
+            addCriterion("user_signature <", value, "userSignature");
+            return (Criteria) this;
+        }
+
+        public Criteria andUserSignatureLessThanOrEqualTo(String value) {
+            addCriterion("user_signature <=", value, "userSignature");
+            return (Criteria) this;
+        }
+
+        public Criteria andUserSignatureLike(String value) {
+            addCriterion("user_signature like", value, "userSignature");
+            return (Criteria) this;
+        }
+
+        public Criteria andUserSignatureNotLike(String value) {
+            addCriterion("user_signature not like", value, "userSignature");
+            return (Criteria) this;
+        }
+
+        public Criteria andUserSignatureIn(List<String> values) {
+            addCriterion("user_signature in", values, "userSignature");
+            return (Criteria) this;
+        }
+
+        public Criteria andUserSignatureNotIn(List<String> values) {
+            addCriterion("user_signature not in", values, "userSignature");
+            return (Criteria) this;
+        }
+
+        public Criteria andUserSignatureBetween(String value1, String value2) {
+            addCriterion("user_signature between", value1, value2, "userSignature");
+            return (Criteria) this;
+        }
+
+        public Criteria andUserSignatureNotBetween(String value1, String value2) {
+            addCriterion("user_signature not between", value1, value2, "userSignature");
+            return (Criteria) this;
+        }
+
+        public Criteria andStateIsNull() {
+            addCriterion("state is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andStateIsNotNull() {
+            addCriterion("state is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andStateEqualTo(Integer value) {
+            addCriterion("state =", value, "state");
+            return (Criteria) this;
+        }
+
+        public Criteria andStateNotEqualTo(Integer value) {
+            addCriterion("state <>", value, "state");
+            return (Criteria) this;
+        }
+
+        public Criteria andStateGreaterThan(Integer value) {
+            addCriterion("state >", value, "state");
+            return (Criteria) this;
+        }
+
+        public Criteria andStateGreaterThanOrEqualTo(Integer value) {
+            addCriterion("state >=", value, "state");
+            return (Criteria) this;
+        }
+
+        public Criteria andStateLessThan(Integer value) {
+            addCriterion("state <", value, "state");
+            return (Criteria) this;
+        }
+
+        public Criteria andStateLessThanOrEqualTo(Integer value) {
+            addCriterion("state <=", value, "state");
+            return (Criteria) this;
+        }
+
+        public Criteria andStateIn(List<Integer> values) {
+            addCriterion("state in", values, "state");
+            return (Criteria) this;
+        }
+
+        public Criteria andStateNotIn(List<Integer> values) {
+            addCriterion("state not in", values, "state");
+            return (Criteria) this;
+        }
+
+        public Criteria andStateBetween(Integer value1, Integer value2) {
+            addCriterion("state between", value1, value2, "state");
+            return (Criteria) this;
+        }
+
+        public Criteria andStateNotBetween(Integer value1, Integer value2) {
+            addCriterion("state not between", value1, value2, "state");
+            return (Criteria) this;
+        }
     }
 
     public static class Criteria extends GeneratedCriteria {

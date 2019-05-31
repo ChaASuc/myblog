@@ -1,12 +1,14 @@
 package com.deschen.myblog.modules.system.entity;
 
-import com.deschen.myblog.core.serializer.Date2LongSerializer;
 import com.deschen.myblog.core.serializer.Long2StringSerializer;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import jdk.nashorn.internal.ir.annotations.Ignore;
 
 import java.util.Date;
 
 public class User {
+
     @JsonSerialize(using = Long2StringSerializer.class)
     private Long userId;
 
@@ -14,18 +16,21 @@ public class User {
 
     private String userPassword;
 
-    //@JsonSerialize(using = Date2LongSerializer.class)
     private Date createTime;
 
-    //@JsonSerialize(using = Date2LongSerializer.class)
     private Date updateTime;
 
+    @JsonIgnore
     private String salt;
 
     @JsonSerialize(using = Long2StringSerializer.class)
     private Long imageId;
 
     private String email;
+
+    private String userSignature;
+
+    private Integer state;
 
     public Long getUserId() {
         return userId;
@@ -89,5 +94,21 @@ public class User {
 
     public void setEmail(String email) {
         this.email = email == null ? null : email.trim();
+    }
+
+    public String getUserSignature() {
+        return userSignature;
+    }
+
+    public void setUserSignature(String userSignature) {
+        this.userSignature = userSignature == null ? null : userSignature.trim();
+    }
+
+    public Integer getState() {
+        return state;
+    }
+
+    public void setState(Integer state) {
+        this.state = state;
     }
 }

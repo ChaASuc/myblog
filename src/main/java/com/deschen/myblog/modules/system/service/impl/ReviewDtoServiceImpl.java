@@ -3,7 +3,6 @@ package com.deschen.myblog.modules.system.service.impl;
 import com.deschen.myblog.core.constants.BlogConstant;
 import com.deschen.myblog.core.enums.BlogEnum;
 import com.deschen.myblog.core.exceptions.GlobalException;
-import com.deschen.myblog.core.utils.IdWorker;
 import com.deschen.myblog.modules.system.dto.ReviewDto;
 import com.deschen.myblog.modules.system.entity.Review;
 import com.deschen.myblog.modules.system.entity.ReviewExample;
@@ -93,6 +92,8 @@ public class ReviewDtoServiceImpl implements ReviewDtoService {
         }else {
             reviewExample.setOrderByClause("UPDATE_TIME ASC");
         }
+
+        // 获取评论
         ReviewExample.Criteria criteria =
                 reviewExample.createCriteria()
                         .andArticleIdEqualTo(articleId)
@@ -107,6 +108,7 @@ public class ReviewDtoServiceImpl implements ReviewDtoService {
 
         List<ReviewDto> reviewDtos = reviews.stream().map(
                 review -> {
+                    // 评论组装
                     ReviewDto pReviewDto = getReviewDto(review, flag);
                     // 获取该评论下的回复
                     Long reviewId = pReviewDto.getReviewId();
@@ -116,6 +118,7 @@ public class ReviewDtoServiceImpl implements ReviewDtoService {
                     }else {
                         cReviewExample.setOrderByClause("UPDATE_TIME ASC");
                     }
+                    // 该评论回复
                     ReviewExample.Criteria cCriteria = cReviewExample.createCriteria()
                             .andReviewParentEqualTo(reviewId);
                     if (state != null) {
@@ -143,7 +146,8 @@ public class ReviewDtoServiceImpl implements ReviewDtoService {
         }
         User user = userMapper.selectByPrimaryKey(parentReview.getUserId());
         reviewDto.setUserName(user.getUserName());
-        reviewDto.setImageId(user.getImageId());
+        reviewDto.setImageUrl(BlogConstant.IMAGEURL+ user.getImageId());
+
         return reviewDto;
     }
 }

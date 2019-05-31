@@ -25,8 +25,7 @@ public class ReviewDto extends Review implements Serializable {
 
     private String reviewUrl;
 
-    @JsonSerialize(using = Long2StringSerializer.class)
-    private Long imageId;
+    private String imageUrl;
 
     private List<ReviewDto> reviewDtos;
 }

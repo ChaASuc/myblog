@@ -2,22 +2,14 @@ package com.deschen.myblog.modules.system.controller;
 
 import com.deschen.myblog.core.constants.BlogConstant;
 import com.deschen.myblog.core.constants.RedisConstant;
+import com.deschen.myblog.core.enums.BlogEnum;
 import com.deschen.myblog.core.enums.ShiroEnum;
 import com.deschen.myblog.core.exceptions.GlobalException;
-import com.deschen.myblog.core.utils.RedisUtil;
-import com.deschen.myblog.core.utils.ResultVOUtil;
-import com.deschen.myblog.core.utils.SortUtil;
-import com.deschen.myblog.modules.system.dto.ArticleDto;
-import com.deschen.myblog.modules.system.dto.ArticleWithBLOBsDto;
-import com.deschen.myblog.modules.system.dto.CategoryDto;
-import com.deschen.myblog.modules.system.dto.ReviewDto;
-import com.deschen.myblog.modules.system.entity.Category;
-import com.deschen.myblog.modules.system.entity.Image;
-import com.deschen.myblog.modules.system.entity.Tag;
-import com.deschen.myblog.modules.system.service.ArticleDtoService;
-import com.deschen.myblog.modules.system.service.CategoryDtoService;
-import com.deschen.myblog.modules.system.service.ImageDtoService;
-import com.deschen.myblog.modules.system.service.ReviewDtoService;
+import com.deschen.myblog.core.utils.*;
+import com.deschen.myblog.modules.system.dto.*;
+import com.deschen.myblog.modules.system.entity.*;
+import com.deschen.myblog.modules.system.form.ReviewForm;
+import com.deschen.myblog.modules.system.service.*;
 import com.deschen.myblog.modules.system.vo.ResultVO;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -27,8 +19,12 @@ import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.ResourceLoader;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
+import javax.validation.constraints.Max;
+import javax.validation.constraints.Min;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
@@ -57,6 +53,10 @@ public class UserController {
 
     @Autowired
     private ReviewDtoService reviewDtoService;
+
+    @Autowired
+    private UserDtoService userDtoService;
+
     @Autowired
     private SortUtil sortUtil;
 
@@ -225,12 +225,73 @@ public class UserController {
     @ApiOperation(value = "根据文章id获取评论", notes = "已测试")
     @GetMapping("/review/{articleId}")
     public ResultVO selectReviewDtos(
-            @PathVariable Long articleId
+            @PathVariable Long articleId,
+            @RequestParam(required = false) Integer sort
     ) {
+
+        if (sort == null) {
+            sort = 0;  // 最新
+        } else if (sort < 0 || sort > 1) {
+            throw new GlobalException(BlogEnum.PARROR_EMPTY_ERROR.getCode(),
+                    "sort字段小于0，大于1");
+        }
         List<ReviewDto> reviewDtos =
-                reviewDtoService.selectReviewDto(articleId, BlogConstant.RECORD_VALID, null);
+                reviewDtoService.selectReviewDto(articleId, BlogConstant.RECORD_VALID, null, sort);
         ResultVO success = ResultVOUtil.success(reviewDtos);
         return success;
     }
 
+
+    @ApiOperation(value = "添加评论或回复", notes = "已测试")
+    @PostMapping("/review")
+    public ResultVO insertReview(
+            @Valid @RequestBody ReviewForm reviewForm,
+            BindingResult bindingResult
+    ) {
+        if (bindingResult.hasErrors()) {
+            log.info("【添加评论】 参数错误");
+            throw new GlobalException(BlogEnum.PARROR_EMPTY_ERROR.getCode(),
+                    bindingResult.getFieldError().getDefaultMessage());
+        }
+
+        if (reviewForm.getEmail() != null && !EmailUtil.checkEmaile(reviewForm.getEmail())) {
+            log.info("【添加评论】邮箱校验失败，email = {}", reviewForm.getEmail());
+            throw new GlobalException(BlogEnum.PARROR_EMPTY_ERROR.getCode(),
+                    "邮箱格式错误");
+        }
+
+
+        // 创建用户
+        User user = new User();
+        BeanUtils.copyProperties(reviewForm, user);
+        long userId = new IdWorker().nextId();
+        user.setUserId(userId);
+        // 获取用户头像的随机图片
+        Image image =
+                imageDtoService.selectRandomImage(null);
+        user.setImageId(image.getImageId());
+        userDtoService.insertUser(user);
+
+        Review review = new Review();
+        BeanUtils.copyProperties(reviewForm, review);
+        long reviewId = new IdWorker().nextId();
+        review.setReviewId(reviewId);
+        review.setUserId(userId);
+        reviewDtoService.insertReview(review);
+
+        ResultVO success = ResultVOUtil.success();
+
+        return success;
+    }
+
+    @GetMapping("/authorInfo")
+    public ResultVO selectUserByAuthorId(
+    ) {
+        // 作者用户id
+        Long authorId = BlogConstant.AUTHOR_ID;
+        UserDto userDto =
+                userDtoService.selectUserDto(authorId);
+        ResultVO success = ResultVOUtil.success(userDto);
+        return success;
+    }
 }
