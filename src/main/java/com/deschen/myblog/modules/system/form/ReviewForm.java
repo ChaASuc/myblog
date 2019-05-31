@@ -5,6 +5,7 @@ import lombok.Data;
 
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotEmpty;
 import java.io.Serializable;
 
 /**
@@ -21,6 +22,7 @@ public class ReviewForm implements Serializable {
     @NotBlank(message = "评论内容不为空")
     private String reviewContent;
 
+    @NotEmpty(message = "文章id不为空")
     private Long articleId;
 
     private Long reviewParent;

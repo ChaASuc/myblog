@@ -1,8 +1,11 @@
 package com.deschen.myblog.modules.system.entity;
 
 import com.deschen.myblog.core.serializer.Long2StringSerializer;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotEmpty;
 import java.util.Date;
 
 public class Review {
@@ -10,12 +13,15 @@ public class Review {
     @JsonSerialize(using = Long2StringSerializer.class)
     private Long reviewId;
 
+    @NotBlank(message = "内容不为空")
     private String reviewContent;
 
     @JsonSerialize(using = Long2StringSerializer.class)
+    @NotEmpty(message = "文章id不为空")
     private Long articleId;
 
     @JsonSerialize(using = Long2StringSerializer.class)
+    @NotEmpty(message = "用户id不为空")
     private Long userId;
 
     @JsonSerialize(using = Long2StringSerializer.class)

@@ -17,7 +17,7 @@ public interface ReviewDtoService {
 
     void updateReview(Review review);
 
-    List<ReviewDto> selectReviewDto(Long articleId, Integer state, Integer flag);
+    List<ReviewDto> selectReviewDto(Long articleId, Integer state, Integer flag, Integer sort);
 
 
 }

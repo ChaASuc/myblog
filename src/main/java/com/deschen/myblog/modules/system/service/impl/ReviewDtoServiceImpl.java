@@ -86,8 +86,13 @@ public class ReviewDtoServiceImpl implements ReviewDtoService {
      * @Date: 2019/5/29 23:05
      * @Description: 获取文章id下的相应的评论和回复，根据flag有误显示email（无 代表用户， 有代表博主有）
      */
-    public List<ReviewDto> selectReviewDto(Long articleId, Integer state, Integer flag) {
+    public List<ReviewDto> selectReviewDto(Long articleId, Integer state, Integer flag, Integer sort) {
         ReviewExample reviewExample = new ReviewExample();
+        if (sort.equals(0)) {
+            reviewExample.setOrderByClause("UPDATE_TIME DESC");
+        }else {
+            reviewExample.setOrderByClause("UPDATE_TIME ASC");
+        }
         ReviewExample.Criteria criteria =
                 reviewExample.createCriteria()
                         .andArticleIdEqualTo(articleId)
@@ -106,6 +111,11 @@ public class ReviewDtoServiceImpl implements ReviewDtoService {
                     // 获取该评论下的回复
                     Long reviewId = pReviewDto.getReviewId();
                     ReviewExample cReviewExample = new ReviewExample();
+                    if (sort.equals(0)) {
+                        cReviewExample.setOrderByClause("UPDATE_TIME DESC");
+                    }else {
+                        cReviewExample.setOrderByClause("UPDATE_TIME ASC");
+                    }
                     ReviewExample.Criteria cCriteria = cReviewExample.createCriteria()
                             .andReviewParentEqualTo(reviewId);
                     if (state != null) {

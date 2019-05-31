@@ -117,17 +117,23 @@ PUBLIC "-//mybatis.org//DTD MyBatis Generator Configuration 1.0//EN"
             <!--&lt;!&ndash;<columnOverride column="create_time" javaType="java.time.LocalDate" jdbcType="DATETIME" />&ndash;&gt;-->
             <!--&lt;!&ndash;<columnOverride column="update_time" javaType="java.time.LocalDate" jdbcType="DATETIME" />&ndash;&gt;-->
         <!--</table>-->
-        <table schema="" tableName="blog_review" domainObjectName="Review">
-            <!-- 指定java类型 -->
-            <columnOverride column="state" javaType="java.lang.Integer" jdbcType="TINYINT" />
-            <!--<columnOverride column="create_time" javaType="java.time.LocalDate" jdbcType="DATETIME" />-->
-            <!--<columnOverride column="update_time" javaType="java.time.LocalDate" jdbcType="DATETIME" />-->
-        </table>
+        <!--<table schema="" tableName="blog_review" domainObjectName="Review">-->
+            <!--&lt;!&ndash; 指定java类型 &ndash;&gt;-->
+            <!--<columnOverride column="state" javaType="java.lang.Integer" jdbcType="TINYINT" />-->
+            <!--&lt;!&ndash;<columnOverride column="create_time" javaType="java.time.LocalDate" jdbcType="DATETIME" />&ndash;&gt;-->
+            <!--&lt;!&ndash;<columnOverride column="update_time" javaType="java.time.LocalDate" jdbcType="DATETIME" />&ndash;&gt;-->
+        <!--</table>-->
         <!--<table schema="" tableName="blog_user" domainObjectName="User">-->
             <!--&lt;!&ndash; 指定java类型 &ndash;&gt;-->
             <!--<columnOverride column="state" javaType="java.lang.Integer" jdbcType="TINYINT" />-->
             <!--&lt;!&ndash;<columnOverride column="create_time" javaType="java.time.LocalDate" jdbcType="DATETIME" />&ndash;&gt;-->
             <!--&lt;!&ndash;<columnOverride column="update_time" javaType="java.time.LocalDate" jdbcType="DATETIME" />&ndash;&gt;-->
         <!--</table>-->
+        <table schema="" tableName="blog_user_config" domainObjectName="UserConfig">
+            <!-- 指定java类型 -->
+            <!--<columnOverride column="state" javaType="java.lang.Integer" jdbcType="TINYINT" />-->
+            <!--<columnOverride column="create_time" javaType="java.time.LocalDate" jdbcType="DATETIME" />-->
+            <!--<columnOverride column="update_time" javaType="java.time.LocalDate" jdbcType="DATETIME" />-->
+        </table>
     </context>
 </generatorConfiguration>
