@@ -36,6 +36,7 @@ public class LikeTask extends QuartzJobBean {
         categoryDtoService.transHotFromRedisDB();
         articleModuleService.transVisitCountFromRedisDB();
         articleModuleService.transThumbupCountFromRedisDB();
+        articleModuleService.transCommentCountFromRedisDB();
 
     }
 }

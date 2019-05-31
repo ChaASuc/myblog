@@ -1,15 +1,13 @@
 package com.deschen.myblog.modules.system.service.impl;
 
+import com.deschen.myblog.core.constants.BlogConstant;
 import com.deschen.myblog.core.constants.RedisConstant;
 import com.deschen.myblog.core.enums.BlogEnum;
 import com.deschen.myblog.core.exceptions.GlobalException;
 import com.deschen.myblog.core.utils.IdWorker;
 import com.deschen.myblog.core.utils.RedisUtil;
 import com.deschen.myblog.modules.system.entity.*;
-import com.deschen.myblog.modules.system.mapper.ArticleMapper;
-import com.deschen.myblog.modules.system.mapper.CommentMapper;
-import com.deschen.myblog.modules.system.mapper.ThumbupMapper;
-import com.deschen.myblog.modules.system.mapper.VisitMapper;
+import com.deschen.myblog.modules.system.mapper.*;
 import com.deschen.myblog.modules.system.service.ArticleModuleService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -38,6 +36,9 @@ public class ArticleModuleServiceImpl implements ArticleModuleService {
 
     @Autowired
     private CommentMapper commentMapper;
+
+    @Autowired
+    private ReviewMapper reviewMapper;
 
 
 
@@ -173,9 +174,35 @@ public class ArticleModuleServiceImpl implements ArticleModuleService {
      * @Return:void
      * @Author: deschen
      * @Date: 2019/5/30 22:22
-     * @Description:
+     * @Description: 从评论表中的数量更新到评论量表中
      */
+    @Transactional
     public void transCommentCountFromRedisDB() {
-
+        List<Comment> comments =
+                commentMapper.selectByExample(new CommentExample());
+        comments.stream().forEach(
+                comment -> {
+                    // 获取评论量表中的文章id
+                    Long articleId = comment.getArticleId();
+                    // 根据文章id和有效状态获取评论集合
+                    ReviewExample reviewExample = new ReviewExample();
+                    reviewExample.createCriteria()
+                            .andStateEqualTo(BlogConstant.RECORD_VALID)
+                            .andArticleIdEqualTo(articleId);
+                    List<Review> reviews = reviewMapper.selectByExample(reviewExample);
+                    // 评论集合判空
+                    if (reviews == null) {
+                        comment.setCommentCount(0);
+                    } else {
+                        comment.setCommentCount(reviews.size());
+                    }
+                    // 更新评论
+                    int success = commentMapper.updateByPrimaryKeySelective(comment);
+                    if (success == 0) {
+                        log.info("【定时数据库】 评论量更新失败，commentId={}", comment.getCommentId());
+                        throw new GlobalException(BlogEnum.COMMENT_UPDATE_ERROR);
+                    }
+                }
+        );
     }
 }

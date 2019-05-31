@@ -68,7 +68,7 @@ public enum BlogEnum implements IEnum {
 
     USER_INSERT_ERROR(128, "用户保存失败"),
 
-    ;
+    COMMENT_UPDATE_ERROR(129, "评论量更新失败");
     private Integer code;
 
     private String message;
