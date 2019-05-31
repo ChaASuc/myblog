@@ -245,10 +245,10 @@
       #{state}
     </foreach>
     <if test="sort == null">
-      ORDER BY visit.visit_count,thumbup.thumbup_count,comment.comment_count DESC
+      ORDER BY visit.visit_count DESC ,thumbup.thumbup_count DESC,comment.comment_count DESC
     </if>
     <if test="sort == 'hot'">
-      ORDER BY visit.visit_count,thumbup.thumbup_count,comment.comment_count DESC
+      ORDER BY visit.visit_count DESC ,thumbup.thumbup_count DESC,comment.comment_count DESC
     </if>
     <if test="sort == 'newest'">
       ORDER BY article.update_time DESC
@@ -279,10 +279,10 @@
       #{state}
     </foreach>
     <if test="sort == null">
-      ORDER BY visit.visit_count,thumbup.thumbup_count,comment.comment_count DESC
+      ORDER BY visit.visit_count DESC ,thumbup.thumbup_count DESC,comment.comment_count DESC
     </if>
     <if test="sort == 'hot'">
-      ORDER BY visit.visit_count,thumbup.thumbup_count,comment.comment_count DESC
+      ORDER BY visit.visit_count DESC ,thumbup.thumbup_count DESC,comment.comment_count DESC
     </if>
     <if test="sort == 'newest'">
       ORDER BY article.update_time DESC
@@ -317,10 +317,10 @@
     </foreach>
     and tag_article.state = 1
     <if test="sort == null">
-      ORDER BY visit.visit_count,thumbup.thumbup_count,comment.comment_count DESC
+      ORDER BY visit.visit_count DESC ,thumbup.thumbup_count DESC,comment.comment_count DESC
     </if>
     <if test="sort == 'hot'">
-      ORDER BY visit.visit_count,thumbup.thumbup_count,comment.comment_count DESC
+      ORDER BY visit.visit_count DESC ,thumbup.thumbup_count DESC,comment.comment_count DESC
     </if>
     <if test="sort == 'newest'">
       ORDER BY article.update_time DESC
@@ -348,10 +348,10 @@
       #{state}
     </foreach>
     <if test="sort == null">
-      ORDER BY visit.visit_count,thumbup.thumbup_count,comment.comment_count DESC
+      ORDER BY visit.visit_count DESC ,thumbup.thumbup_count DESC,comment.comment_count DESC
     </if>
     <if test="sort == 'hot'">
-      ORDER BY visit.visit_count,thumbup.thumbup_count,comment.comment_count DESC
+      ORDER BY visit.visit_count DESC ,thumbup.thumbup_count DESC,comment.comment_count DESC
     </if>
     <if test="sort == 'newest'">
       ORDER BY article.update_time DESC
@@ -381,10 +381,10 @@
       #{state}
     </foreach>
     <if test="sort == null">
-      ORDER BY visit.visit_count,thumbup.thumbup_count,comment.comment_count DESC
+      ORDER BY visit.visit_count DESC ,thumbup.thumbup_count DESC,comment.comment_count DESC
     </if>
     <if test="sort == 'hot'">
-      ORDER BY visit.visit_count,thumbup.thumbup_count,comment.comment_count DESC
+      ORDER BY visit.visit_count DESC ,thumbup.thumbup_count DESC,comment.comment_count DESC
     </if>
     <if test="sort == 'newest'">
       ORDER BY article.update_time DESC

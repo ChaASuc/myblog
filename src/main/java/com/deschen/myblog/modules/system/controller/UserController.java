@@ -1,5 +1,6 @@
 package com.deschen.myblog.modules.system.controller;
 
+import com.deschen.myblog.config.BlogConfig;
 import com.deschen.myblog.core.constants.BlogConstant;
 import com.deschen.myblog.core.constants.RedisConstant;
 import com.deschen.myblog.core.enums.BlogEnum;
@@ -11,6 +12,8 @@ import com.deschen.myblog.modules.system.entity.*;
 import com.deschen.myblog.modules.system.form.ReviewForm;
 import com.deschen.myblog.modules.system.service.*;
 import com.deschen.myblog.modules.system.vo.ResultVO;
+import com.github.pagehelper.PageHelper;
+import com.github.pagehelper.PageInfo;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
@@ -58,6 +61,9 @@ public class UserController {
     private UserDtoService userDtoService;
 
     @Autowired
+    private BlogConfig blogConfig;
+
+    @Autowired
     private SortUtil sortUtil;
 
     @Autowired
@@ -100,7 +106,9 @@ public class UserController {
             @ApiParam("tagId")
             @RequestParam(value = "tagId", required = false) Long tagId,
             @ApiParam("sort")
-            @RequestParam(value = "sort", required = false) Integer sort
+            @RequestParam(value = "sort", required = false) Integer sort,
+            @ApiParam("pageNum")
+            @RequestParam(value = "pageNum", required = false) Integer pageNum
     ) {
 
         String categoryPrefix = RedisConstant.CATEGORY_PREFIX;
@@ -111,26 +119,36 @@ public class UserController {
         List<Integer> states = new ArrayList<>();
         states.add(BlogConstant.RECORD_VALID);
 
+        if (pageNum == null) {
+            pageNum = 1;
+        }
+
         List<ArticleDto> articleDtos = new ArrayList<>();
         if (categoryId == null && tagId == null) {
+            PageHelper.startPage(pageNum, blogConfig.getPageSize());
             articleDtos = articleDtoService.selectArticleDto(states, sortName);
         } else if (categoryId != null) {
-            categoryDtoService.selectBycategoryIdOrTagId(categoryId, null);
-            redisInc(categoryId, categoryPrefix);
-            articleDtos = articleDtoService.selectArticleDtoByCategoryId(categoryId, states, sortName);
             if (tagId != null) {
                 categoryDtoService.selectBycategoryIdOrTagId(categoryId, tagId);
                 redisInc(tagId, tagPrefix);
+                PageHelper.startPage(pageNum, blogConfig.getPageSize());
                 articleDtos =
                         articleDtoService.selectArticleDtoByCategoryIdAndTagId(categoryId, tagId, states, sortName);
+            }else {
+                categoryDtoService.selectBycategoryIdOrTagId(categoryId, null);
+                redisInc(categoryId, categoryPrefix);
+PageHelper.startPage(pageNum, blogConfig.getPageSize());
+                articleDtos = articleDtoService.selectArticleDtoByCategoryId(categoryId, states, sortName);
             }
         } else {
             categoryDtoService.selectBycategoryIdOrTagId(null, tagId);
             redisInc(tagId, tagPrefix);
+            PageHelper.startPage(pageNum, blogConfig.getPageSize());
             articleDtos = articleDtoService.selectArticleDtoByTagId(tagId, states, sortName);
 
         }
-        ResultVO success = ResultVOUtil.success(articleDtos);
+        PageInfo<ArticleDto> articleDtoPageInfo = new PageInfo<>(articleDtos);
+        ResultVO success = ResultVOUtil.success(articleDtoPageInfo);
         return success;
     }
 

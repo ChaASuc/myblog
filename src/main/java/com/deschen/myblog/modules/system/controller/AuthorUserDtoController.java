@@ -33,7 +33,7 @@ import javax.validation.Valid;
 @RestController
 @Slf4j
 @RequestMapping("/author/userDto")
-@Api("用户信息模块")
+@Api(description = "用户信息模块")
 public class AuthorUserDtoController {
 
     @Autowired

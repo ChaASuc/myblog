@@ -86,9 +86,7 @@ public class AuthorArticleDtoController {
             sortName = sortUtil.getSort(sort);
         }
         if (pageNum == null) {
-            pageNum = 0;
-        }else {
-            pageNum = pageNum - 1;
+            pageNum =  1;
         }
 
         Integer pageSize = blogConfig.getPageSize();
