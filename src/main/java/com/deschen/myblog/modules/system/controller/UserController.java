@@ -28,6 +28,7 @@ import org.springframework.web.bind.annotation.*;
 import javax.validation.Valid;
 import javax.validation.constraints.Max;
 import javax.validation.constraints.Min;
+import javax.validation.constraints.NotNull;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
@@ -281,6 +282,9 @@ public class UserController {
             }
         }
 
+        Long articleId = reviewForm.getArticleId();
+        articleDtoService.selectArticle(articleId);
+
         // 创建用户
         User user = new User();
         BeanUtils.copyProperties(reviewForm, user);
@@ -297,6 +301,17 @@ public class UserController {
         long reviewId = new IdWorker().nextId();
         review.setReviewId(reviewId);
         review.setUserId(userId);
+        // 是回复还是评论
+        Long reviewParentId = reviewForm.getReviewParent();
+        if (reviewParentId != null) {
+            // 回复的话，查找回复的那条的评论区id
+            Review reviewParent =
+                    reviewDtoService.selectReviewByReviewId(reviewParentId);
+            review.setReviewAreaId(reviewParent.getReviewAreaId());
+        }else {
+            // 评论的话，创建评论区id
+            review.setReviewAreaId(reviewId);
+        }
         reviewDtoService.insertReview(review);
 
         ResultVO success = ResultVOUtil.success();

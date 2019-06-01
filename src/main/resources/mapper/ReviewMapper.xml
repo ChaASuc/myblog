@@ -11,6 +11,7 @@
     <result column="update_time" jdbcType="TIMESTAMP" property="updateTime" />
     <result column="state" jdbcType="TINYINT" property="state" />
     <result column="review_url" jdbcType="VARCHAR" property="reviewUrl" />
+    <result column="review_area_id" jdbcType="BIGINT" property="reviewAreaId" />
   </resultMap>
   <sql id="Example_Where_Clause">
     <where>
@@ -72,7 +73,7 @@
   </sql>
   <sql id="Base_Column_List">
     review_id, review_content, article_id, user_id, review_parent, create_time, update_time, 
-    state, review_url
+    state, review_url, review_area_id
   </sql>
   <select id="selectByExample" parameterType="com.deschen.myblog.modules.system.entity.ReviewExample" resultMap="BaseResultMap">
     select
@@ -107,12 +108,12 @@
   <insert id="insert" parameterType="com.deschen.myblog.modules.system.entity.Review">
     insert into blog_review (review_id, review_content, article_id, 
       user_id, review_parent, create_time, 
-      update_time, state, review_url
-      )
+      update_time, state, review_url, 
+      review_area_id)
     values (#{reviewId,jdbcType=BIGINT}, #{reviewContent,jdbcType=VARCHAR}, #{articleId,jdbcType=BIGINT}, 
       #{userId,jdbcType=BIGINT}, #{reviewParent,jdbcType=BIGINT}, #{createTime,jdbcType=TIMESTAMP}, 
-      #{updateTime,jdbcType=TIMESTAMP}, #{state,jdbcType=TINYINT}, #{reviewUrl,jdbcType=VARCHAR}
-      )
+      #{updateTime,jdbcType=TIMESTAMP}, #{state,jdbcType=TINYINT}, #{reviewUrl,jdbcType=VARCHAR}, 
+      #{reviewAreaId,jdbcType=BIGINT})
   </insert>
   <insert id="insertSelective" parameterType="com.deschen.myblog.modules.system.entity.Review">
     insert into blog_review
@@ -144,6 +145,9 @@
       <if test="reviewUrl != null">
         review_url,
       </if>
+      <if test="reviewAreaId != null">
+        review_area_id,
+      </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides=",">
       <if test="reviewId != null">
@@ -172,6 +176,9 @@
       </if>
       <if test="reviewUrl != null">
         #{reviewUrl,jdbcType=VARCHAR},
+      </if>
+      <if test="reviewAreaId != null">
+        #{reviewAreaId,jdbcType=BIGINT},
       </if>
     </trim>
   </insert>
@@ -211,6 +218,9 @@
       <if test="record.reviewUrl != null">
         review_url = #{record.reviewUrl,jdbcType=VARCHAR},
       </if>
+      <if test="record.reviewAreaId != null">
+        review_area_id = #{record.reviewAreaId,jdbcType=BIGINT},
+      </if>
     </set>
     <if test="_parameter != null">
       <include refid="Update_By_Example_Where_Clause" />
@@ -226,7 +236,8 @@
       create_time = #{record.createTime,jdbcType=TIMESTAMP},
       update_time = #{record.updateTime,jdbcType=TIMESTAMP},
       state = #{record.state,jdbcType=TINYINT},
-      review_url = #{record.reviewUrl,jdbcType=VARCHAR}
+      review_url = #{record.reviewUrl,jdbcType=VARCHAR},
+      review_area_id = #{record.reviewAreaId,jdbcType=BIGINT}
     <if test="_parameter != null">
       <include refid="Update_By_Example_Where_Clause" />
     </if>
@@ -258,6 +269,9 @@
       <if test="reviewUrl != null">
         review_url = #{reviewUrl,jdbcType=VARCHAR},
       </if>
+      <if test="reviewAreaId != null">
+        review_area_id = #{reviewAreaId,jdbcType=BIGINT},
+      </if>
     </set>
     where review_id = #{reviewId,jdbcType=BIGINT}
   </update>
@@ -270,7 +284,8 @@
       create_time = #{createTime,jdbcType=TIMESTAMP},
       update_time = #{updateTime,jdbcType=TIMESTAMP},
       state = #{state,jdbcType=TINYINT},
-      review_url = #{reviewUrl,jdbcType=VARCHAR}
+      review_url = #{reviewUrl,jdbcType=VARCHAR},
+      review_area_id = #{reviewAreaId,jdbcType=BIGINT}
     where review_id = #{reviewId,jdbcType=BIGINT}
   </update>
 </mapper>

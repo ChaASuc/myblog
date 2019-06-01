@@ -19,5 +19,6 @@ public interface ReviewDtoService {
 
     List<ReviewDto> selectReviewDto(Long articleId, Integer state, Integer flag, Integer sort);
 
+    Review selectReviewByReviewId(Long reviewParentId);
 
 }

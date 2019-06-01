@@ -121,6 +121,8 @@ public class ReviewDtoServiceImpl implements ReviewDtoService {
                     // 该评论回复
                     ReviewExample.Criteria cCriteria = cReviewExample.createCriteria()
                             .andArticleIdEqualTo(articleId)
+                            // 根据评论的区域id获取该评论的所有回复
+                            .andReviewAreaIdEqualTo(review.getReviewAreaId())
                             .andReviewParentIsNotNull();
                     if (state != null) {
                         cCriteria.andStateEqualTo(state);
@@ -140,6 +142,21 @@ public class ReviewDtoServiceImpl implements ReviewDtoService {
                 }
         ).collect(Collectors.toList());
         return reviewDtos;
+    }
+
+    @Override
+
+    /**
+     * @Param: [reviewParentId]
+     * @Return:com.deschen.myblog.modules.system.entity.Review
+     * @Author: deschen
+     * @Date: 2019/6/1 10:20
+     * @Description: 根据id获取评论或回复
+     */
+    public Review selectReviewByReviewId(Long reviewParentId) {
+        Review review =
+                reviewMapper.selectByPrimaryKey(reviewParentId);
+        return review;
     }
 
     private ReviewDto getReviewDto(Review parentReview, Integer flag) {

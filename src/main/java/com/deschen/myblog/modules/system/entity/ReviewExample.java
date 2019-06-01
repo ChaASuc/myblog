@@ -664,6 +664,66 @@ public class ReviewExample {
             addCriterion("review_url not between", value1, value2, "reviewUrl");
             return (Criteria) this;
         }
+
+        public Criteria andReviewAreaIdIsNull() {
+            addCriterion("review_area_id is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andReviewAreaIdIsNotNull() {
+            addCriterion("review_area_id is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andReviewAreaIdEqualTo(Long value) {
+            addCriterion("review_area_id =", value, "reviewAreaId");
+            return (Criteria) this;
+        }
+
+        public Criteria andReviewAreaIdNotEqualTo(Long value) {
+            addCriterion("review_area_id <>", value, "reviewAreaId");
+            return (Criteria) this;
+        }
+
+        public Criteria andReviewAreaIdGreaterThan(Long value) {
+            addCriterion("review_area_id >", value, "reviewAreaId");
+            return (Criteria) this;
+        }
+
+        public Criteria andReviewAreaIdGreaterThanOrEqualTo(Long value) {
+            addCriterion("review_area_id >=", value, "reviewAreaId");
+            return (Criteria) this;
+        }
+
+        public Criteria andReviewAreaIdLessThan(Long value) {
+            addCriterion("review_area_id <", value, "reviewAreaId");
+            return (Criteria) this;
+        }
+
+        public Criteria andReviewAreaIdLessThanOrEqualTo(Long value) {
+            addCriterion("review_area_id <=", value, "reviewAreaId");
+            return (Criteria) this;
+        }
+
+        public Criteria andReviewAreaIdIn(List<Long> values) {
+            addCriterion("review_area_id in", values, "reviewAreaId");
+            return (Criteria) this;
+        }
+
+        public Criteria andReviewAreaIdNotIn(List<Long> values) {
+            addCriterion("review_area_id not in", values, "reviewAreaId");
+            return (Criteria) this;
+        }
+
+        public Criteria andReviewAreaIdBetween(Long value1, Long value2) {
+            addCriterion("review_area_id between", value1, value2, "reviewAreaId");
+            return (Criteria) this;
+        }
+
+        public Criteria andReviewAreaIdNotBetween(Long value1, Long value2) {
+            addCriterion("review_area_id not between", value1, value2, "reviewAreaId");
+            return (Criteria) this;
+        }
     }
 
     public static class Criteria extends GeneratedCriteria {

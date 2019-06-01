@@ -54,6 +54,17 @@ public class AuthorReviewDtoController {
 
         long reviewId = new IdWorker().nextId();
         review.setReviewId(reviewId);
+        // 是回复还是评论
+        Long reviewParentId = review.getReviewParent();
+        if (reviewParentId != null) {
+            // 回复的话，查找回复的那条的评论区id
+            Review reviewParent =
+                    reviewDtoService.selectReviewByReviewId(reviewParentId);
+            review.setReviewAreaId(reviewParent.getReviewAreaId());
+        }else {
+            // 评论的话，创建评论区id
+            review.setReviewAreaId(reviewId);
+        }
         reviewDtoService.insertReview(review);
 
         ResultVO success = ResultVOUtil.success();

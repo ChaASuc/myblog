@@ -1,11 +1,7 @@
 package com.deschen.myblog.modules.system.dto;
 
-import com.deschen.myblog.core.serializer.Date2LongSerializer;
-import com.deschen.myblog.core.serializer.Long2StringSerializer;
 import com.deschen.myblog.modules.system.entity.Review;
-import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import lombok.Data;
-import org.apache.catalina.LifecycleState;
 
 import java.io.Serializable;
 import java.util.List;

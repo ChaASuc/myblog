@@ -2,27 +2,19 @@ package com.deschen.myblog.modules.system.entity;
 
 import com.deschen.myblog.core.serializer.Long2StringSerializer;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 
-import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.NotEmpty;
-import javax.validation.constraints.NotNull;
 import java.util.Date;
 
 public class Review {
-
     @JsonSerialize(using = Long2StringSerializer.class)
     private Long reviewId;
 
-    @NotBlank(message = "内容不为空")
     private String reviewContent;
 
-    @JsonSerialize(using = Long2StringSerializer.class)
-    @NotNull(message = "文章id不为空")
     private Long articleId;
 
-    @JsonSerialize(using = Long2StringSerializer.class)
-    @NotNull(message = "用户id不为空")
     private Long userId;
 
     @JsonSerialize(using = Long2StringSerializer.class)
@@ -34,7 +26,11 @@ public class Review {
 
     private Integer state;
 
+    @JsonIgnore
     private String reviewUrl;
+
+    @JsonSerialize(using = Long2StringSerializer.class)
+    private Long reviewAreaId;
 
     public Long getReviewId() {
         return reviewId;
@@ -106,5 +102,13 @@ public class Review {
 
     public void setReviewUrl(String reviewUrl) {
         this.reviewUrl = reviewUrl == null ? null : reviewUrl.trim();
+    }
+
+    public Long getReviewAreaId() {
+        return reviewAreaId;
+    }
+
+    public void setReviewAreaId(Long reviewAreaId) {
+        this.reviewAreaId = reviewAreaId;
     }
 }

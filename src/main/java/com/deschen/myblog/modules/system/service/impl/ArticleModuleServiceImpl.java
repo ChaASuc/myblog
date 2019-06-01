@@ -16,6 +16,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.security.RunAs;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 
@@ -43,6 +44,9 @@ public class ArticleModuleServiceImpl implements ArticleModuleService {
 
     @Autowired
     private ArticleMapper articleMapper;
+
+    @Autowired
+    private UserConfigMapper userConfigMapper;
 
 
 
@@ -237,9 +241,43 @@ public class ArticleModuleServiceImpl implements ArticleModuleService {
             userConfig.setArticleSum(articles.size());
         }
 
-        // 获取所有文章的评论量表
+        // 获取所有文章的评论量
         List<Comment> comments =
                 commentMapper.selectByExample(new CommentExample());
-//        comments.stream().map(Comment::getCommentCount).
+        Integer commentSum =
+                comments.stream().map(Comment::getCommentCount).reduce(0, Integer::sum);
+        userConfig.setCommentSum(commentSum);
+
+        // 获取所有文章的点赞数
+        List<Thumbup> thumbups =
+                thumbupMapper.selectByExample(new ThumbupExample());
+        Integer thumbupSum =
+                thumbups.stream().map(Thumbup::getThumbupCount).reduce(0, Integer::sum);
+        userConfig.setThumbupSum(thumbupSum);
+
+        // 获取文章的浏览量
+        List<Visit> visits =
+                visitMapper.selectByExample(new VisitExample());
+        Integer visitSum =
+                visits.stream().map(Visit::getVisitCount).reduce(0, Integer::sum);
+        userConfig.setVisitSum(visitSum);
+
+        // 创建今天的文章总量，点赞总量，访问总量，浏览总量的记录
+        int success = userConfigMapper.insertSelective(userConfig);
+        if (success == 0) {
+            throw new GlobalException(BlogEnum.USERCONFIG_INSERT_ERROR);
+        }
     }
+
+//    public static void main(String[] args) {
+//        ArrayList<Comment> comments = new ArrayList<>();
+//        Comment comment = new Comment();
+//        comment.setCommentCount(1);
+//        Comment comment1 = new Comment();
+//        comment1.setCommentCount(2);
+//        comments.add(comment);
+//        comments.add(comment1);
+//        Integer reduce = comments.stream().map(Comment::getCommentCount).reduce(0, Integer::sum);
+//        System.out.println(reduce);
+//    }
 }
