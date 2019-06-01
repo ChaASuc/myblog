@@ -4,7 +4,8 @@
 ### POST /author/imageDto/dir  创建文件夹
 `{
    "dirName": "用户图片"
- }`
+ }
+ `
 
 ### POST /author/imageDto/image/{dirId}  上传图片
 `
