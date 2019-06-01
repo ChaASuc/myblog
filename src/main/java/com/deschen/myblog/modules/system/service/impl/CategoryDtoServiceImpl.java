@@ -19,7 +19,9 @@ import com.sun.org.apache.bcel.internal.generic.ARRAYLENGTH;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.PropertySource;
 import org.springframework.data.annotation.Id;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.CollectionUtils;
@@ -37,6 +39,7 @@ import java.util.stream.Collectors;
  */
 @Service
 @Slf4j
+@PropertySource("classpath:config/blog.properties")
 public class CategoryDtoServiceImpl implements CategoryDtoService {
 
     @Autowired
@@ -282,7 +285,10 @@ public class CategoryDtoServiceImpl implements CategoryDtoService {
      * @Description: reids点击种类和标签的次数更新相应实体类的hot
      */
     @Transactional
+//    @Scheduled(cron = "0 0/30 * * * ?")/*每半个小时触发*/
+//    @Scheduled(cron = "${blog.hot}")/*每半个小时触发*/
     public void transHotFromRedisDB() {
+        log.info("【定时任务】种类和标签定时任务开启");
         String categoryPrefix = String.format(RedisConstant.CATEGORY_PREFIX, "*");
         String tagPrefix = String.format(RedisConstant.TAG_PREFIX, "*");
 

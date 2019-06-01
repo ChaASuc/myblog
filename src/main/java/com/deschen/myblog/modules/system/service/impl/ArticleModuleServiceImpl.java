@@ -12,6 +12,9 @@ import com.deschen.myblog.modules.system.mapper.*;
 import com.deschen.myblog.modules.system.service.ArticleModuleService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.PropertySource;
+import org.springframework.scheduling.annotation.EnableScheduling;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -28,6 +31,7 @@ import java.util.Set;
  */
 @Service
 @Slf4j
+@PropertySource({"classpath:config/blog.properties"})
 public class ArticleModuleServiceImpl implements ArticleModuleService {
 
     @Autowired
@@ -54,6 +58,7 @@ public class ArticleModuleServiceImpl implements ArticleModuleService {
     private RedisUtil redisUtil;
 
     @Override
+    @Transactional
     public void insertArticleModule(Long articleId) {
 
         // 创建访问，点赞，评论量实体类
@@ -94,7 +99,10 @@ public class ArticleModuleServiceImpl implements ArticleModuleService {
      * @Description: redis访问次数更新到visit中
      */
     @Transactional
+//    @Scheduled(cron = "0 0/30 * * * ?")/*每半个小时触发*/
+//    @Scheduled(cron = "${blog.visit}")/*每半个小时触发*/
     public void transVisitCountFromRedisDB() {
+        log.info("【定时任务】浏览量定时更新到数据库");
         String visitPrefix = String.format(RedisConstant.VISIT_PREFIX, "*");
         Set<String> keys = redisUtil.keys(visitPrefix);
         keys.stream().forEach(
@@ -140,7 +148,10 @@ public class ArticleModuleServiceImpl implements ArticleModuleService {
      * @Description: redis点赞次数更新到thumbup中
      */
     @Transactional
+//    @Scheduled(cron = "0 0/30 * * * ?")/*每半个小时触发*/
+//    @Scheduled(cron = "${blog.thumbup}")/*每半个小时触发*/
     public void transThumbupCountFromRedisDB() {
+        log.info("【定时任务】点赞定时更新到数据库");
         String thumbupPrefix = String.format(RedisConstant.THUMBUP_PREFIX, "*");
         Set<String> keys = redisUtil.keys(thumbupPrefix);
         keys.stream().forEach(
@@ -185,7 +196,10 @@ public class ArticleModuleServiceImpl implements ArticleModuleService {
      * @Description: 从评论表中的数量更新到评论量表中
      */
     @Transactional
+//    @Scheduled(cron = "0 0/30 * * * ?")/*每半个小时触发*/
+    @Scheduled(cron = "${blog.comment}")/*每半个小时触发*/
     public void transCommentCountFromRedisDB() {
+        log.info("【定时任务】评论定时更新到数据库");
         List<Comment> comments =
                 commentMapper.selectByExample(new CommentExample());
         comments.stream().forEach(
@@ -222,8 +236,13 @@ public class ArticleModuleServiceImpl implements ArticleModuleService {
      * @Author: deschen
      * @Date: 2019/5/31 19:08
      * @Description: 从浏览量表，评论量表， 点赞量表中的数量累加更新到用户配置表中
+     * @Modify： 使用注解进行定时任务
      */
+    @Transactional
+//    @Scheduled(cron = "0 50 23 * * ?")/*每月每日晚上23:50触发*/
+//    @Scheduled(cron = "${blog.userConfig}")/*每半个小时触发*/
     public void transUserConfigSumFromRedisDB() {
+        log.info("【定时任务】规定时间更新用户配置信息");
         // 创建用户配置信息，用于记录每天的文章总数，浏览量总数，点赞量总数，评论量总数
         UserConfig userConfig = new UserConfig();
         long userConfigId = new IdWorker().nextId();
