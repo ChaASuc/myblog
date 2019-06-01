@@ -16,7 +16,10 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import sun.misc.FDBigInteger;
 
+import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -106,15 +109,18 @@ public class UserDtoServiceImpl implements UserDtoService {
 
         UserConfigExample userConfigExample = new UserConfigExample();
         // 根据最新排序
-        userConfigExample.setOrderByClause("UPDATE_TIME DESC");
+        userConfigExample.setOrderByClause("CREATE_TIME DESC");
         userConfigExample.createCriteria().andUserIdEqualTo(user.getUserId());
         List<UserConfig> userConfigs = userConfigMapper.selectByExample(userConfigExample);
         if (userConfigs != null && userConfigs.size() != 0) {
             // 获取最新的用户配置信息
             UserConfig userConfig = userConfigs.get(0);
+            userDto.setArticleSum(userConfig.getArticleSum());
             userDto.setCommentSum(userConfig.getCommentSum());
             userDto.setThumbupSum(userConfig.getThumbupSum());
             userDto.setVisitSum(userConfig.getVisitSum());
+        }else {
+            throw new GlobalException(BlogEnum.USER_CONFIG_NOT_EXIST);
         }
         String imageUrl = BlogConstant.IMAGE_USER_URL + user.getImageId();
         userDto.setImageUrl(imageUrl);
@@ -141,5 +147,47 @@ public class UserDtoServiceImpl implements UserDtoService {
             throw new GlobalException(BlogEnum.USER_NOT_EXIST);
         }
     }
+
+    @Override
+    /**
+     * @Param: [userId, date, sort, condition]
+     * @Return:com.deschen.myblog.modules.system.entity.UserConfig
+     * @Author: deschen
+     * @Date: 2019/6/1 16:51
+     * @Description: 根据用户和时间和排序规则筛选本周、本月、本年的最新用户配置信息
+     */
+    public List<UserConfig> selectUserConfigs(Long userId, Date date, Integer sort, Integer condition) {
+        List<UserConfig> userConfigs = new ArrayList<>();
+        if (date == null && condition == null) {
+            // 最新的记录
+            UserConfigExample userConfigExample = new UserConfigExample();
+            userConfigExample.setOrderByClause("CREATE_TIME DESC");
+            userConfigExample.createCriteria().andUserIdEqualTo(userId);
+            userConfigs = userConfigMapper.selectByExample(userConfigExample);
+            if (userConfigs == null || userConfigs.size() == 0) {
+                throw new GlobalException(BlogEnum.USER_CONFIG_NOT_EXIST);
+            }
+            return userConfigs;
+        }
+        if (condition.equals(BlogConstant.WEEK)) {
+            // 本周记录
+            userConfigs = userConfigMapper.selectUserConfigWeekByDate(userId, date, sort);
+            return userConfigs;
+        }
+        if (condition.equals(BlogConstant.MONTH)) {
+            // 本月记录
+            userConfigs = userConfigMapper.selectUserConfigMonthByDate(userId, date, sort);
+            return userConfigs;
+        }
+        if (condition.equals(BlogConstant.YEAR)) {
+            // 本年记录
+            userConfigs = userConfigMapper.selectUserConfigYearByDate(userId, date, sort);
+            return userConfigs;
+        }
+        return userConfigs;
+    }
+
+
+
 
 }

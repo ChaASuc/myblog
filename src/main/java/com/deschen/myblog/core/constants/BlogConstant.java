@@ -33,7 +33,7 @@ public interface BlogConstant {
 
     String IMAGE_USER_URL = "http://10.79.3.57:8080/myblog/user/image/";
 
-    String IMAGE_ADMIN_URL = "http://10.79.3.57:8080/author/imageDto/";
+    String IMAGE_ADMIN_URL = "http://10.79.3.57:8080/myblog/author/imageDto/";
 
     // 默认博客文章上传图片文件夹
     Long ARTICLE_DIRID = 1133930737993527296L;
@@ -42,4 +42,14 @@ public interface BlogConstant {
 
     // 默认博主的用户id
     Long AUTHOR_ID = 1L;
+
+    Integer ASC = 0;
+
+    Integer DESC = 1;
+
+    Integer WEEK = 0;
+
+    Integer MONTH = 1;
+
+    Integer YEAR = 2;
 }

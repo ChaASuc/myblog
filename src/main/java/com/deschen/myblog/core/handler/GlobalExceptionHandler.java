@@ -31,7 +31,7 @@ public class GlobalExceptionHandler {
     //拦截全局异常
     @ExceptionHandler({Exception.class})
     public ResultVO handlerException(Exception e, HttpServletRequest request) {
-        ResultVO error = ResultVOUtil.error(420, e.getMessage());
+        ResultVO error = ResultVOUtil.error(420, e.toString());
         log.error("【系统异常】 error url = {}", request.getRequestURL());
         return error;
     }

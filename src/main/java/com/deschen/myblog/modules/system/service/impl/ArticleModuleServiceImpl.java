@@ -100,7 +100,7 @@ public class ArticleModuleServiceImpl implements ArticleModuleService {
      */
     @Transactional
 //    @Scheduled(cron = "0 0/30 * * * ?")/*每半个小时触发*/
-//    @Scheduled(cron = "${blog.visit}")/*每半个小时触发*/
+    @Scheduled(cron = "${blog.visit}")/*每半个小时触发*/
     public void transVisitCountFromRedisDB() {
         log.info("【定时任务】浏览量定时更新到数据库");
         String visitPrefix = String.format(RedisConstant.VISIT_PREFIX, "*");
@@ -149,7 +149,7 @@ public class ArticleModuleServiceImpl implements ArticleModuleService {
      */
     @Transactional
 //    @Scheduled(cron = "0 0/30 * * * ?")/*每半个小时触发*/
-//    @Scheduled(cron = "${blog.thumbup}")/*每半个小时触发*/
+    @Scheduled(cron = "${blog.thumbup}")/*每半个小时触发*/
     public void transThumbupCountFromRedisDB() {
         log.info("【定时任务】点赞定时更新到数据库");
         String thumbupPrefix = String.format(RedisConstant.THUMBUP_PREFIX, "*");
@@ -240,7 +240,7 @@ public class ArticleModuleServiceImpl implements ArticleModuleService {
      */
     @Transactional
 //    @Scheduled(cron = "0 50 23 * * ?")/*每月每日晚上23:50触发*/
-//    @Scheduled(cron = "${blog.userConfig}")/*每半个小时触发*/
+    @Scheduled(cron = "${blog.userConfig}")/*每半个小时触发*/
     public void transUserConfigSumFromRedisDB() {
         log.info("【定时任务】规定时间更新用户配置信息");
         // 创建用户配置信息，用于记录每天的文章总数，浏览量总数，点赞量总数，评论量总数

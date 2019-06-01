@@ -172,6 +172,49 @@
       <include refid="Example_Where_Clause" />
     </if>
   </select>
+
+  <select id="selectUserConfigWeekByDate" parameterType="map" resultMap="BaseResultMap">
+    SELECT * FROM blog_user_config
+    WHERE
+    user_id = #{userId}
+    AND
+    YEARWEEK( date_format(create_time,'%Y-%m-%d' ) ) = YEARWEEK( #{date} )
+    <if test="sort == 0">
+      ORDER BY create_time ASC
+    </if>
+    <if test="sort == 1">
+      ORDER BY create_time DESC
+    </if>
+  </select>
+
+  <select id="selectUserConfigMonthByDate" parameterType="map" resultMap="BaseResultMap">
+    SELECT * FROM blog_user_config
+    WHERE
+    user_id = #{userId}
+    AND
+    DATE_FORMAT(create_time, '%Y%m' ) = DATE_FORMAT( #{date} , '%Y%m' )
+    <if test="sort == 0">
+      ORDER BY create_time ASC
+    </if>
+    <if test="sort == 1">
+      ORDER BY create_time DESC
+    </if>
+  </select>
+
+  <select id="selectUserConfigYearByDate" parameterType="map" resultMap="BaseResultMap">
+    SELECT * FROM blog_user_config
+    WHERE
+    user_id = #{userId}
+    AND
+    YEAR(create_time)=YEAR(#{date})
+    <if test="sort == 0">
+      ORDER BY create_time ASC
+    </if>
+    <if test="sort == 1">
+      ORDER BY create_time DESC
+    </if>
+  </select>
+
   <update id="updateByExampleSelective" parameterType="map">
     update blog_user_config
     <set>
@@ -256,4 +299,6 @@
       update_time = #{updateTime,jdbcType=TIMESTAMP}
     where config_id = #{configId,jdbcType=BIGINT}
   </update>
+
+
 </mapper>

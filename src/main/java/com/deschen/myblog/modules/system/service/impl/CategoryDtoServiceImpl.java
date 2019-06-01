@@ -286,7 +286,7 @@ public class CategoryDtoServiceImpl implements CategoryDtoService {
      */
     @Transactional
 //    @Scheduled(cron = "0 0/30 * * * ?")/*每半个小时触发*/
-//    @Scheduled(cron = "${blog.hot}")/*每半个小时触发*/
+    @Scheduled(cron = "${blog.hot}")/*每半个小时触发*/
     public void transHotFromRedisDB() {
         log.info("【定时任务】种类和标签定时任务开启");
         String categoryPrefix = String.format(RedisConstant.CATEGORY_PREFIX, "*");

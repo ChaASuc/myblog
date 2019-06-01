@@ -32,6 +32,8 @@ public class UserDto implements Serializable {
 
     private String email;
 
+    private Integer articleSum;
+
     private Integer visitSum;
 
     private Integer thumbupSum;

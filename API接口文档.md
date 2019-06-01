@@ -7,7 +7,7 @@
  }
  `
 
-### POST /author/imageDto/image/{dirId}  上传图片
+### POST /author/imageDto/image/{dirId}  上传文件夹图片
 `
 dirId: 1133556052961378304
 file: 

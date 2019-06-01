@@ -64,14 +64,15 @@ public class AuthorImageDtoController {
         return success;
     }
 
-    @ApiOperation(value="上传图片", notes="已测试")
+    @ApiOperation(value="上传文件夹图片", notes="已测试")
     @PostMapping("/image/{dirId}")
     public ResultVO insertImageToDirId(
             @ApiParam(value = "文件夹Id", required = true)
             @PathVariable Long dirId,
             @ApiParam(value = "上传文件", required = true)
-            @RequestParam MultipartFile file
+            @RequestParam("file") MultipartFile file
             ) {
+        System.out.println("xxx");
         return getResultVO(file, dirId, BlogConstant.FLAGADMIN);
     }
 
@@ -79,7 +80,7 @@ public class AuthorImageDtoController {
     @PostMapping("/image")
     public ResultVO insertImage(
             @ApiParam(value = "上传文件", required = true)
-            @RequestParam MultipartFile file
+            @RequestParam("file") MultipartFile file
     ) {
         Long dirId = BlogConstant.ARTICLE_DIRID;
         return getResultVO(file, dirId, null);
@@ -111,7 +112,10 @@ public class AuthorImageDtoController {
         }else {
             imageUrl = BlogConstant.IMAGE_USER_URL + image.getImageId();
         }
-        ResultVO success = ResultVOUtil.success(imageUrl);
+        ImageVO imageVO = new ImageVO();
+        imageVO.setImageId(imageId);
+        imageVO.setImageUrl(imageUrl);
+        ResultVO success = ResultVOUtil.success(imageVO);
         return success;
     }
 
@@ -176,7 +180,6 @@ public class AuthorImageDtoController {
     ) {
         Image image =
                 imageDtoService.selectImageByImageId(imageId);
-
         try {
             return ResponseEntity.ok(resourceLoader.getResource("file:" + image.getImageUrl()));
         } catch (Exception e) {

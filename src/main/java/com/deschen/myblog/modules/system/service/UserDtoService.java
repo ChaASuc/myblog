@@ -2,6 +2,11 @@ package com.deschen.myblog.modules.system.service;
 
 import com.deschen.myblog.modules.system.dto.UserDto;
 import com.deschen.myblog.modules.system.entity.User;
+import com.deschen.myblog.modules.system.entity.UserConfig;
+import org.apache.catalina.LifecycleState;
+
+import java.util.Date;
+import java.util.List;
 
 /**
  * @Author deschen
@@ -23,5 +28,7 @@ public interface UserDtoService {
             String userName, String userPassword, String salt
     );
 
+
+    List<UserConfig> selectUserConfigs(Long userId, Date date, Integer sort, Integer condition);
 
 }
