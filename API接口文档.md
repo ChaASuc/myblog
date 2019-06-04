@@ -7,7 +7,7 @@
  }
  `
 
-### POST /author/imageDto/image/{dirId}  上传文件夹图片
+### POST /author/imageDto/image/{dirId}  上传文件夹Z图片
 `
 dirId: 1133556052961378304
 file: 
@@ -335,4 +335,19 @@ userPassword: 123456
 ### GET /author/userDto/{userId} 获取个人信息
 `
 userId: 1
+`
+### GET /author/userDto/authorInfo 更具用户id，时间，排序，筛选条件获取统计信息
+`
+获取全部记录
+userId: 1  //必填
+sort:    //选填（无和0默认时间升序 1降序）
+date:    无
+condition:  无
+`
+`
+获取规定时间的本周本月本日
+userId: 1  //必填
+sort:    //选填（无和0默认时间升序 1降序）
+date:   //选填（无默认当前时间）
+condition:  //必填 （0 本周 1本月 2本年）
 `

@@ -74,15 +74,13 @@ public class AuthorUserDtoController {
         }
 
         User user = new User();
-        long userId = new IdWorker().nextId();
-        user.setUserId(userId);
         user.setUserName(userForm.getUserName());
         user.setSalt(user.getUserName());
         user.setUserPassword(userForm.getUserPassword());
         Image image =
                 imageDtoService.selectRandomImage(null);
         user.setImageId(image.getImageId());
-        userDtoService.insertUser(user);
+        Long userId = userDtoService.insertUser(user);
         userDtoService.insertUserConfig(userId);
         ResultVO success = ResultVOUtil.success();
         return success;
@@ -172,8 +170,8 @@ public class AuthorUserDtoController {
         }
 
         if (sort == null) {
-            // 默认以创建时间降序
-            sort = BlogConstant.DESC;
+            // 默认以创建时间升序
+            sort = BlogConstant.ASC;
         } else if (sort < BlogConstant.ASC || sort > BlogConstant.DESC) {
             throw new GlobalException(BlogEnum.PARROR_EMPTY_ERROR.getCode(),
                     "排序规则必须在0和1之间");

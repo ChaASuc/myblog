@@ -168,7 +168,7 @@ public class ArticleModuleServiceImpl implements ArticleModuleService {
                         Integer thumbupCount = (Integer) redisUtil.get(key);
                         Thumbup thumbup = thumbups.get(0);
                         // 点赞会减少，不能用只增不减的操作
-                        if (thumbupCount == 0) {
+                        if (thumbupCount < 0) {
                             // redis误删点赞量
                             redisUtil.set(key, thumbup.getThumbupCount());
                         }else {

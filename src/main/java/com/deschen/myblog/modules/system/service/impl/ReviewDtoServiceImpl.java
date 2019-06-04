@@ -65,14 +65,17 @@ public class ReviewDtoServiceImpl implements ReviewDtoService {
     public void updateReview(Review review) {
         int success = reviewMapper.updateByPrimaryKeySelective(review);
         if (success == 0) {
-            throw new GlobalException(BlogEnum.REVIEW_INSERT_ERROR);
+            throw new GlobalException(BlogEnum.REVIEW_UPDATE_ERROR);
         }
         if (review.getReviewParent() == null && review.getState() == BlogConstant.RECORD_VOID) {
             Review review1 = new Review();
             review1.setState(BlogConstant.RECORD_VOID);
             ReviewExample reviewExample = new ReviewExample();
-            reviewExample.createCriteria().andReviewParentEqualTo(review.getReviewId());
+            reviewExample.createCriteria().andReviewAreaIdEqualTo(review.getReviewId());
             int cSuccess = reviewMapper.updateByExampleSelective(review1, reviewExample);
+//            if (cSuccess == 0) {
+//                throw new GlobalException(BlogEnum.REVIEW_UPDATE_ERROR);
+//            }
         }
     }
 

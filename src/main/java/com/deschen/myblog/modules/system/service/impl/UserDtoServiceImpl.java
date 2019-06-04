@@ -49,11 +49,14 @@ public class UserDtoServiceImpl implements UserDtoService {
      * @Date: 2019/5/31 8:36
      * @Description: 添加用户
      */
-    public void insertUser(User user) {
+    public Long insertUser(User user) {
+        long userId = new IdWorker().nextId();
+        user.setUserId(userId);
         int success = userMapper.insertSelective(user);
         if (success == 0) {
             throw new GlobalException(BlogEnum.USER_INSERT_ERROR);
         }
+        return userId;
     }
 
 

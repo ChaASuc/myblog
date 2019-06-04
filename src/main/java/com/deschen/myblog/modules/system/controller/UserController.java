@@ -9,6 +9,7 @@ import com.deschen.myblog.core.exceptions.GlobalException;
 import com.deschen.myblog.core.utils.*;
 import com.deschen.myblog.modules.system.dto.*;
 import com.deschen.myblog.modules.system.entity.*;
+import com.deschen.myblog.modules.system.form.GuestBookForm;
 import com.deschen.myblog.modules.system.form.ReviewForm;
 import com.deschen.myblog.modules.system.service.*;
 import com.deschen.myblog.modules.system.vo.ResultVO;
@@ -28,6 +29,7 @@ import org.springframework.web.bind.annotation.*;
 import javax.validation.Valid;
 import javax.validation.constraints.Max;
 import javax.validation.constraints.Min;
+import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import java.util.ArrayList;
 import java.util.List;
@@ -60,6 +62,9 @@ public class UserController {
 
     @Autowired
     private UserDtoService userDtoService;
+
+    @Autowired
+    private GuestBookDtoService guestBookDtoService;
 
     @Autowired
     private BlogConfig blogConfig;
@@ -288,13 +293,11 @@ public class UserController {
         // 创建用户
         User user = new User();
         BeanUtils.copyProperties(reviewForm, user);
-        long userId = new IdWorker().nextId();
-        user.setUserId(userId);
         // 获取用户头像的随机图片
         Image image =
                 imageDtoService.selectRandomImage(null);
         user.setImageId(image.getImageId());
-        userDtoService.insertUser(user);
+        Long userId = userDtoService.insertUser(user);
 
         Review review = new Review();
         BeanUtils.copyProperties(reviewForm, review);
@@ -319,6 +322,7 @@ public class UserController {
         return success;
     }
 
+    @ApiOperation(value = "获取用户信息", notes = "已测试")
     @GetMapping("/authorInfo")
     public ResultVO selectUserByAuthorId(
     ) {
@@ -327,6 +331,79 @@ public class UserController {
         UserDto userDto =
                 userDtoService.selectUserDto(authorId);
         ResultVO success = ResultVOUtil.success(userDto);
+        return success;
+    }
+
+    @ApiOperation(value = "获取留言", notes = "已测试")
+    @GetMapping("/guestBook")
+    public ResultVO selectGuestBookDto() {
+        List<GuestBook> guestBooks =
+                guestBookDtoService.selectGuestBookDto(BlogConstant.RECORD_VALID, BlogConstant.DESC);
+        List<GuestBookDto> guestBookDtos = guestBooks.stream().map(
+                guestBook -> {
+                    GuestBookDto guestBookDto = new GuestBookDto();
+                    BeanUtils.copyProperties(guestBook, guestBookDto);
+                    UserDto userDto =
+                            userDtoService.selectUserDto(guestBook.getUserId());
+                    guestBookDto.setUserName(userDto.getUserName());
+                    guestBookDto.setImageUrl(userDto.getImageUrl());
+                    guestBookDto.setEmail(userDto.getEmail());
+                    return guestBookDto;
+                }
+        ).collect(Collectors.toList());
+        ResultVO success = ResultVOUtil.success(guestBookDtos);
+        return success;
+    }
+
+    @ApiOperation(value = "创建留言", notes = "已测试")
+    @PostMapping("/guestBook")
+    public ResultVO insertGuestBookDto(
+            @Valid @RequestBody GuestBookForm guestBookForm,
+            BindingResult bindingResult
+    ) {
+        if (bindingResult.hasErrors()) {
+            log.info("【添加留言】 参数错误");
+            throw new GlobalException(BlogEnum.PARROR_EMPTY_ERROR.getCode(),
+                    bindingResult.getFieldError().getDefaultMessage());
+        }
+
+        String email = guestBookForm.getEmail();
+        if (email != null) {
+            email = email.trim();
+            if (email.equals("") || !EmailUtil.checkEmaile(email)) {
+                log.info("【添加留言】邮箱校验失败，email = {}", email);
+                throw new GlobalException(BlogEnum.PARROR_EMPTY_ERROR.getCode(),
+                        "邮箱格式错误");
+            }
+        }
+        String userName = guestBookForm.getUserName();
+        String guestbookContent = guestBookForm.getGuestbookContent();
+        String guestbookUrl = guestBookForm.getGuestbookUrl();
+
+        User user = new User();
+        user.setUserName(userName);
+        user.setSalt(userName);
+        user.setEmail(user.getEmail());
+        Image image =
+                imageDtoService.selectRandomImage(null);
+        Long imageId = image.getImageId();
+        user.setImageId(imageId);
+        Long userId = userDtoService.insertUser(user);
+
+        GuestBook guestBook = new GuestBook();
+        BeanUtils.copyProperties(guestBookForm, guestBook);
+        guestBook.setUserId(userId);
+
+        Long guestBookId = guestBookDtoService.insertGuestBook(guestBook);
+
+        GuestBook guestBook1 =
+                guestBookDtoService.selectGuestBookDtoByGuestBookId(guestBookId);
+        GuestBookDto guestBookDto = new GuestBookDto();
+        BeanUtils.copyProperties(guestBook1, guestBookDto);
+        guestBookDto.setEmail(email);
+        guestBookDto.setImageUrl(BlogConstant.IMAGE_USER_URL + imageId);
+        guestBookDto.setUserName(userName);
+        ResultVO success = ResultVOUtil.success(guestBookDto);
         return success;
     }
 }

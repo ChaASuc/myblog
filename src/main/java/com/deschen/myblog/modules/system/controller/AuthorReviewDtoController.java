@@ -6,14 +6,18 @@ import com.deschen.myblog.core.exceptions.GlobalException;
 import com.deschen.myblog.core.utils.IdWorker;
 import com.deschen.myblog.core.utils.ResultVOUtil;
 import com.deschen.myblog.modules.system.dto.ReviewDto;
+import com.deschen.myblog.modules.system.dto.UserDto;
 import com.deschen.myblog.modules.system.entity.Review;
 import com.deschen.myblog.modules.system.service.ImageDtoService;
 import com.deschen.myblog.modules.system.service.ReviewDtoService;
+import com.deschen.myblog.modules.system.service.UserDtoService;
 import com.deschen.myblog.modules.system.vo.ResultVO;
+import com.deschen.myblog.modules.system.vo.ReviewVO;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.Data;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
@@ -38,6 +42,9 @@ public class AuthorReviewDtoController {
 
     @Autowired
     private ImageDtoService imageDtoService;
+
+    @Autowired
+    private UserDtoService userDtoService;
 
 
     @ApiOperation(value = "添加评论或回复", notes = "已测试")
@@ -67,7 +74,17 @@ public class AuthorReviewDtoController {
         }
         reviewDtoService.insertReview(review);
 
-        ResultVO success = ResultVOUtil.success();
+        Review review1 =
+                reviewDtoService.selectReviewByReviewId(reviewId);
+        UserDto userDto
+                = userDtoService.selectUserDto(review1.getUserId());
+        ReviewVO reviewVO = new ReviewVO();
+        BeanUtils.copyProperties(review1, reviewVO);
+        reviewVO.setUserId(userDto.getUserId());
+        reviewVO.setUserName(userDto.getUserName());
+        reviewVO.setImageUrl(userDto.getImageUrl());
+
+        ResultVO success = ResultVOUtil.success(reviewVO);
 
         return success;
     }

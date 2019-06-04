@@ -13,8 +13,10 @@ public class Review {
 
     private String reviewContent;
 
+    @JsonSerialize(using = Long2StringSerializer.class)
     private Long articleId;
 
+    @JsonSerialize(using = Long2StringSerializer.class)
     private Long userId;
 
     @JsonSerialize(using = Long2StringSerializer.class)
@@ -31,6 +33,8 @@ public class Review {
 
     @JsonSerialize(using = Long2StringSerializer.class)
     private Long reviewAreaId;
+
+    private String userName;
 
     public Long getReviewId() {
         return reviewId;

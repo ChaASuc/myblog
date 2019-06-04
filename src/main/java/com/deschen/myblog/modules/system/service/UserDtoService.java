@@ -16,7 +16,7 @@ import java.util.List;
  */
 public interface UserDtoService {
 
-    void insertUser(User user);
+    Long insertUser(User user);
 
     void insertUserConfig(Long userId);
 

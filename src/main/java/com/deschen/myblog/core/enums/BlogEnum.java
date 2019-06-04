@@ -79,8 +79,15 @@ public enum BlogEnum implements IEnum {
     USERCONFIG_INSERT_ERROR(133, "用户配置信息保存失败"),
 
 
-    USER_CONFIG_NOT_EXIST(134, "用户配置信息不存在")
+    USER_CONFIG_NOT_EXIST(134, "用户配置信息不存在"),
 
+
+    REVIEW_UPDATE_ERROR(135, "评论更新失败"),
+
+
+    GUESTBOOK_INSERT_ERROR(136, "留言保存失败"),
+
+    GUESTBOOK_UPDATE_ERROR(137, "留言更新失败")
 
     ;
     private Integer code;
