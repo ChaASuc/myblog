@@ -101,11 +101,9 @@ public class AuthorImageDtoController {
             throw new GlobalException(BlogEnum.IMAGE_UPLOAD_ERROR);
         }
         Image image = new Image();
-        long imageId = new IdWorker().nextId();
-        image.setImageId(imageId);
         image.setImageUrl(imagePath);
         image.setDirId(dirId);
-        imageDtoService.insertImages(image);
+        Long imageId = imageDtoService.insertImages(image);
         String imageUrl;
         if (flag != null) {
             imageUrl = BlogConstant.IMAGE_ADMIN_URL + image.getImageId();

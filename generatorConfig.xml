@@ -141,5 +141,11 @@ PUBLIC "-//mybatis.org//DTD MyBatis Generator Configuration 1.0//EN"
             <!--<columnOverride column="create_time" javaType="java.time.LocalDate" jdbcType="DATETIME" />-->
             <!--<columnOverride column="update_time" javaType="java.time.LocalDate" jdbcType="DATETIME" />-->
         </table>
+        <table schema="" tableName="blog_url" domainObjectName="Url">
+            <!-- 指定java类型 -->
+            <columnOverride column="state" javaType="java.lang.Integer" jdbcType="TINYINT" />
+            <!--<columnOverride column="create_time" javaType="java.time.LocalDate" jdbcType="DATETIME" />-->
+            <!--<columnOverride column="update_time" javaType="java.time.LocalDate" jdbcType="DATETIME" />-->
+        </table>
     </context>
 </generatorConfiguration>

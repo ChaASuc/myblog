@@ -67,6 +67,9 @@ public class UserController {
     private GuestBookDtoService guestBookDtoService;
 
     @Autowired
+    private UrlDtoService urlDtoService;
+
+    @Autowired
     private BlogConfig blogConfig;
 
     @Autowired
@@ -404,6 +407,26 @@ public class UserController {
         guestBookDto.setImageUrl(BlogConstant.IMAGE_USER_URL + imageId);
         guestBookDto.setUserName(userName);
         ResultVO success = ResultVOUtil.success(guestBookDto);
+        return success;
+    }
+
+    @ApiOperation(value = "获取链接", notes = "已测试")
+    @GetMapping("/url")
+    public ResultVO selectUrlDto(
+    ) {
+        List<Url> urls =
+                urlDtoService.selectUrlDto(BlogConstant.RECORD_VALID, BlogConstant.DESC);
+
+        List<UrlDto> urlDtos = urls.stream().map(
+                url -> {
+                    UrlDto urlDto = new UrlDto();
+                    BeanUtils.copyProperties(url, urlDto);
+                    urlDto.setImageUrl(BlogConstant.IMAGE_USER_URL + url.getImageId());
+                    return urlDto;
+                }
+        ).collect(Collectors.toList());
+
+        ResultVO success = ResultVOUtil.success(urlDtos);
         return success;
     }
 }

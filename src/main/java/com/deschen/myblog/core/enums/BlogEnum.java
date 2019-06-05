@@ -87,7 +87,13 @@ public enum BlogEnum implements IEnum {
 
     GUESTBOOK_INSERT_ERROR(136, "留言保存失败"),
 
-    GUESTBOOK_UPDATE_ERROR(137, "留言更新失败")
+    GUESTBOOK_UPDATE_ERROR(137, "留言更新失败"),
+
+    URL_INSERT_ERROR(138, "链接保存失败"),
+
+    URL_UPDATE_ERROR(139, "链接更新失败"),
+
+    FILE_UPLOAD_ERROR(140, "文件上传失败")
 
     ;
     private Integer code;

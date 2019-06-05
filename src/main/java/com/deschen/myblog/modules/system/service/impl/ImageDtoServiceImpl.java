@@ -70,12 +70,15 @@ public class ImageDtoServiceImpl implements ImageDtoService {
      * @Date: 2019/5/29 9:23
      * @Description: 插入图片
      */
-    public void insertImages(Image image) {
+    public Long insertImages(Image image) {
+        long imageId = new IdWorker().nextId();
+        image.setImageId(imageId);
         int success = imageMapper.insertSelective(image);
         if (success == 0) {
             throw new GlobalException(BlogEnum.IMAGE_INSERT_ERROR);
         }
-   }
+        return imageId;
+    }
 
     @Override
 

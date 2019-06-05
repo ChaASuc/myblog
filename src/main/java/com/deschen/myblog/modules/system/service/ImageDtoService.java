@@ -2,7 +2,6 @@ package com.deschen.myblog.modules.system.service;
 
 import com.deschen.myblog.modules.system.entity.Dir;
 import com.deschen.myblog.modules.system.entity.Image;
-import org.apache.catalina.LifecycleState;
 
 import java.util.List;
 
@@ -16,7 +15,7 @@ public interface ImageDtoService {
 
     void insertDir(Dir dir);
 
-    void insertImages(Image image);
+    Long insertImages(Image image);
 
     void updateDir(Dir dir);
 
