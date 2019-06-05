@@ -99,9 +99,11 @@ public class ReviewDtoServiceImpl implements ReviewDtoService {
         // 获取评论
         ReviewExample.Criteria criteria =
                 reviewExample.createCriteria()
-                        .andArticleIdEqualTo(articleId)
                         .andReviewParentIsNull();
 
+        if (articleId != null) {
+            criteria.andArticleIdEqualTo(articleId);
+        }
         // 无代表所有状态
         if (state != null) {
             criteria.andStateEqualTo(state);
@@ -123,10 +125,12 @@ public class ReviewDtoServiceImpl implements ReviewDtoService {
                     }
                     // 该评论回复
                     ReviewExample.Criteria cCriteria = cReviewExample.createCriteria()
-                            .andArticleIdEqualTo(articleId)
                             // 根据评论的区域id获取该评论的所有回复
                             .andReviewAreaIdEqualTo(review.getReviewAreaId())
                             .andReviewParentIsNotNull();
+                    if (articleId != null) {
+                        cCriteria.andArticleIdEqualTo(articleId);
+                    }
                     if (state != null) {
                         cCriteria.andStateEqualTo(state);
                     }

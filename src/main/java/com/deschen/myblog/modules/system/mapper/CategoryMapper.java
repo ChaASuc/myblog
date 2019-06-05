@@ -1,5 +1,6 @@
 package com.deschen.myblog.modules.system.mapper;
 
+import com.deschen.myblog.modules.system.dto.ArticleDto;
 import com.deschen.myblog.modules.system.entity.Category;
 import com.deschen.myblog.modules.system.entity.CategoryExample;
 import java.util.List;

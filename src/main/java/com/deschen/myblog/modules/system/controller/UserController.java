@@ -23,8 +23,10 @@ import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.ResourceLoader;
 import org.springframework.http.ResponseEntity;
+import org.springframework.util.CollectionUtils;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
+import springfox.documentation.service.Tags;
 
 import javax.validation.Valid;
 import javax.validation.constraints.Max;
@@ -250,9 +252,9 @@ public class UserController {
     }
 
     @ApiOperation(value = "根据文章id获取评论", notes = "已测试")
-    @GetMapping("/review/{articleId}")
+    @GetMapping("/review")
     public ResultVO selectReviewDtos(
-            @PathVariable Long articleId,
+            @RequestParam(required = false) Long articleId,
             @RequestParam(required = false) Integer sort
     ) {
 
@@ -415,6 +417,55 @@ public class UserController {
         ).collect(Collectors.toList());
 
         ResultVO success = ResultVOUtil.success(urlDtos);
+        return success;
+    }
+
+    @ApiOperation(value = "搜索文章",notes = "已测试")
+    @GetMapping("/search")
+    public ResultVO selectArticleDtoByKeyWord(
+            @RequestParam(required = false, defaultValue = "0") Integer type,
+            @RequestParam(defaultValue = "") String keyword,
+            @RequestParam(required = false, defaultValue = "1") Integer pageNum
+    ) {
+        List<Integer> states = new ArrayList<>();
+        states.add(BlogConstant.RECORD_VALID);
+        String sort = sortUtil.getSort(BlogConstant.NEWEST);
+        Integer pageSize = blogConfig.getGPageSize();
+
+        List<ArticleDto> articleDtos = new ArrayList<>();
+        if (type.equals(BlogConstant.TYPE_ARTICLE)) {
+            PageHelper.startPage(pageNum, pageSize);
+            articleDtos =
+                    articleDtoService.selectArticleDtoByKeyWord(states, keyword);
+        } else if (type.equals(BlogConstant.TYPE_CATEGORY)) {
+            // 判断有效种类是否存在
+            List<Category> categories =
+                    categoryDtoService.selectCategoryByKeyWord(keyword);
+            if (CollectionUtils.isEmpty(categories)) {
+                ResultVO success = ResultVOUtil.success(null);
+                return success;
+            }
+            PageHelper.startPage(pageNum, pageSize);
+            articleDtos = articleDtoService.selectArticleDtoByCategoryKeyWord(
+                    keyword, states, sort
+            );
+        } else if (type.equals(BlogConstant.TYPE_TAG)) {
+            // 判断有效标签是否存在
+            List<Tag> tags =
+                    categoryDtoService.selectTagByKeyWord(keyword);
+            if (CollectionUtils.isEmpty(tags)) {
+                ResultVO success = ResultVOUtil.success(null);
+                return success;
+            }
+            PageHelper.startPage(pageNum, pageSize);
+            articleDtos = articleDtoService.selectArticleDtoByTagKeyWord(
+                    keyword, states, sort);
+        } else {
+            throw new GlobalException(BlogEnum.PARROR_EMPTY_ERROR.getCode(),
+                    "类型错误，必须在0到2之间");
+        }
+        PageInfo<ArticleDto> articleDtoPageInfo = new PageInfo<>(articleDtos);
+        ResultVO success = ResultVOUtil.success(articleDtoPageInfo);
         return success;
     }
 }

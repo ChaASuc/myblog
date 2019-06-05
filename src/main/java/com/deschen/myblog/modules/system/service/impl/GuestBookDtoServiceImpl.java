@@ -147,8 +147,6 @@ public class GuestBookDtoServiceImpl implements GuestBookDtoService {
                 userMapper.selectByPrimaryKey(userId);
 
         Long imageId = user.getImageId();
-        Image image =
-                imageMapper.selectByPrimaryKey(imageId);
         GuestBookDto guestBookDto =
                 new GuestBookDto();
         BeanUtils.copyProperties(guestBook, guestBookDto);

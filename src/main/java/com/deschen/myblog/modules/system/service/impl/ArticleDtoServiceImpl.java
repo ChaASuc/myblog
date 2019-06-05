@@ -277,6 +277,74 @@ public class ArticleDtoServiceImpl implements ArticleDtoService {
         }
     }
 
+    @Override
+
+    /**
+     * @Param: [keyWord]
+     * @Return:java.util.List<com.deschen.myblog.modules.system.dto.ArticleDto>
+     * @Author: deschen
+     * @Date: 2019/6/5 19:54
+     * @Description: 文章关键字搜索
+     */
+    public List<ArticleDto> selectArticleDtoByKeyWord(List<Integer> states, String keyWord) {
+        List<ArticleDto> articleDtos =
+                articleMapper.selectArticleDtoByKeyWord(states, keyWord);
+        articleDtoAddTags(articleDtos);
+        return articleDtos;
+    }
+
+    @Override
+
+    /**
+     * @Param: [categoryIds, states, sort]
+     * @Return:java.util.List<com.deschen.myblog.modules.system.dto.ArticleDto>
+     * @Author: deschen
+     * @Date: 2019/6/5 21:01
+     * @Description: 根据种类关键词集合获取文章集合
+     */
+    public List<ArticleDto> selectArticleDtoByCategoryKeyWord(String keyword, List<Integer> states, String sort) {
+        List<ArticleDto> articleDtos =
+                articleMapper.selectArticleDtoByCategoryKeyWordSortDesc(
+                        keyword, states, sort
+                );
+        articleDtoAddTags(articleDtos);
+        return articleDtos;
+    }
+
+    @Override
+
+    /**
+     * @Param: [tagIds, states, sort]
+     * @Return:java.util.List<com.deschen.myblog.modules.system.dto.ArticleDto>
+     * @Author: deschen
+     * @Date: 2019/6/5 21:23
+     * @Description: 根据标签关键词集合获取文章集合
+     */
+    public List<ArticleDto> selectArticleDtoByTagKeyWord(String keyword, List<Integer> states, String sort) {
+        List<ArticleDto> articleDtos = articleMapper.selectArticleDtoByTagKeyWordSortDesc(
+                keyword, states, sort
+        );
+        articleDtoAddTags(articleDtos);
+        return articleDtos;
+    }
+
+    @Override
+
+    /**
+     * @Param: [categoryId, tagId, states, keyword, sort]
+     * @Return:java.util.List<com.deschen.myblog.modules.system.dto.ArticleDto>
+     * @Author: deschen
+     * @Date: 2019/6/5 23:48
+     * @Description: 种类id或标签id搜索关键字
+     */
+    public List<ArticleDto> selectArticleDtoByKeyWordByCategoryIdOrTagId(Long categoryId, Long tagId, List<Integer> states, String keyword, String sort) {
+        List<ArticleDto> articleDtos = articleMapper.selectArticleDtoByCategoryIdOrTagIdAndKeyWordSortDesc(
+                categoryId, tagId, keyword, states, sort
+        );
+        articleDtoAddTags(articleDtos);
+        return articleDtos;
+    }
+
 
     /**
      * @Param: articleDtos

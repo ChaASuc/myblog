@@ -1,5 +1,6 @@
 package com.deschen.myblog.modules.system.service.impl;
 
+import com.deschen.myblog.config.BlogConfig;
 import com.deschen.myblog.core.constants.BlogConstant;
 import com.deschen.myblog.core.constants.RedisConstant;
 import com.deschen.myblog.core.enums.BlogEnum;
@@ -401,6 +402,42 @@ public class CategoryDtoServiceImpl implements CategoryDtoService {
             }
         }
 
+    }
+
+    @Override
+
+    /**
+     * @Param: [keyword]
+     * @Return:java.util.List<com.deschen.myblog.modules.system.entity.Category>
+     * @Author: deschen
+     * @Date: 2019/6/5 20:23
+     * @Description: 种类模糊查询
+     */
+    public List<Category> selectCategoryByKeyWord(String keyword) {
+        CategoryExample categoryExample = new CategoryExample();
+        categoryExample.createCriteria().andStateEqualTo(BlogConstant.RECORD_VALID)
+                .andCategoryNameLike("%" + keyword + "%");
+        List<Category> categories =
+                categoryMapper.selectByExample(categoryExample);
+        return categories;
+    }
+
+    @Override
+
+    /**
+     * @Param: [keyword]
+     * @Return:java.util.List<com.deschen.myblog.modules.system.entity.Tag>
+     * @Author: deschen
+     * @Date: 2019/6/5 20:31
+     * @Description: 标签模糊查询
+     */
+    public List<Tag> selectTagByKeyWord(String keyword) {
+        TagExample tagExample = new TagExample();
+        tagExample.createCriteria().andStateEqualTo(BlogConstant.RECORD_VALID)
+                .andTagNameLike("%" + keyword + "%");
+        List<Tag> tags =
+                tagMapper.selectByExample(tagExample);
+        return tags;
     }
 
     public static void main(String[] args) {

@@ -36,4 +36,10 @@ public interface CategoryDtoService {
     Tag selectTag(Long categoryId, String tagName);
 
     void selectBycategoryIdOrTagId(Long categoryId, Long tagId);
+
+    List<Category> selectCategoryByKeyWord(String keyword);
+
+    List<Tag> selectTagByKeyWord(String keyword);
+
+
 }

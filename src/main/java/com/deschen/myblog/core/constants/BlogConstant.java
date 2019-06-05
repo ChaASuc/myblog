@@ -52,4 +52,10 @@ public interface BlogConstant {
     Integer MONTH = 1;
 
     Integer YEAR = 2;
+
+    Integer TYPE_ARTICLE = 0;
+
+    Integer TYPE_CATEGORY = 1;
+
+    Integer TYPE_TAG = 2;
 }

@@ -12,6 +12,7 @@ import com.deschen.myblog.modules.system.dto.ArticleDto;
 import com.deschen.myblog.modules.system.dto.ArticleWithBLOBsDto;
 import com.deschen.myblog.modules.system.dto.CategoryDto;
 import com.deschen.myblog.modules.system.entity.ArticleWithBLOBs;
+import com.deschen.myblog.modules.system.entity.Category;
 import com.deschen.myblog.modules.system.entity.Tag;
 import com.deschen.myblog.modules.system.form.ArticleDtoForm;
 import com.deschen.myblog.modules.system.form.ArticleForm;
@@ -32,6 +33,7 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.CollectionUtils;
 import org.springframework.web.bind.annotation.*;
 
+import javax.xml.transform.Result;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
@@ -184,20 +186,62 @@ public class AuthorArticleDtoController {
         return success;
     }
 
-    public static void main(String[] args) {
-        ArticleDtoForm articleDtoForm = new ArticleDtoForm();
-        List<Integer> states = new ArrayList<>();
-        states.add(1);
-        states.add(2);
-        articleDtoForm.setStates(states);
-        articleDtoForm.setPageNum(0);
-        articleDtoForm.setSort(1);
-        try {
-            log.info("【文章模块】 articleDtoForm={}", JsonUtil.obj2string(articleDtoForm));
-        } catch (JsonProcessingException e) {
-            e.printStackTrace();
-        }
+    @ApiOperation(value = "搜索文章",notes = "已测试")
+    @GetMapping("/search")
+    public ResultVO selectArticleDtoByKeyWord(
+            @RequestParam(required = false, defaultValue = "0") Integer type,
+            @RequestParam(required = false, defaultValue = "1") List<Integer> states,
+            @RequestParam(defaultValue = "") String keyword,
+            @RequestParam(required = false, defaultValue = "1") Integer pageNum
+    ) {
 
+        String sort = sortUtil.getSort(BlogConstant.NEWEST);
+        Integer pageSize = blogConfig.getGPageSize();
+
+        List<ArticleDto> articleDtos = new ArrayList<>();
+        if (type.equals(BlogConstant.TYPE_ARTICLE)) {
+            PageHelper.startPage(pageNum, pageSize);
+            articleDtos =
+                    articleDtoService.selectArticleDtoByKeyWord(states, keyword);
+        }else if (type.equals(BlogConstant.TYPE_CATEGORY)) {
+            PageHelper.startPage(pageNum, pageSize);
+            articleDtos = articleDtoService.selectArticleDtoByCategoryKeyWord(
+                    keyword, states, sort
+            );
+        }else if (type.equals(BlogConstant.TYPE_TAG)) {
+            PageHelper.startPage(pageNum, pageSize);
+            articleDtos = articleDtoService.selectArticleDtoByTagKeyWord(
+                    keyword, states, sort);
+        }else {
+            throw new GlobalException(BlogEnum.PARROR_EMPTY_ERROR.getCode(),
+                    "类型错误，必须在0到2之间");
+        }
+        PageInfo<ArticleDto> articleDtoPageInfo = new PageInfo<>(articleDtos);
+        ResultVO success = ResultVOUtil.success(articleDtoPageInfo);
+        return success;
+    }
+
+    @ApiOperation(value = "根据种类id或标签id搜索文章",notes = "已测试")
+    @GetMapping("/categoryDto/search")
+    public ResultVO selectArticleDtoByCategoryDto(
+            @RequestParam(required = false) Long categoryId,
+            @RequestParam(required = false) Long tagId,
+            @RequestParam(required = false, defaultValue = "1") List<Integer> states,
+            @RequestParam(defaultValue = "") String keyword,
+            @RequestParam(required = false, defaultValue = "1") Integer pageNum
+    ) {
+
+        String sort = sortUtil.getSort(BlogConstant.NEWEST);
+        Integer pageSize = blogConfig.getGPageSize();
+
+
+        PageHelper.startPage(pageNum, pageSize);
+        List<ArticleDto> articleDtos =
+                        articleDtoService.selectArticleDtoByKeyWordByCategoryIdOrTagId(
+                                categoryId, tagId, states, keyword, sort);
+        PageInfo<ArticleDto> articleDtoPageInfo = new PageInfo<>(articleDtos);
+        ResultVO success = ResultVOUtil.success(articleDtoPageInfo);
+        return success;
     }
 }
 

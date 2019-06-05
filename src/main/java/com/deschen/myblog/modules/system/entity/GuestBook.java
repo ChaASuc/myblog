@@ -1,12 +1,17 @@
 package com.deschen.myblog.modules.system.entity;
 
+import com.deschen.myblog.core.serializer.Long2StringSerializer;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+
 import java.util.Date;
 
 public class GuestBook {
+    @JsonSerialize(using = Long2StringSerializer.class)
     private Long guestbookId;
 
     private String guestbookContent;
 
+    @JsonSerialize(using = Long2StringSerializer.class)
     private Long userId;
 
     private Integer state;

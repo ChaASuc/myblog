@@ -38,6 +38,14 @@ public interface ArticleDtoService {
 
     List<Tag> selectTagsByArticleId(Long articleId);
 
-
     void selectArticle(Long articleId);
+
+    List<ArticleDto> selectArticleDtoByKeyWord(List<Integer> states, String keyWord);
+
+    List<ArticleDto> selectArticleDtoByCategoryKeyWord(String keyword, List<Integer> states, String sort);
+
+    List<ArticleDto> selectArticleDtoByTagKeyWord(String keyword, List<Integer> states, String sort);
+
+    List<ArticleDto> selectArticleDtoByKeyWordByCategoryIdOrTagId(
+            Long categoryId, Long tagId, List<Integer> states, String keyword, String sort);
 }

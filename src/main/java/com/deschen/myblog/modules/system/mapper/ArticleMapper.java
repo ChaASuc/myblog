@@ -48,6 +48,7 @@ public interface ArticleMapper {
             @Param("sort") String sort
     );
 
+
     /**
      * @Modify: 2019/5/26 状态码查询由一个到批量查询
      */
@@ -58,10 +59,24 @@ public interface ArticleMapper {
             @Param("sort") String sort
     );
 
+    List<ArticleDto> selectArticleDtoByCategoryIdOrTagIdAndKeyWordSortDesc(
+            @Param("categoryId") Long categoryId,
+            @Param("tagId") Long tagId,
+            @Param("keyword") String keyword,
+            @Param("states") List<Integer> states,
+            @Param("sort") String sort
+    );
+
     List<ArticleDto> selectArticleDtoByTagIdSortDesc(
             @Param("tagId") Long tagId,
             @Param("states") List<Integer> states,
             @Param("sort") String sort);
+
+    List<ArticleDto> selectArticleDtoByTagKeyWordSortDesc(
+            @Param("keyword") String keyword,
+            @Param("states") List<Integer> states,
+            @Param("sort") String sort);
+
 
     /**
      * @Modify: 2019/5/26 状态码查询由一个到批量查询
@@ -80,9 +95,23 @@ public interface ArticleMapper {
             @Param("sort") String sort
     );
 
+    List<ArticleDto> selectArticleDtoByCategoryKeyWordSortDesc(
+            @Param("keyword") String keyword,
+            @Param("states") List<Integer> states,
+            @Param("sort") String sort
+    );
+
 
     ArticleWithBLOBsDto selectArticleWithBLOBsDtoByArticleId(
             @Param("articleId") Long articleId
     );
+
+    List<ArticleDto> selectArticleDtoByKeyWord(
+            @Param("states") List<Integer> states,
+            @Param("keyword") String keyword
+
+    );
+
+
 
 }

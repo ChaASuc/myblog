@@ -104,9 +104,9 @@ public class AuthorReviewDtoController {
     }
 
     @ApiOperation(value = "根据文章id获取评论", notes = "已测试")
-    @GetMapping("/{articleId}")
+    @GetMapping("")
     public ResultVO selectReviewDtos(
-            @PathVariable Long articleId,
+            @RequestParam(required = false) Long articleId,
             @RequestParam(required = false) Integer state,
             @RequestParam(required = false) Integer sort
     ) {

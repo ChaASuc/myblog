@@ -292,6 +292,52 @@
     </if>
   </select>
 
+  <select id="selectArticleDtoByCategoryIdOrTagIdAndKeyWordSortDesc" parameterType="map" resultMap="ResultMapDto">
+    SELECT article.*, category_name, visit_count, thumbup_count, comment_count
+    FROM blog_article article
+    LEFT JOIN blog_category category
+    on article.category_id = category.category_id
+    LEFT JOIN blog_visit visit
+    on article.article_id = visit.article_id
+    LEFT JOIN blog_comment comment
+    on article.article_id = comment.article_id
+    LEFT JOIN blog_thumbup thumbup
+    on article.article_id = thumbup.article_id
+    LEFT JOIN blog_tag_article tag_article
+    on article.article_id = tag_article.article_id
+    <where>
+    <if test="categoryId != null">
+      category.category_id = #{categoryId}
+    </if>
+    <if test="tagId != null">
+      and tag_article.tag_id = #{tagId}
+    </if>
+    <if test="states != null">
+      and article.state in
+      <foreach collection="states" open="(" separator="," close=")" item="state">
+        #{state}
+      </foreach>
+    </if>
+    <if test="keyword != null">
+      and article.article_content LIKE
+      CONCAT('%','${keyword}','%')
+    </if>
+    </where>
+    <if test="sort == null">
+      ORDER BY visit.visit_count DESC ,thumbup.thumbup_count DESC,comment.comment_count DESC
+    </if>
+    <if test="sort == 'hot'">
+      ORDER BY visit.visit_count DESC ,thumbup.thumbup_count DESC,comment.comment_count DESC
+    </if>
+    <if test="sort == 'newest'">
+      ORDER BY article.update_time DESC
+    </if>
+    <if test="sort == 'comment'">
+      ORDER BY comment.comment_count DESC
+    </if>
+  </select>
+
+
   <select id="selectArticleDtoByTagIdSortDesc" parameterType="map" resultMap="ResultMapDto">
     SELECT article.*, category_name, visit_count, thumbup_count, comment_count
     FROM blog_article article
@@ -310,6 +356,44 @@
     SELECT tag_id
     FROM blog_tag tag
     WHERE tag.tag_name = (SELECT tag_name FROM blog_tag WHERE tag_id = #{tagId})
+    )
+    and article.state in
+    <foreach collection="states" open="(" separator="," close=")" item="state">
+      #{state}
+    </foreach>
+    and tag_article.state = 1
+    <if test="sort == null">
+      ORDER BY visit.visit_count DESC ,thumbup.thumbup_count DESC,comment.comment_count DESC
+    </if>
+    <if test="sort == 'hot'">
+      ORDER BY visit.visit_count DESC ,thumbup.thumbup_count DESC,comment.comment_count DESC
+    </if>
+    <if test="sort == 'newest'">
+      ORDER BY article.update_time DESC
+    </if>
+    <if test="sort == 'comment'">
+      ORDER BY comment.comment_count DESC
+    </if>
+  </select>
+
+  <select id="selectArticleDtoByTagKeyWordSortDesc" parameterType="map" resultMap="ResultMapDto">
+    SELECT article.*, category_name, visit_count, thumbup_count, comment_count
+    FROM blog_article article
+    LEFT JOIN blog_category category
+    on article.category_id = category.category_id
+    LEFT JOIN blog_visit visit
+    on article.article_id = visit.article_id
+    LEFT JOIN blog_comment comment
+    on article.article_id = comment.article_id
+    LEFT JOIN blog_thumbup thumbup
+    on article.article_id = thumbup.article_id
+    LEFT JOIN blog_tag_article tag_article
+    on article.article_id = tag_article.article_id
+    WHERE tag_article.tag_id in
+    (
+    SELECT tag_id
+    FROM blog_tag tag
+    WHERE tag.tag_name LIKE CONCAT('%','${keyword}','%')
     )
     and article.state in
     <foreach collection="states" open="(" separator="," close=")" item="state">
@@ -394,6 +478,38 @@
     </if>
   </select>
 
+  <select id="selectArticleDtoByCategoryKeyWordSortDesc" parameterType="map" resultMap="ResultMapDto">
+    SELECT article.*, category_name, visit_count, thumbup_count, comment_count
+    FROM blog_article article
+    LEFT JOIN blog_category category
+    on article.category_id = category.category_id
+    LEFT JOIN blog_visit visit
+    on article.article_id = visit.article_id
+    LEFT JOIN blog_comment comment
+    on article.article_id = comment.article_id
+    LEFT JOIN blog_thumbup thumbup
+    on article.article_id = thumbup.article_id
+    WHERE category.category_name
+    LIKE CONCAT('%','${keyword}','%')
+    and article.state in
+    <foreach collection="states" open="(" separator="," close=")" item="state">
+      #{state}
+    </foreach>
+    <if test="sort == null">
+      ORDER BY visit.visit_count DESC ,thumbup.thumbup_count DESC,comment.comment_count DESC
+    </if>
+    <if test="sort == 'hot'">
+      ORDER BY visit.visit_count DESC ,thumbup.thumbup_count DESC,comment.comment_count DESC
+    </if>
+    <if test="sort == 'newest'">
+      ORDER BY article.update_time DESC
+    </if>
+    <if test="sort == 'comment'">
+      ORDER BY comment.comment_count DESC
+    </if>
+  </select>
+
+
   <select id="selectArticleWithBLOBsDtoByArticleId" parameterType="java.lang.Long" resultMap="ResultMapWithBLOBsDto">
     SELECT article.*, category_name, visit_count, thumbup_count, comment_count
     FROM blog_article article
@@ -406,6 +522,25 @@
     LEFT JOIN blog_thumbup thumbup
     on article.article_id = thumbup.article_id
     WHERE article.article_id = #{articleId}
+  </select>
+
+  <select id="selectArticleDtoByKeyWord" parameterType="map" resultMap="ResultMapDto">
+    SELECT article.*, category_name, visit_count, thumbup_count, comment_count
+    FROM blog_article article
+    LEFT JOIN blog_category category
+    on article.category_id = category.category_id
+    LEFT JOIN blog_visit visit
+    on article.article_id = visit.article_id
+    LEFT JOIN blog_comment comment
+    on article.article_id = comment.article_id
+    LEFT JOIN blog_thumbup thumbup
+    on article.article_id = thumbup.article_id
+    WHERE article.state in
+    <foreach collection="states" open="(" separator="," close=")" item="state">
+      #{state}
+    </foreach>
+    AND article.article_title LIKE CONCAT('%','${keyword}','%')
+    OR article.article_content LIKE CONCAT('%','${keyword}','%')
   </select>
 
   <update id="updateByExampleSelective" parameterType="map">
