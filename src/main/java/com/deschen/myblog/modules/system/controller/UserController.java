@@ -339,22 +339,15 @@ public class UserController {
 
     @ApiOperation(value = "获取留言", notes = "已测试")
     @GetMapping("/guestBook")
-    public ResultVO selectGuestBookDto() {
-        List<GuestBook> guestBooks =
-                guestBookDtoService.selectGuestBookDto(BlogConstant.RECORD_VALID, BlogConstant.DESC);
-        List<GuestBookDto> guestBookDtos = guestBooks.stream().map(
-                guestBook -> {
-                    GuestBookDto guestBookDto = new GuestBookDto();
-                    BeanUtils.copyProperties(guestBook, guestBookDto);
-                    UserDto userDto =
-                            userDtoService.selectUserDto(guestBook.getUserId());
-                    guestBookDto.setUserName(userDto.getUserName());
-                    guestBookDto.setImageUrl(userDto.getImageUrl());
-                    guestBookDto.setEmail(userDto.getEmail());
-                    return guestBookDto;
-                }
-        ).collect(Collectors.toList());
-        ResultVO success = ResultVOUtil.success(guestBookDtos);
+    public ResultVO selectGuestBookDto(
+            @RequestParam(defaultValue = "1") Integer pageNum
+    ) {
+
+        Integer gPageSize = blogConfig.getGPageSize();
+
+        PageInfo<GuestBookDto> guestBookDtoPageInfo =
+                guestBookDtoService.selectGuestBookDto(BlogConstant.RECORD_VALID, BlogConstant.DESC, pageNum, gPageSize);
+        ResultVO success = ResultVOUtil.success(guestBookDtoPageInfo);
         return success;
     }
 
@@ -399,13 +392,8 @@ public class UserController {
 
         Long guestBookId = guestBookDtoService.insertGuestBook(guestBook);
 
-        GuestBook guestBook1 =
-                guestBookDtoService.selectGuestBookDtoByGuestBookId(guestBookId);
-        GuestBookDto guestBookDto = new GuestBookDto();
-        BeanUtils.copyProperties(guestBook1, guestBookDto);
-        guestBookDto.setEmail(email);
-        guestBookDto.setImageUrl(BlogConstant.IMAGE_USER_URL + imageId);
-        guestBookDto.setUserName(userName);
+        GuestBookDto guestBookDto
+                = guestBookDtoService.selectGuestBookDtoByGuestBookId(guestBookId);
         ResultVO success = ResultVOUtil.success(guestBookDto);
         return success;
     }

@@ -1,5 +1,6 @@
 package com.deschen.myblog.modules.system.controller;
 
+import com.deschen.myblog.config.BlogConfig;
 import com.deschen.myblog.core.constants.BlogConstant;
 import com.deschen.myblog.core.enums.BlogEnum;
 import com.deschen.myblog.core.exceptions.GlobalException;
@@ -7,10 +8,13 @@ import com.deschen.myblog.core.utils.ResultVOUtil;
 import com.deschen.myblog.modules.system.dto.GuestBookDto;
 import com.deschen.myblog.modules.system.dto.UserDto;
 import com.deschen.myblog.modules.system.entity.GuestBook;
+import com.deschen.myblog.modules.system.entity.User;
 import com.deschen.myblog.modules.system.service.GuestBookDtoService;
 import com.deschen.myblog.modules.system.service.ImageDtoService;
 import com.deschen.myblog.modules.system.service.UserDtoService;
 import com.deschen.myblog.modules.system.vo.ResultVO;
+import com.github.pagehelper.PageHelper;
+import com.github.pagehelper.PageInfo;
 import com.sun.javafx.iio.ImageStorage;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -43,6 +47,9 @@ public class AuthorGuestBookDtoController {
     @Autowired
     private ImageDtoService imageDtoService;
 
+    @Autowired
+    private BlogConfig blogConfig;
+
 
     @ApiOperation(value = "创建留言 ", notes = "已测试")
     @PostMapping("")
@@ -52,17 +59,9 @@ public class AuthorGuestBookDtoController {
         if (guestBook.getUserId() == null || guestBook.getGuestbookContent() == null) {
             throw new GlobalException(BlogEnum.PARROR_EMPTY_ERROR.getCode(), "用户id不为空或留言内容不为空");
         }
-        Long userId = guestBook.getUserId();
         Long guestBookId = guestBookDtoService.insertGuestBook(guestBook);
-        GuestBook guestBook1 =
+        GuestBookDto guestBookDto =
                 guestBookDtoService.selectGuestBookDtoByGuestBookId(guestBookId);
-        GuestBookDto guestBookDto = new GuestBookDto();
-        BeanUtils.copyProperties(guestBook1, guestBookDto);
-
-        UserDto userDto = userDtoService.selectUserDto(userId);
-        guestBookDto.setUserName(userDto.getUserName());
-        guestBookDto.setEmail(userDto.getEmail());
-        guestBookDto.setImageUrl(userDto.getImageUrl());
 
         ResultVO success = ResultVOUtil.success(guestBookDto);
         return success;
@@ -81,24 +80,15 @@ public class AuthorGuestBookDtoController {
     @ApiOperation(value = "获取留言", notes = "已测试")
     @GetMapping("")
     public ResultVO selectGuestBookDto(
+            @RequestParam(defaultValue = "1") Integer pageNum,
             @RequestParam(required = false) Integer state,
             @RequestParam(defaultValue = "1" ,required = false) Integer sort
     ) {
-        List<GuestBook> guestBooks =
-                guestBookDtoService.selectGuestBookDto(state, sort);
-        List<GuestBookDto> guestBookDtos = guestBooks.stream().map(
-                guestBook -> {
-                    GuestBookDto guestBookDto = new GuestBookDto();
-                    BeanUtils.copyProperties(guestBook, guestBookDto);
-                    UserDto userDto =
-                            userDtoService.selectUserDto(guestBook.getUserId());
-                    guestBookDto.setUserName(userDto.getUserName());
-                    guestBookDto.setImageUrl(userDto.getImageUrl());
-                    guestBookDto.setEmail(userDto.getEmail());
-                    return guestBookDto;
-                }
-        ).collect(Collectors.toList());
-        ResultVO success = ResultVOUtil.success(guestBookDtos);
+
+        Integer gPageSize = blogConfig.getGPageSize();
+        PageInfo<GuestBookDto> guestBookDtoPageInfo =
+                guestBookDtoService.selectGuestBookDto(state, sort, pageNum, gPageSize);
+        ResultVO success = ResultVOUtil.success(guestBookDtoPageInfo);
         return success;
     }
 

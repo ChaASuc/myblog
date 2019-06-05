@@ -31,4 +31,5 @@ public interface UserDtoService {
 
     List<UserConfig> selectUserConfigs(Long userId, Date date, Integer sort, Integer condition);
 
+    User selectUserByUserId(Long userId);
 }

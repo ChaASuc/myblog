@@ -22,6 +22,7 @@ public interface TagMapper {
 
     Tag selectByPrimaryKey(Long tagId);
 
+
     int updateByExampleSelective(@Param("record") Tag record, @Param("example") TagExample example);
 
     int updateByExample(@Param("record") Tag record, @Param("example") TagExample example);

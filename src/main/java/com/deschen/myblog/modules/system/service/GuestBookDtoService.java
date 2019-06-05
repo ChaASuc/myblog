@@ -2,6 +2,7 @@ package com.deschen.myblog.modules.system.service;
 
 import com.deschen.myblog.modules.system.dto.GuestBookDto;
 import com.deschen.myblog.modules.system.entity.GuestBook;
+import com.github.pagehelper.PageInfo;
 
 import java.util.List;
 
@@ -17,7 +18,7 @@ public interface GuestBookDtoService {
 
     void updateGuestBook(List<GuestBook> guestBooks);
 
-    List<GuestBook> selectGuestBookDto(Integer state, Integer sort);
+    PageInfo<GuestBookDto> selectGuestBookDto(Integer state, Integer sort, Integer pageNum, Integer pageSize);
 
-    GuestBook selectGuestBookDtoByGuestBookId(Long guestbookId);
+    GuestBookDto selectGuestBookDtoByGuestBookId(Long guestbookId);
 }

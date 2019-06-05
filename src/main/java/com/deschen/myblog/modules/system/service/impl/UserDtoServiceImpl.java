@@ -190,7 +190,21 @@ public class UserDtoServiceImpl implements UserDtoService {
         return userConfigs;
     }
 
+    @Override
 
+    /**
+     * @Param: [userId]
+     * @Return:com.deschen.myblog.modules.system.entity.User
+     * @Author: deschen
+     * @Date: 2019/6/5 17:33
+     * @Description: 获取用户信息
+     */
+    public User selectUserByUserId(Long userId) {
+        User user =
+                userMapper.selectByPrimaryKey(userId);
+        return user;
+
+    }
 
 
 }

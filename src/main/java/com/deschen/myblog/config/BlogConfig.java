@@ -13,8 +13,12 @@ import org.springframework.stereotype.Component;
 @Data
 public class BlogConfig {
 
-    @Value("${pageSize}")
+    @Value("${article.pageSize}")
     private Integer pageSize;
+
+    @Value("${guestbook.pageSize}")
+    private Integer gPageSize;
+
     // 存储上传文件夹的名称
     @Value(("${uploadDir}"))
     private String uploadDir;
