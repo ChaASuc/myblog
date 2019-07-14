@@ -31,7 +31,7 @@ public interface CategoryDtoService {
 
     List<Tag> selectTag(Long categoryId, Integer state, String sort);
 
-    void transHotFromRedisDB();
+
 
     Tag selectTag(Long categoryId, String tagName);
 
@@ -40,6 +40,8 @@ public interface CategoryDtoService {
     List<Category> selectCategoryByKeyWord(String keyword);
 
     List<Tag> selectTagByKeyWord(String keyword);
+
+    void transHotFromRedisDB();
 
 
 }

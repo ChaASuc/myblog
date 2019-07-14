@@ -5,6 +5,7 @@ import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 
 import java.io.Serializable;
+import java.util.Map;
 
 /**
  * http请求返回的最外层对象
@@ -28,9 +29,18 @@ public class ResultVO implements Serializable {
     private String msg;
 
     /**
-     * 具体内容.
+     * 返回成功的数据
      */
-    @ApiModelProperty(value = "返回数据", name = "data")
+    @ApiModelProperty(value = "返回成功的数据", name = "data")
     private Object data;
+
+/*    *//**
+     * 返回失败的数据
+     *//*
+    @ApiModelProperty(value = "返回失败的数据", name = "extra")
+    private Map<String, Object> extra;*/
+
+
+
 
 }

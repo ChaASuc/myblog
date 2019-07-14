@@ -1,5 +1,10 @@
 package com.deschen.myblog.core.enums;
 
+import org.apache.ibatis.scripting.xmltags.ForEachSqlNode;
+
+import java.util.Collection;
+import java.util.List;
+
 /**
  * @Author deschen
  * @Create 2019/4/25
@@ -93,7 +98,7 @@ public enum BlogEnum implements IEnum {
 
     URL_UPDATE_ERROR(139, "链接更新失败"),
 
-    FILE_UPLOAD_ERROR(140, "文件上传失败")
+    FILE_UPLOAD_ERROR(140, "文件上传失败"),
 
     ;
     private Integer code;
@@ -114,4 +119,5 @@ public enum BlogEnum implements IEnum {
     public String getMessage() {
         return message;
     }
+
 }
