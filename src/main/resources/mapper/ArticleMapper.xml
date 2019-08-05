@@ -543,6 +543,7 @@
     OR article.article_content LIKE CONCAT('%','${keyword}','%')
   </select>
 
+
   <update id="updateByExampleSelective" parameterType="map">
     update blog_article
     <set>

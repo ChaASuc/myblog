@@ -345,6 +345,25 @@ public class ArticleDtoServiceImpl implements ArticleDtoService {
         return articleDtos;
     }
 
+    @Override
+    public List<ArticleDto> selectArticleDtoByCategoryIdsAndState(List<Long> categoryIds, List<Integer> states) {
+        List<ArticleDto> articleDtos = articleMapper.selectArticleDtoByCategoryIdsSortDesc(
+                categoryIds, states, "hot"
+        );
+        articleDtoAddTags(articleDtos);
+        return articleDtos;
+
+    }
+
+    @Override
+    public List<ArticleDto> selectArticleDtoByArticleTitleOrContentKeyWord(String keyWord, List<Integer> states) {
+        List<ArticleDto> articleDtos = articleMapper.selectArticleDtoByKeyWord(
+                states, keyWord
+        );
+        articleDtoAddTags(articleDtos);
+        return articleDtos;
+    }
+
 
     /**
      * @Param: articleDtos

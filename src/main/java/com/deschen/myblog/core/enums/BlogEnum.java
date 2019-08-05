@@ -100,6 +100,8 @@ public enum BlogEnum implements IEnum {
 
     FILE_UPLOAD_ERROR(140, "文件上传失败"),
 
+    PARROR_ERROR(141, "参数错误")
+
     ;
     private Integer code;
 

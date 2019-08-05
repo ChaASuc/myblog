@@ -6,6 +6,7 @@ import com.deschen.myblog.core.exceptions.GlobalException;
 import com.deschen.myblog.core.utils.ResultVOUtil;
 import com.deschen.myblog.modules.system.vo.ResultVO;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
@@ -28,6 +29,8 @@ public class GlobalExceptionHandler {
         log.error("【GlobalException】 error url = {}", request.getRequestURL());
         return error;
     }
+
+
     //拦截全局异常
     @ExceptionHandler({Exception.class})
     public ResultVO handlerException(Exception e, HttpServletRequest request) {
