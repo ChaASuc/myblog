@@ -240,7 +240,7 @@ public class ArticleModuleServiceImpl implements ArticleModuleService {
      */
     @Transactional
 //    @Scheduled(cron = "0 50 23 * * ?")/*每月每日晚上23:50触发*/
-    @Scheduled(cron = "${blog.userConfig}")/*每半个小时触发*/
+    @Scheduled(cron = "${blog.userConfig}")
     public void transUserConfigSumFromRedisDB() {
         log.info("【定时任务】规定时间更新用户配置信息");
         // 创建用户配置信息，用于记录每天的文章总数，浏览量总数，点赞量总数，评论量总数

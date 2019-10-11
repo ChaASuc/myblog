@@ -55,9 +55,6 @@ public class AuthorArticleDtoController {
     private ArticleDtoService articleDtoService;
 
     @Autowired
-    private CategoryDtoService categoryDtoService;
-
-    @Autowired
     private ArticleModuleService articleModuleService;
 
     @Autowired

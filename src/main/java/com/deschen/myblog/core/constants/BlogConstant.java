@@ -31,9 +31,9 @@ public interface BlogConstant {
     // 默认用户头像图片文件夹
     Long DEFAULT_DIRID = 1133930631181381632L;
 
-    String IMAGE_USER_URL = "http://10.79.3.57:8080/myblog/user/image/";
+    String IMAGE_USER_URL = "http://localhost:8080/myblog/user/image/";
 
-    String IMAGE_ADMIN_URL = "http://10.79.3.57:8080/myblog/author/imageDto/";
+    String IMAGE_ADMIN_URL = "http://localhost:8080/myblog/author/imageDto/";
 
     // 默认博客文章上传图片文件夹
     Long ARTICLE_DIRID = 1133930737993527296L;

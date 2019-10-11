@@ -276,75 +276,7 @@ public class CategoryDtoServiceImpl implements CategoryDtoService {
         return tags;
     }
 
-    @Override
 
-    /**
-     * @Param: []
-     * @Return:void
-     * @Author: deschen
-     * @Date: 2019/5/28 19:39
-     * @Description: reids点击种类和标签的次数更新相应实体类的hot
-     */
-    @Transactional
-//    @Scheduled(cron = "0 0/30 * * * ?")/*每半个小时触发*/
-    @Scheduled(cron = "${blog.hot}")/*每半个小时触发*/
-    public void transHotFromRedisDB() {
-        log.info("【定时任务】种类和标签定时任务开启");
-        String categoryPrefix = String.format(RedisConstant.CATEGORY_PREFIX, "*");
-        String tagPrefix = String.format(RedisConstant.TAG_PREFIX, "*");
-
-        Set<String> ckeys = redisUtil.keys(categoryPrefix);
-        Set<String> tkeys = redisUtil.keys(tagPrefix);
-
-        ckeys.stream().forEach(
-                ckey -> {
-                    // 种类id
-                    Long categoryId = Long.valueOf(ckey.substring(ckey.lastIndexOf("_") + 1));
-                    // redis存的种类热度
-                    Integer hot = (Integer) redisUtil.get(ckey);
-                    // 获取种类
-                    Category category = categoryMapper.selectByPrimaryKey(categoryId);
-                    if (category != null) {  // 不存在则跳过，避免不必要报错
-                        if (category.getHot() > hot) {
-                            // 代表redis错误删掉种类热度缓存
-                            redisUtil.set(ckey, category.getHot());
-                        }else if(category.getHot() < hot){
-                            category.setHot(hot);
-                            int success = categoryMapper.updateByPrimaryKey(category);
-                            if (success == 0) {
-                                throw new GlobalException(BlogEnum.CATEGORY_UPDATE_ERROR);
-                            }
-                        }// 相同跳过，提高效率
-                    }
-
-                }
-        );
-
-        tkeys.stream().forEach(
-                tkey -> {
-                    // 获取标签id
-                    Long tagId = Long.valueOf(tkey.substring(tkey.lastIndexOf("_") + 1));
-                    Integer hot = (Integer) redisUtil.get(tkey);
-                    // 获取标签
-                    Tag tag = tagMapper.selectByPrimaryKey(tagId);
-                    if (tag != null) {  // 不存在跳过，避免报错，提高效率
-                        if (tag.getHot() > hot) {
-                            // 标签缓存误删
-                            redisUtil.set(tkey, tag.getHot());
-                        } else if (tag.getHot() < hot){
-                            tag.setHot(hot);
-                            int success =
-                                    tagMapper.updateByPrimaryKey(tag);
-                            if (success == 0) {
-                                throw new GlobalException(BlogEnum.TAG_UPDATE_ERROR);
-                            }
-                        }// 相同跳过，提高效率
-                    }
-
-                }
-        );
-
-    }
 
     @Override
 
@@ -438,6 +370,77 @@ public class CategoryDtoServiceImpl implements CategoryDtoService {
         List<Tag> tags =
                 tagMapper.selectByExample(tagExample);
         return tags;
+    }
+
+
+    @Override
+
+    /**
+     * @Param: []
+     * @Return:void
+     * @Author: deschen
+     * @Date: 2019/5/28 19:39
+     * @Description: reids点击种类和标签的次数更新相应实体类的hot
+     */
+    @Transactional
+//    @Scheduled(cron = "0 0/30 * * * ?")/*每半个小时触发*/
+    @Scheduled(cron = "${blog.hot}")/*每半个小时触发*/
+    public void transHotFromRedisDB() {
+        log.info("【定时任务】种类和标签定时任务开启");
+        String categoryPrefix = String.format(RedisConstant.CATEGORY_PREFIX, "*");
+        String tagPrefix = String.format(RedisConstant.TAG_PREFIX, "*");
+
+        Set<String> ckeys = redisUtil.keys(categoryPrefix);
+        Set<String> tkeys = redisUtil.keys(tagPrefix);
+
+        ckeys.stream().forEach(
+                ckey -> {
+                    // 种类id
+                    Long categoryId = Long.valueOf(ckey.substring(ckey.lastIndexOf("_") + 1));
+                    // redis存的种类热度
+                    Integer hot = (Integer) redisUtil.get(ckey);
+                    // 获取种类
+                    Category category = categoryMapper.selectByPrimaryKey(categoryId);
+                    if (category != null) {  // 不存在则跳过，避免不必要报错
+                        if (category.getHot() > hot) {
+                            // 代表redis错误删掉种类热度缓存
+                            redisUtil.set(ckey, category.getHot());
+                        }else if(category.getHot() < hot){
+                            category.setHot(hot);
+                            int success = categoryMapper.updateByPrimaryKey(category);
+                            if (success == 0) {
+                                throw new GlobalException(BlogEnum.CATEGORY_UPDATE_ERROR);
+                            }
+                        }// 相同跳过，提高效率
+                    }
+
+                }
+        );
+
+        tkeys.stream().forEach(
+                tkey -> {
+                    // 获取标签id
+                    Long tagId = Long.valueOf(tkey.substring(tkey.lastIndexOf("_") + 1));
+                    Integer hot = (Integer) redisUtil.get(tkey);
+                    // 获取标签
+                    Tag tag = tagMapper.selectByPrimaryKey(tagId);
+                    if (tag != null) {  // 不存在跳过，避免报错，提高效率
+                        if (tag.getHot() > hot) {
+                            // 标签缓存误删
+                            redisUtil.set(tkey, tag.getHot());
+                        } else if (tag.getHot() < hot){
+                            tag.setHot(hot);
+                            int success =
+                                    tagMapper.updateByPrimaryKey(tag);
+                            if (success == 0) {
+                                throw new GlobalException(BlogEnum.TAG_UPDATE_ERROR);
+                            }
+                        }// 相同跳过，提高效率
+                    }
+
+                }
+        );
+
     }
 
     public static void main(String[] args) {

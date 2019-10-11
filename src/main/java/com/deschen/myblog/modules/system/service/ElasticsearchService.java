@@ -4,6 +4,7 @@
 //import org.springframework.data.domain.Page;
 //
 //import java.awt.print.Pageable;
+//import java.util.List;
 //
 ///**
 // * @Author deschen
@@ -14,4 +15,6 @@
 //public interface ElasticsearchService {
 //
 //    Page<ArticleES> selectArticleEs(String title, String content, Pageable pageable);
+//
+//    void save(List<ArticleES> articleESList);
 //}

@@ -6,6 +6,8 @@ package com.deschen.myblog.core.utils;
  * @Description
  * @Since 1.0.0
  */
+import com.deschen.myblog.common.utils.DateUtil;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.util.CollectionUtils;
 
@@ -15,6 +17,13 @@ import java.util.Set;
 import java.util.concurrent.TimeUnit;
 
 public class RedisUtil {
+
+    @Value("${token.expirationSeconds}")
+    private int expirationSeconds;
+
+    /*常量，各种实现方式都行，这里读取application.yml*/
+    @Value("${token.validTime}")
+    private int validTime;
 
     private RedisTemplate<String, Object> redisTemplate;
 
@@ -559,5 +568,83 @@ public class RedisUtil {
             e.printStackTrace();
             return 0;
         }
+    }
+
+    /**
+     * 判断此token是否在黑名单中
+     * @param token
+     * @return
+     */
+    public Boolean isBlackList(String token){
+        return hasKey("blacklist",token);
+    }
+
+    /**
+     * 判断key和field下是否有值
+     *
+     * @param key 判断的key
+     * @param field 判断的field
+     */
+    public Boolean hasKey(String key,String field) {
+        return redisTemplate.opsForHash().hasKey(key,field);
+    }
+
+    /**
+     * 将token加入到redis黑名单中
+     * @param token
+     */
+    public void addBlackList(String token){
+        hset("blacklist", token,"true");
+    }
+
+
+    /**
+     * 查询token下的刷新时间
+     *
+     * @param token 查询的key
+     * @return HV
+     */
+    public Object getTokenValidTimeByToken(String token) {
+        return redisTemplate.opsForHash().get(token, "tokenValidTime");
+    }
+
+    /**
+     * 查询token下的刷新时间
+     *
+     * @param token 查询的key
+     * @return HV
+     */
+    public Object getUsernameByToken(String token) {
+        return redisTemplate.opsForHash().get(token, "username");
+    }
+
+    /**
+     * 查询token下的刷新时间
+     *
+     * @param token 查询的key
+     * @return HV
+     */
+    public Object getIPByToken(String token) {
+        return redisTemplate.opsForHash().get(token, "ip");
+    }
+
+    /**
+     * 查询token下的过期时间
+     *
+     * @param token 查询的key
+     * @return HV
+     */
+    public Object getExpirationTimeByToken(String token) {
+        return redisTemplate.opsForHash().get(token, "expirationTime");
+    }
+
+    public void setTokenRefresh(String token,String username,String ip){
+        //刷新时间
+        Integer expire = validTime*24*60*60*1000;
+
+        hset(token, "tokenValidTime",DateUtil.getAddDayTime(validTime),expire);
+        hset(token, "expirationTime",DateUtil.getAddDaySecond(expirationSeconds),expire);
+        hset(token, "username",username,expire);
+        hset(token, "ip",ip,expire);
     }
 }

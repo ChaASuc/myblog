@@ -420,7 +420,10 @@ public class UserController {
         return success;
     }
 
-    @ApiOperation(value = "搜索文章",notes = "已测试")
+
+
+
+   /* @ApiOperation(value = "搜索文章",notes = "已测试")
     @GetMapping("/search")
     public ResultVO selectArticleDtoByKeyWord(
             @RequestParam(required = false, defaultValue = "0") Integer type,
@@ -467,5 +470,5 @@ public class UserController {
         PageInfo<ArticleDto> articleDtoPageInfo = new PageInfo<>(articleDtos);
         ResultVO success = ResultVOUtil.success(articleDtoPageInfo);
         return success;
-    }
+    }*/
 }
