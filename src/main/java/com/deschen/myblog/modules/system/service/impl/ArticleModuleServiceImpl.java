@@ -31,7 +31,7 @@ import java.util.Set;
  */
 @Service
 @Slf4j
-@PropertySource({"classpath:config/blog_test.properties"})
+@PropertySource({"classpath:config/blog.properties"})
 public class ArticleModuleServiceImpl implements ArticleModuleService {
 
     @Autowired

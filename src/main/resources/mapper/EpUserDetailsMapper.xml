@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.deschen.myblog.modules.system.mapper.EpUserMapper">
+  <resultMap id="EpUserDetailsResultMap" type="com.deschen.myblog.modules.system.entity.EpUserDetails">
+    <result column="user_id" jdbcType="BIGINT" property="userId"></result>
+    <result column="user_nickname" jdbcType="VARCHAR" property="username" />
+    <result column="user_pwd" jdbcType="VARCHAR" property="password" />
+    <collection property="authorities" javaType="java.util.HashSet" ofType="org.springframework.security.core.authority.SimpleGrantedAuthority">
+      <constructor>
+        <!-- idArg 对应构造方法中的id参数 -->
+        <arg column="role_name" javaType="String"/>
+      </constructor>
+    </collection>
+  </resultMap>
+
+  <select id="selectByUsername" parameterType="java.lang.String" resultMap="EpUserDetailsResultMap">
+    select
+      u.user_id, u.user_nickname, u.user_pwd, r.role_name
+    from
+      ep_user u
+        LEFT JOIN ep_user_role ur ON u.user_id = ur.user_id
+        LEFT JOIN ep_role r ON ur.role_id = r.role_id
+    WHERE u.user_nickname =  #{username,jdbcType=VARCHAR}
+  </select>
+
+</mapper>

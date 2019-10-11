@@ -103,6 +103,7 @@ public enum BlogEnum implements IEnum {
     PARROR_ERROR(141, "参数错误")
 
     ;
+
     private Integer code;
 
     private String message;

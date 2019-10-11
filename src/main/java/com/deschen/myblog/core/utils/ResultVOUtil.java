@@ -1,6 +1,7 @@
 package com.deschen.myblog.core.utils;
 
 
+import com.deschen.myblog.core.enums.IEnum;
 import com.deschen.myblog.modules.system.vo.ResultVO;
 import org.springframework.stereotype.Component;
 
@@ -30,6 +31,13 @@ public class ResultVOUtil{
         ResultVO resultVO = new ResultVO();
         resultVO.setCode(code);
         resultVO.setMsg(message);
+        return resultVO;
+    }
+
+    public static ResultVO error(IEnum iEnum) {
+        ResultVO resultVO = new ResultVO();
+        resultVO.setCode(iEnum.getCode());
+        resultVO.setMsg(iEnum.getMessage());
         return resultVO;
     }
 }

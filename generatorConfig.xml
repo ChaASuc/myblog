@@ -22,7 +22,7 @@ PUBLIC "-//mybatis.org//DTD MyBatis Generator Configuration 1.0//EN"
         <!-- JDBC连接 其中connectionURL后面的newtest改为你创建的数据库，紧跟在后面是数据库连接的账户和密码-->
         <jdbcConnection
                 driverClass="com.mysql.jdbc.Driver"
-                connectionURL="jdbc:mysql://localhost:3306/my_blog?serverTimezone=UTC"
+                connectionURL="jdbc:mysql://management.deschen.cn:3306/ep_user?characterEncoding=utf-8"
                 userId="root"
                 password="root123">
         </jdbcConnection>
@@ -135,15 +135,44 @@ PUBLIC "-//mybatis.org//DTD MyBatis Generator Configuration 1.0//EN"
             <!--&lt;!&ndash;<columnOverride column="create_time" javaType="java.time.LocalDate" jdbcType="DATETIME" />&ndash;&gt;-->
             <!--&lt;!&ndash;<columnOverride column="update_time" javaType="java.time.LocalDate" jdbcType="DATETIME" />&ndash;&gt;-->
         <!--</table>-->
-        <table schema="" tableName="blog_guestbook" domainObjectName="GuestBook">
-            <!-- 指定java类型 -->
-            <columnOverride column="state" javaType="java.lang.Integer" jdbcType="TINYINT" />
+        <!--<table schema="" tableName="blog_guestbook" domainObjectName="GuestBook">-->
+            <!--&lt;!&ndash; 指定java类型 &ndash;&gt;-->
+            <!--<columnOverride column="state" javaType="java.lang.Integer" jdbcType="TINYINT" />-->
+            <!--&lt;!&ndash;<columnOverride column="create_time" javaType="java.time.LocalDate" jdbcType="DATETIME" />&ndash;&gt;-->
+            <!--&lt;!&ndash;<columnOverride column="update_time" javaType="java.time.LocalDate" jdbcType="DATETIME" />&ndash;&gt;-->
+        <!--</table>-->
+        <!--<table schema="" tableName="blog_url" domainObjectName="Url">-->
+            <!--&lt;!&ndash; 指定java类型 &ndash;&gt;-->
+            <!--<columnOverride column="state" javaType="java.lang.Integer" jdbcType="TINYINT" />-->
+            <!--&lt;!&ndash;<columnOverride column="create_time" javaType="java.time.LocalDate" jdbcType="DATETIME" />&ndash;&gt;-->
+            <!--&lt;!&ndash;<columnOverride column="update_time" javaType="java.time.LocalDate" jdbcType="DATETIME" />&ndash;&gt;-->
+        <!--</table>-->
+
+        <table schema="" tableName="ep_user">
+            <columnOverride column="status" javaType="java.lang.Integer" jdbcType="TINYINT" />
+        </table>
+
+        <table schema="" tableName="ep_role">
             <!--<columnOverride column="create_time" javaType="java.time.LocalDate" jdbcType="DATETIME" />-->
             <!--<columnOverride column="update_time" javaType="java.time.LocalDate" jdbcType="DATETIME" />-->
         </table>
-        <table schema="" tableName="blog_url" domainObjectName="Url">
-            <!-- 指定java类型 -->
-            <columnOverride column="state" javaType="java.lang.Integer" jdbcType="TINYINT" />
+
+        <table schema="" tableName="ep_user_role">
+            <!--<columnOverride column="create_time" javaType="java.time.LocalDate" jdbcType="DATETIME" />-->
+            <!--<columnOverride column="update_time" javaType="java.time.LocalDate" jdbcType="DATETIME" />-->
+        </table>
+
+        <table schema="" tableName="ep_permission">
+            <!--<columnOverride column="create_time" javaType="java.time.LocalDate" jdbcType="DATETIME" />-->
+            <!--<columnOverride column="update_time" javaType="java.time.LocalDate" jdbcType="DATETIME" />-->
+        </table>
+
+        <table schema="" tableName="ep_role_permission">
+            <!--<columnOverride column="create_time" javaType="java.time.LocalDate" jdbcType="DATETIME" />-->
+            <!--<columnOverride column="update_time" javaType="java.time.LocalDate" jdbcType="DATETIME" />-->
+        </table>
+
+        <table schema="" tableName="ep_dept">
             <!--<columnOverride column="create_time" javaType="java.time.LocalDate" jdbcType="DATETIME" />-->
             <!--<columnOverride column="update_time" javaType="java.time.LocalDate" jdbcType="DATETIME" />-->
         </table>
