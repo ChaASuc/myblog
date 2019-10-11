@@ -40,7 +40,7 @@ import java.util.stream.Collectors;
  */
 @Service
 @Slf4j
-@PropertySource("classpath:config/blog_test.properties")
+@PropertySource("classpath:config/blog.properties")
 public class CategoryDtoServiceImpl implements CategoryDtoService {
 
     @Autowired
