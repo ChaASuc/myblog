@@ -245,52 +245,52 @@ public class EpPermissionExample {
             return (Criteria) this;
         }
 
-        public Criteria andReqMethodEqualTo(Boolean value) {
+        public Criteria andReqMethodEqualTo(Integer value) {
             addCriterion("req_method =", value, "reqMethod");
             return (Criteria) this;
         }
 
-        public Criteria andReqMethodNotEqualTo(Boolean value) {
+        public Criteria andReqMethodNotEqualTo(Integer value) {
             addCriterion("req_method <>", value, "reqMethod");
             return (Criteria) this;
         }
 
-        public Criteria andReqMethodGreaterThan(Boolean value) {
+        public Criteria andReqMethodGreaterThan(Integer value) {
             addCriterion("req_method >", value, "reqMethod");
             return (Criteria) this;
         }
 
-        public Criteria andReqMethodGreaterThanOrEqualTo(Boolean value) {
+        public Criteria andReqMethodGreaterThanOrEqualTo(Integer value) {
             addCriterion("req_method >=", value, "reqMethod");
             return (Criteria) this;
         }
 
-        public Criteria andReqMethodLessThan(Boolean value) {
+        public Criteria andReqMethodLessThan(Integer value) {
             addCriterion("req_method <", value, "reqMethod");
             return (Criteria) this;
         }
 
-        public Criteria andReqMethodLessThanOrEqualTo(Boolean value) {
+        public Criteria andReqMethodLessThanOrEqualTo(Integer value) {
             addCriterion("req_method <=", value, "reqMethod");
             return (Criteria) this;
         }
 
-        public Criteria andReqMethodIn(List<Boolean> values) {
+        public Criteria andReqMethodIn(List<Integer> values) {
             addCriterion("req_method in", values, "reqMethod");
             return (Criteria) this;
         }
 
-        public Criteria andReqMethodNotIn(List<Boolean> values) {
+        public Criteria andReqMethodNotIn(List<Integer> values) {
             addCriterion("req_method not in", values, "reqMethod");
             return (Criteria) this;
         }
 
-        public Criteria andReqMethodBetween(Boolean value1, Boolean value2) {
+        public Criteria andReqMethodBetween(Integer value1, Integer value2) {
             addCriterion("req_method between", value1, value2, "reqMethod");
             return (Criteria) this;
         }
 
-        public Criteria andReqMethodNotBetween(Boolean value1, Boolean value2) {
+        public Criteria andReqMethodNotBetween(Integer value1, Integer value2) {
             addCriterion("req_method not between", value1, value2, "reqMethod");
             return (Criteria) this;
         }
@@ -365,73 +365,73 @@ public class EpPermissionExample {
             return (Criteria) this;
         }
 
-        public Criteria andServerMethodIsNull() {
-            addCriterion("server_method is null");
+        public Criteria andServerPrefixIsNull() {
+            addCriterion("server_prefix is null");
             return (Criteria) this;
         }
 
-        public Criteria andServerMethodIsNotNull() {
-            addCriterion("server_method is not null");
+        public Criteria andServerPrefixIsNotNull() {
+            addCriterion("server_prefix is not null");
             return (Criteria) this;
         }
 
-        public Criteria andServerMethodEqualTo(String value) {
-            addCriterion("server_method =", value, "serverMethod");
+        public Criteria andServerPrefixEqualTo(String value) {
+            addCriterion("server_prefix =", value, "serverPrefix");
             return (Criteria) this;
         }
 
-        public Criteria andServerMethodNotEqualTo(String value) {
-            addCriterion("server_method <>", value, "serverMethod");
+        public Criteria andServerPrefixNotEqualTo(String value) {
+            addCriterion("server_prefix <>", value, "serverPrefix");
             return (Criteria) this;
         }
 
-        public Criteria andServerMethodGreaterThan(String value) {
-            addCriterion("server_method >", value, "serverMethod");
+        public Criteria andServerPrefixGreaterThan(String value) {
+            addCriterion("server_prefix >", value, "serverPrefix");
             return (Criteria) this;
         }
 
-        public Criteria andServerMethodGreaterThanOrEqualTo(String value) {
-            addCriterion("server_method >=", value, "serverMethod");
+        public Criteria andServerPrefixGreaterThanOrEqualTo(String value) {
+            addCriterion("server_prefix >=", value, "serverPrefix");
             return (Criteria) this;
         }
 
-        public Criteria andServerMethodLessThan(String value) {
-            addCriterion("server_method <", value, "serverMethod");
+        public Criteria andServerPrefixLessThan(String value) {
+            addCriterion("server_prefix <", value, "serverPrefix");
             return (Criteria) this;
         }
 
-        public Criteria andServerMethodLessThanOrEqualTo(String value) {
-            addCriterion("server_method <=", value, "serverMethod");
+        public Criteria andServerPrefixLessThanOrEqualTo(String value) {
+            addCriterion("server_prefix <=", value, "serverPrefix");
             return (Criteria) this;
         }
 
-        public Criteria andServerMethodLike(String value) {
-            addCriterion("server_method like", value, "serverMethod");
+        public Criteria andServerPrefixLike(String value) {
+            addCriterion("server_prefix like", value, "serverPrefix");
             return (Criteria) this;
         }
 
-        public Criteria andServerMethodNotLike(String value) {
-            addCriterion("server_method not like", value, "serverMethod");
+        public Criteria andServerPrefixNotLike(String value) {
+            addCriterion("server_prefix not like", value, "serverPrefix");
             return (Criteria) this;
         }
 
-        public Criteria andServerMethodIn(List<String> values) {
-            addCriterion("server_method in", values, "serverMethod");
+        public Criteria andServerPrefixIn(List<String> values) {
+            addCriterion("server_prefix in", values, "serverPrefix");
             return (Criteria) this;
         }
 
-        public Criteria andServerMethodNotIn(List<String> values) {
-            addCriterion("server_method not in", values, "serverMethod");
+        public Criteria andServerPrefixNotIn(List<String> values) {
+            addCriterion("server_prefix not in", values, "serverPrefix");
             return (Criteria) this;
         }
 
-        public Criteria andServerMethodBetween(String value1, String value2) {
-            addCriterion("server_method between", value1, value2, "serverMethod");
+        public Criteria andServerPrefixBetween(String value1, String value2) {
+            addCriterion("server_prefix between", value1, value2, "serverPrefix");
             return (Criteria) this;
         }
 
-        public Criteria andServerMethodNotBetween(String value1, String value2) {
-            addCriterion("server_method not between", value1, value2, "serverMethod");
+        public Criteria andServerPrefixNotBetween(String value1, String value2) {
+            addCriterion("server_prefix not between", value1, value2, "serverPrefix");
             return (Criteria) this;
         }
 

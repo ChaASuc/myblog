@@ -20,7 +20,10 @@ public class BlogConfig {
     private Integer gPageSize;
 
     // 存储上传文件夹的名称
-    @Value(("${uploadDir}"))
+    @Value("${uploadDir}")
     private String uploadDir;
+
+    @Value("${commonRoleName}")
+    private String commonRoleName;
 
 }

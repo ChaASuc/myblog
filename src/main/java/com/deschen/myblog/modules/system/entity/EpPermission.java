@@ -7,11 +7,11 @@ public class EpPermission {
 
     private String permDescription;
 
-    private Boolean reqMethod;
+    private Integer reqMethod;
 
     private String zuulPrefix;
 
-    private String serverMethod;
+    private String serverPrefix;
 
     private Boolean deleted;
 
@@ -35,11 +35,11 @@ public class EpPermission {
         this.permDescription = permDescription == null ? null : permDescription.trim();
     }
 
-    public Boolean getReqMethod() {
+    public Integer getReqMethod() {
         return reqMethod;
     }
 
-    public void setReqMethod(Boolean reqMethod) {
+    public void setReqMethod(Integer reqMethod) {
         this.reqMethod = reqMethod;
     }
 
@@ -51,12 +51,12 @@ public class EpPermission {
         this.zuulPrefix = zuulPrefix == null ? null : zuulPrefix.trim();
     }
 
-    public String getServerMethod() {
-        return serverMethod;
+    public String getServerPrefix() {
+        return serverPrefix;
     }
 
-    public void setServerMethod(String serverMethod) {
-        this.serverMethod = serverMethod == null ? null : serverMethod.trim();
+    public void setServerPrefix(String serverPrefix) {
+        this.serverPrefix = serverPrefix == null ? null : serverPrefix.trim();
     }
 
     public Boolean getDeleted() {

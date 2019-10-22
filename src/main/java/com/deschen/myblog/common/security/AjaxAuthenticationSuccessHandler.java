@@ -60,5 +60,6 @@ public class AjaxAuthenticationSuccessHandler implements AuthenticationSuccessHa
 
         httpServletResponse.setHeader("token", jwtToken);
         httpServletResponse.getWriter().write(JSON.toJSONString(ResultVOUtil.success()));
+        System.out.println(jwtToken);
     }
 }

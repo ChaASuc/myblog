@@ -25,20 +25,23 @@ public class EpUserDetails implements Serializable, UserDetails {
 
     private String password;
 
-//    private Set<Example> examples;
+    private Set<GrantedAuthority> authorities;
 
-    private Set<SimpleGrantedAuthority> authorities;
+    private Set<EpUserDetialsPermission> permissions;
 
+    //账号是否过期
     @Override
     public boolean isAccountNonExpired() {
         return true;
     }
 
+    //账号是否锁定
     @Override
     public boolean isAccountNonLocked() {
         return true;
     }
 
+    //账号凭证是否未过期
     @Override
     public boolean isCredentialsNonExpired() {
         return true;
@@ -49,10 +52,5 @@ public class EpUserDetails implements Serializable, UserDetails {
         return true;
     }
 
-}
-
-@Data
-class Example {
-    private String role;
 }
 

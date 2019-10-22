@@ -2,6 +2,7 @@ package com.deschen.myblog.modules.system.controller;
 
 import com.deschen.myblog.core.constants.BlogConstant;
 import com.deschen.myblog.core.enums.BlogEnum;
+import com.deschen.myblog.core.enums.ResultEnum;
 import com.deschen.myblog.core.exceptions.GlobalException;
 import com.deschen.myblog.core.utils.EmailUtil;
 import com.deschen.myblog.core.utils.IdWorker;
@@ -27,12 +28,14 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
 import javax.xml.bind.annotation.XmlElementDecl;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
 
 /**
  * @Author deschen
@@ -227,7 +230,10 @@ public class AuthorUserDtoController {
         userConfigList.add(userConfig);
     }
 
-    public static void main(String[] args) {
-        System.out.println(new Date());
+    @PostMapping("/register")
+    public ResultVO register(String username, String password){
+        userDtoService.register(username,password);
+        return ResultVOUtil.success();
     }
+
 }

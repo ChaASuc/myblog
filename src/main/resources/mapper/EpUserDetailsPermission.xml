@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.deschen.myblog.modules.system.mapper.EpPermissionMapper" >
+  <resultMap id="EpUserDetailPermissionBaseResultMap" type="com.deschen.myblog.modules.system.entity.EpUserDetialsPermission" >
+    <id column="perm_id" property="permId" jdbcType="BIGINT" />
+    <result column="req_method" property="reqMethod" jdbcType="TINYINT" />
+    <result column="uri" property="uri" jdbcType="VARCHAR" />
+  </resultMap>
+
+  <select id="selectByRoleName" resultMap="EpUserDetailPermissionBaseResultMap" parameterType="java.lang.String">
+    SELECT
+      p.perm_id, p.req_method, CONCAT(p.zuul_prefix, p.server_prefix) AS uri
+    FROM
+      ep_role r
+        LEFT JOIN ep_role_permission rp ON r.role_id = rp.role_id
+        LEFT JOIN ep_permission p ON rp.perm_id = p.perm_id
+    WHERE
+      r.deleted = FALSE
+      AND p.deleted = FALSE
+      AND rp.deleted = FALSE
+      AND r.role_name = #{commonRoleName,jdbcType=VARCHAR}
+  </select>
+</mapper>

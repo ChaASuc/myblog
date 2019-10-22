@@ -2,7 +2,7 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.deschen.myblog.modules.system.mapper.EpUserMapper">
   <resultMap id="EpUserDetailsResultMap" type="com.deschen.myblog.modules.system.entity.EpUserDetails">
-    <result column="user_id" jdbcType="BIGINT" property="userId"></result>
+    <id column="user_id" jdbcType="BIGINT" property="userId"></id>
     <result column="user_nickname" jdbcType="VARCHAR" property="username" />
     <result column="user_pwd" jdbcType="VARCHAR" property="password" />
     <collection property="authorities" javaType="java.util.HashSet" ofType="org.springframework.security.core.authority.SimpleGrantedAuthority">
@@ -10,17 +10,35 @@
         <!-- idArg 对应构造方法中的id参数 -->
         <arg column="role_name" javaType="String"/>
       </constructor>
+      <!--<result property="role" column="role_name" javaType="java.lang.String" jdbcType="VARCHAR"></result>-->
+    </collection>
+
+    <collection property="permissions" javaType="java.util.HashSet" ofType="com.deschen.myblog.modules.system.entity.EpUserDetialsPermission">
+      <id column="perm_id" property="permId" jdbcType="BIGINT" />
+      <result column="req_method" property="reqMethod" jdbcType="TINYINT" />
+      <result column="uri" property="uri" jdbcType="VARCHAR" />
     </collection>
   </resultMap>
 
   <select id="selectByUsername" parameterType="java.lang.String" resultMap="EpUserDetailsResultMap">
-    select
-      u.user_id, u.user_nickname, u.user_pwd, r.role_name
-    from
-      ep_user u
-        LEFT JOIN ep_user_role ur ON u.user_id = ur.user_id
-        LEFT JOIN ep_role r ON ur.role_id = r.role_id
-    WHERE u.user_nickname =  #{username,jdbcType=VARCHAR}
+    SELECT
+      u.user_id, u.user_nickname, u.user_pwd, r.role_id, r.role_name,
+      p.perm_id, p.req_method, CONCAT(p.zuul_prefix, p.server_prefix) AS uri
+    FROM
+      ep_user u, ep_user_role ur, ep_role r, ep_role_permission rp, ep_permission p
+    WHERE
+      u.user_id = ur.user_id
+      AND ur.role_id = r.role_id
+      AND r.role_id = rp.role_id
+      AND rp.perm_id = p.perm_id
+      AND u.deleted = FALSE
+      AND r.deleted = FALSE
+      AND p.deleted = FALSE
+      AND ur.deleted = FALSE
+      AND rp.deleted = FALSE
+      AND u.user_nickname = #{username,jdbcType=VARCHAR}
   </select>
+
+
 
 </mapper>

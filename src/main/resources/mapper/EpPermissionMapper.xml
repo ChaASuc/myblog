@@ -1,35 +1,35 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.deschen.myblog.modules.system.mapper.EpPermissionMapper">
-  <resultMap id="BaseResultMap" type="com.deschen.myblog.modules.system.entity.EpPermission">
-    <id column="perm_id" jdbcType="BIGINT" property="permId" />
-    <result column="perm_description" jdbcType="VARCHAR" property="permDescription" />
-    <result column="req_method" jdbcType="BIT" property="reqMethod" />
-    <result column="zuul_prefix" jdbcType="VARCHAR" property="zuulPrefix" />
-    <result column="server_method" jdbcType="VARCHAR" property="serverMethod" />
-    <result column="deleted" jdbcType="BIT" property="deleted" />
-    <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
-    <result column="update_time" jdbcType="TIMESTAMP" property="updateTime" />
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.deschen.myblog.modules.system.mapper.EpPermissionMapper" >
+  <resultMap id="BaseResultMap" type="com.deschen.myblog.modules.system.entity.EpPermission" >
+    <id column="perm_id" property="permId" jdbcType="BIGINT" />
+    <result column="perm_description" property="permDescription" jdbcType="VARCHAR" />
+    <result column="req_method" property="reqMethod" jdbcType="TINYINT" />
+    <result column="zuul_prefix" property="zuulPrefix" jdbcType="VARCHAR" />
+    <result column="server_prefix" property="serverPrefix" jdbcType="VARCHAR" />
+    <result column="deleted" property="deleted" jdbcType="BIT" />
+    <result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
+    <result column="update_time" property="updateTime" jdbcType="TIMESTAMP" />
   </resultMap>
-  <sql id="Example_Where_Clause">
-    <where>
-      <foreach collection="oredCriteria" item="criteria" separator="or">
-        <if test="criteria.valid">
-          <trim prefix="(" prefixOverrides="and" suffix=")">
-            <foreach collection="criteria.criteria" item="criterion">
-              <choose>
-                <when test="criterion.noValue">
+  <sql id="Example_Where_Clause" >
+    <where >
+      <foreach collection="oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
                   and ${criterion.condition}
                 </when>
-                <when test="criterion.singleValue">
+                <when test="criterion.singleValue" >
                   and ${criterion.condition} #{criterion.value}
                 </when>
-                <when test="criterion.betweenValue">
+                <when test="criterion.betweenValue" >
                   and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
                 </when>
-                <when test="criterion.listValue">
+                <when test="criterion.listValue" >
                   and ${criterion.condition}
-                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
                     #{listItem}
                   </foreach>
                 </when>
@@ -40,25 +40,25 @@
       </foreach>
     </where>
   </sql>
-  <sql id="Update_By_Example_Where_Clause">
-    <where>
-      <foreach collection="example.oredCriteria" item="criteria" separator="or">
-        <if test="criteria.valid">
-          <trim prefix="(" prefixOverrides="and" suffix=")">
-            <foreach collection="criteria.criteria" item="criterion">
-              <choose>
-                <when test="criterion.noValue">
+  <sql id="Update_By_Example_Where_Clause" >
+    <where >
+      <foreach collection="example.oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
                   and ${criterion.condition}
                 </when>
-                <when test="criterion.singleValue">
+                <when test="criterion.singleValue" >
                   and ${criterion.condition} #{criterion.value}
                 </when>
-                <when test="criterion.betweenValue">
+                <when test="criterion.betweenValue" >
                   and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
                 </when>
-                <when test="criterion.listValue">
+                <when test="criterion.listValue" >
                   and ${criterion.condition}
-                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
                     #{listItem}
                   </foreach>
                 </when>
@@ -69,206 +69,191 @@
       </foreach>
     </where>
   </sql>
-  <sql id="Base_Column_List">
-    perm_id, perm_description, req_method, zuul_prefix, server_method, deleted, create_time, 
+  <sql id="Base_Column_List" >
+    perm_id, perm_description, req_method, zuul_prefix, server_prefix, deleted, create_time,
     update_time
   </sql>
-  <select id="selectByExample" parameterType="com.deschen.myblog.modules.system.entity.EpPermissionExample" resultMap="BaseResultMap">
+  <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.deschen.myblog.modules.system.entity.EpPermissionExample" >
     select
-    <if test="distinct">
+    <if test="distinct" >
       distinct
     </if>
     <include refid="Base_Column_List" />
     from ep_permission
-    <if test="_parameter != null">
+    <if test="_parameter != null" >
       <include refid="Example_Where_Clause" />
     </if>
-    <if test="orderByClause != null">
+    <if test="orderByClause != null" >
       order by ${orderByClause}
     </if>
   </select>
-  <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Long" >
     select
     <include refid="Base_Column_List" />
     from ep_permission
     where perm_id = #{permId,jdbcType=BIGINT}
   </select>
-
-  <select id="selectByAuthorities" parameterType="java.util.Set" resultMap="BaseResultMap">
-    SELECT
-      p.*
-    FROM
-      ep_role r
-        LEFT JOIN ep_role_permission rp
-                  ON r.role_id = rp.role_id
-        LEFT JOIN ep_permission p
-                  ON rp.perm_id = p.perm_id
-    WHERE r.role_name IN
-      <foreach collection="collection" item="authority" open="(" separator="," close=")">
-        #{authority.role}
-      </foreach>
-  </select>
-  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long" >
     delete from ep_permission
     where perm_id = #{permId,jdbcType=BIGINT}
   </delete>
-  <delete id="deleteByExample" parameterType="com.deschen.myblog.modules.system.entity.EpPermissionExample">
+  <delete id="deleteByExample" parameterType="com.deschen.myblog.modules.system.entity.EpPermissionExample" >
     delete from ep_permission
-    <if test="_parameter != null">
+    <if test="_parameter != null" >
       <include refid="Example_Where_Clause" />
     </if>
   </delete>
-  <insert id="insert" parameterType="com.deschen.myblog.modules.system.entity.EpPermission">
-    insert into ep_permission (perm_id, perm_description, req_method, 
-      zuul_prefix, server_method, deleted, 
-      create_time, update_time)
-    values (#{permId,jdbcType=BIGINT}, #{permDescription,jdbcType=VARCHAR}, #{reqMethod,jdbcType=BIT}, 
-      #{zuulPrefix,jdbcType=VARCHAR}, #{serverMethod,jdbcType=VARCHAR}, #{deleted,jdbcType=BIT}, 
-      #{createTime,jdbcType=TIMESTAMP}, #{updateTime,jdbcType=TIMESTAMP})
+  <insert id="insert" parameterType="com.deschen.myblog.modules.system.entity.EpPermission" >
+    insert into ep_permission (perm_id, perm_description, req_method,
+                               zuul_prefix, server_prefix, deleted,
+                               create_time, update_time)
+    values (#{permId,jdbcType=BIGINT}, #{permDescription,jdbcType=VARCHAR}, #{reqMethod,jdbcType=TINYINT},
+            #{zuulPrefix,jdbcType=VARCHAR}, #{serverPrefix,jdbcType=VARCHAR}, #{deleted,jdbcType=BIT},
+            #{createTime,jdbcType=TIMESTAMP}, #{updateTime,jdbcType=TIMESTAMP})
   </insert>
-  <insert id="insertSelective" parameterType="com.deschen.myblog.modules.system.entity.EpPermission">
+  <insert id="insertSelective" parameterType="com.deschen.myblog.modules.system.entity.EpPermission" >
     insert into ep_permission
-    <trim prefix="(" suffix=")" suffixOverrides=",">
-      <if test="permId != null">
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="permId != null" >
         perm_id,
       </if>
-      <if test="permDescription != null">
+      <if test="permDescription != null" >
         perm_description,
       </if>
-      <if test="reqMethod != null">
+      <if test="reqMethod != null" >
         req_method,
       </if>
-      <if test="zuulPrefix != null">
+      <if test="zuulPrefix != null" >
         zuul_prefix,
       </if>
-      <if test="serverMethod != null">
-        server_method,
+      <if test="serverPrefix != null" >
+        server_prefix,
       </if>
-      <if test="deleted != null">
+      <if test="deleted != null" >
         deleted,
       </if>
-      <if test="createTime != null">
+      <if test="createTime != null" >
         create_time,
       </if>
-      <if test="updateTime != null">
+      <if test="updateTime != null" >
         update_time,
       </if>
     </trim>
-    <trim prefix="values (" suffix=")" suffixOverrides=",">
-      <if test="permId != null">
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="permId != null" >
         #{permId,jdbcType=BIGINT},
       </if>
-      <if test="permDescription != null">
+      <if test="permDescription != null" >
         #{permDescription,jdbcType=VARCHAR},
       </if>
-      <if test="reqMethod != null">
-        #{reqMethod,jdbcType=BIT},
+      <if test="reqMethod != null" >
+        #{reqMethod,jdbcType=TINYINT},
       </if>
-      <if test="zuulPrefix != null">
+      <if test="zuulPrefix != null" >
         #{zuulPrefix,jdbcType=VARCHAR},
       </if>
-      <if test="serverMethod != null">
-        #{serverMethod,jdbcType=VARCHAR},
+      <if test="serverPrefix != null" >
+        #{serverPrefix,jdbcType=VARCHAR},
       </if>
-      <if test="deleted != null">
+      <if test="deleted != null" >
         #{deleted,jdbcType=BIT},
       </if>
-      <if test="createTime != null">
+      <if test="createTime != null" >
         #{createTime,jdbcType=TIMESTAMP},
       </if>
-      <if test="updateTime != null">
+      <if test="updateTime != null" >
         #{updateTime,jdbcType=TIMESTAMP},
       </if>
     </trim>
   </insert>
-  <select id="countByExample" parameterType="com.deschen.myblog.modules.system.entity.EpPermissionExample" resultType="java.lang.Long">
+  <select id="countByExample" parameterType="com.deschen.myblog.modules.system.entity.EpPermissionExample" resultType="java.lang.Integer" >
     select count(*) from ep_permission
-    <if test="_parameter != null">
+    <if test="_parameter != null" >
       <include refid="Example_Where_Clause" />
     </if>
   </select>
-  <update id="updateByExampleSelective" parameterType="map">
+  <update id="updateByExampleSelective" parameterType="map" >
     update ep_permission
-    <set>
-      <if test="record.permId != null">
+    <set >
+      <if test="record.permId != null" >
         perm_id = #{record.permId,jdbcType=BIGINT},
       </if>
-      <if test="record.permDescription != null">
+      <if test="record.permDescription != null" >
         perm_description = #{record.permDescription,jdbcType=VARCHAR},
       </if>
-      <if test="record.reqMethod != null">
-        req_method = #{record.reqMethod,jdbcType=BIT},
+      <if test="record.reqMethod != null" >
+        req_method = #{record.reqMethod,jdbcType=TINYINT},
       </if>
-      <if test="record.zuulPrefix != null">
+      <if test="record.zuulPrefix != null" >
         zuul_prefix = #{record.zuulPrefix,jdbcType=VARCHAR},
       </if>
-      <if test="record.serverMethod != null">
-        server_method = #{record.serverMethod,jdbcType=VARCHAR},
+      <if test="record.serverPrefix != null" >
+        server_prefix = #{record.serverPrefix,jdbcType=VARCHAR},
       </if>
-      <if test="record.deleted != null">
+      <if test="record.deleted != null" >
         deleted = #{record.deleted,jdbcType=BIT},
       </if>
-      <if test="record.createTime != null">
+      <if test="record.createTime != null" >
         create_time = #{record.createTime,jdbcType=TIMESTAMP},
       </if>
-      <if test="record.updateTime != null">
+      <if test="record.updateTime != null" >
         update_time = #{record.updateTime,jdbcType=TIMESTAMP},
       </if>
     </set>
-    <if test="_parameter != null">
+    <if test="_parameter != null" >
       <include refid="Update_By_Example_Where_Clause" />
     </if>
   </update>
-  <update id="updateByExample" parameterType="map">
+  <update id="updateByExample" parameterType="map" >
     update ep_permission
     set perm_id = #{record.permId,jdbcType=BIGINT},
-      perm_description = #{record.permDescription,jdbcType=VARCHAR},
-      req_method = #{record.reqMethod,jdbcType=BIT},
-      zuul_prefix = #{record.zuulPrefix,jdbcType=VARCHAR},
-      server_method = #{record.serverMethod,jdbcType=VARCHAR},
-      deleted = #{record.deleted,jdbcType=BIT},
-      create_time = #{record.createTime,jdbcType=TIMESTAMP},
-      update_time = #{record.updateTime,jdbcType=TIMESTAMP}
-    <if test="_parameter != null">
+    perm_description = #{record.permDescription,jdbcType=VARCHAR},
+    req_method = #{record.reqMethod,jdbcType=TINYINT},
+    zuul_prefix = #{record.zuulPrefix,jdbcType=VARCHAR},
+    server_prefix = #{record.serverPrefix,jdbcType=VARCHAR},
+    deleted = #{record.deleted,jdbcType=BIT},
+    create_time = #{record.createTime,jdbcType=TIMESTAMP},
+    update_time = #{record.updateTime,jdbcType=TIMESTAMP}
+    <if test="_parameter != null" >
       <include refid="Update_By_Example_Where_Clause" />
     </if>
   </update>
-  <update id="updateByPrimaryKeySelective" parameterType="com.deschen.myblog.modules.system.entity.EpPermission">
+  <update id="updateByPrimaryKeySelective" parameterType="com.deschen.myblog.modules.system.entity.EpPermission" >
     update ep_permission
-    <set>
-      <if test="permDescription != null">
+    <set >
+      <if test="permDescription != null" >
         perm_description = #{permDescription,jdbcType=VARCHAR},
       </if>
-      <if test="reqMethod != null">
-        req_method = #{reqMethod,jdbcType=BIT},
+      <if test="reqMethod != null" >
+        req_method = #{reqMethod,jdbcType=TINYINT},
       </if>
-      <if test="zuulPrefix != null">
+      <if test="zuulPrefix != null" >
         zuul_prefix = #{zuulPrefix,jdbcType=VARCHAR},
       </if>
-      <if test="serverMethod != null">
-        server_method = #{serverMethod,jdbcType=VARCHAR},
+      <if test="serverPrefix != null" >
+        server_prefix = #{serverPrefix,jdbcType=VARCHAR},
       </if>
-      <if test="deleted != null">
+      <if test="deleted != null" >
         deleted = #{deleted,jdbcType=BIT},
       </if>
-      <if test="createTime != null">
+      <if test="createTime != null" >
         create_time = #{createTime,jdbcType=TIMESTAMP},
       </if>
-      <if test="updateTime != null">
+      <if test="updateTime != null" >
         update_time = #{updateTime,jdbcType=TIMESTAMP},
       </if>
     </set>
     where perm_id = #{permId,jdbcType=BIGINT}
   </update>
-  <update id="updateByPrimaryKey" parameterType="com.deschen.myblog.modules.system.entity.EpPermission">
+  <update id="updateByPrimaryKey" parameterType="com.deschen.myblog.modules.system.entity.EpPermission" >
     update ep_permission
     set perm_description = #{permDescription,jdbcType=VARCHAR},
-      req_method = #{reqMethod,jdbcType=BIT},
-      zuul_prefix = #{zuulPrefix,jdbcType=VARCHAR},
-      server_method = #{serverMethod,jdbcType=VARCHAR},
-      deleted = #{deleted,jdbcType=BIT},
-      create_time = #{createTime,jdbcType=TIMESTAMP},
-      update_time = #{updateTime,jdbcType=TIMESTAMP}
+        req_method = #{reqMethod,jdbcType=TINYINT},
+        zuul_prefix = #{zuulPrefix,jdbcType=VARCHAR},
+        server_prefix = #{serverPrefix,jdbcType=VARCHAR},
+        deleted = #{deleted,jdbcType=BIT},
+        create_time = #{createTime,jdbcType=TIMESTAMP},
+        update_time = #{updateTime,jdbcType=TIMESTAMP}
     where perm_id = #{permId,jdbcType=BIGINT}
   </update>
 </mapper>

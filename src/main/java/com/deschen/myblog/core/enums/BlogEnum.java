@@ -1,5 +1,6 @@
 package com.deschen.myblog.core.enums;
 
+import com.deschen.myblog.core.exceptions.GlobalException;
 import org.apache.ibatis.scripting.xmltags.ForEachSqlNode;
 
 import java.util.Collection;
@@ -120,5 +121,6 @@ public enum BlogEnum implements IEnum {
     public String getMessage() {
         return message;
     }
+
 
 }

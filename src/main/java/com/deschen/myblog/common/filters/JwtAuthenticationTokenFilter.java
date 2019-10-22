@@ -50,6 +50,8 @@ public class JwtAuthenticationTokenFilter extends OncePerRequestFilter {
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
         String authHeader = request.getHeader("Authorization");
+        String requestURI = request.getRequestURI();
+
         //获取请求的ip地址
         String currentIp = AccessAddressUtil.getIpAddress(request);
 
@@ -121,7 +123,7 @@ public class JwtAuthenticationTokenFilter extends OncePerRequestFilter {
                  * 加入对ip的验证
                  * 如果ip不正确，进入黑名单验证
                  */
-                if (!StringUtil.equals(ip, currentIp)) {//地址不正确
+                if (!StringUtil.equals(ip, currentIp)) {      //地址不正确
                     log.info("用户：{}的ip地址变动，进入黑名单校验",username);
                     //进入黑名单验证
                     if (redisUtil.isBlackList(authToken)) {

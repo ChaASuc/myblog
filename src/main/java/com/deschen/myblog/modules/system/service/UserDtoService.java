@@ -1,6 +1,7 @@
 package com.deschen.myblog.modules.system.service;
 
 import com.deschen.myblog.modules.system.dto.UserDto;
+import com.deschen.myblog.modules.system.entity.EpUser;
 import com.deschen.myblog.modules.system.entity.User;
 import com.deschen.myblog.modules.system.entity.UserConfig;
 import org.apache.catalina.LifecycleState;
@@ -32,4 +33,6 @@ public interface UserDtoService {
     List<UserConfig> selectUserConfigs(Long userId, Date date, Integer sort, Integer condition);
 
     User selectUserByUserId(Long userId);
+
+    void register(String username, String password);
 }

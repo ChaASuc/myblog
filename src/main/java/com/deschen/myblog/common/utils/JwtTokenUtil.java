@@ -1,5 +1,6 @@
 package com.deschen.myblog.common.utils;
 
+import com.deschen.myblog.common.utils.DateUtil;
 import com.deschen.myblog.core.utils.RedisUtil;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
@@ -14,7 +15,7 @@ import java.util.Date;
 import java.util.Map;
 
 /**
- * @author: deschen
+ * @author: zzx
  * @date: 2018/10/16 9:06
  * @description: jwt生成token
  */
@@ -57,7 +58,7 @@ public class JwtTokenUtil {
     }
 
     /**
-     * @author: deschen
+     * @author: zzx
      * @date: 2018-10-19 09:10
      * @deprecation: 解析token,获得subject中的信息
      */

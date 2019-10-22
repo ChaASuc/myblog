@@ -5,22 +5,23 @@ import com.deschen.myblog.core.enums.BlogEnum;
 import com.deschen.myblog.core.exceptions.GlobalException;
 import com.deschen.myblog.core.utils.IdWorker;
 import com.deschen.myblog.modules.system.dto.UserDto;
-import com.deschen.myblog.modules.system.entity.User;
-import com.deschen.myblog.modules.system.entity.UserConfig;
-import com.deschen.myblog.modules.system.entity.UserConfigExample;
-import com.deschen.myblog.modules.system.entity.UserExample;
+import com.deschen.myblog.modules.system.entity.*;
+import com.deschen.myblog.modules.system.mapper.EpUserMapper;
 import com.deschen.myblog.modules.system.mapper.UserConfigMapper;
 import com.deschen.myblog.modules.system.mapper.UserMapper;
 import com.deschen.myblog.modules.system.service.UserDtoService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import sun.misc.FDBigInteger;
 
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.UUID;
 
 /**
  * @Author deschen
@@ -38,7 +39,8 @@ public class UserDtoServiceImpl implements UserDtoService {
     @Autowired
     private UserConfigMapper userConfigMapper;
 
-
+    @Autowired
+    private EpUserMapper epUserMapper;
 
     @Override
 
@@ -203,6 +205,24 @@ public class UserDtoServiceImpl implements UserDtoService {
         User user =
                 userMapper.selectByPrimaryKey(userId);
         return user;
+
+    }
+
+    @Override
+    @Transactional
+    public void register(String username, String password) {
+        //因为只是简单注册，故只是对密码加密保存，其他就不添加进来了
+        BCryptPasswordEncoder bCryptPasswordEncoder = new BCryptPasswordEncoder();
+        String EncryptedPassword = bCryptPasswordEncoder.encode(password);
+        EpUser epUser = new EpUser();
+        long userConfigId = new IdWorker().nextId();
+        epUser.setUserId(userConfigId);
+        epUser.setUserNickname(username);
+        epUser.setUserPwd(EncryptedPassword);
+        boolean success = epUserMapper.insertSelective(epUser) > 0 ? true : false;
+        if (!success) {
+            throw new GlobalException(BlogEnum.USER_INSERT_ERROR);
+        }
 
     }
 

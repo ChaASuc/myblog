@@ -5,12 +5,11 @@ import com.deschen.myblog.modules.system.entity.EpPermissionExample;
 import java.util.List;
 import java.util.Set;
 
+import com.deschen.myblog.modules.system.entity.EpUserDetialsPermission;
 import org.apache.ibatis.annotations.Param;
-import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.authority.SimpleGrantedAuthority;
 
 public interface EpPermissionMapper {
-    long countByExample(EpPermissionExample example);
+    int countByExample(EpPermissionExample example);
 
     int deleteByExample(EpPermissionExample example);
 
@@ -24,8 +23,6 @@ public interface EpPermissionMapper {
 
     EpPermission selectByPrimaryKey(Long permId);
 
-    Set<EpPermission> selectByAuthorities(Set<SimpleGrantedAuthority> authorities);
-
     int updateByExampleSelective(@Param("record") EpPermission record, @Param("example") EpPermissionExample example);
 
     int updateByExample(@Param("record") EpPermission record, @Param("example") EpPermissionExample example);
@@ -33,4 +30,6 @@ public interface EpPermissionMapper {
     int updateByPrimaryKeySelective(EpPermission record);
 
     int updateByPrimaryKey(EpPermission record);
+
+    Set<EpUserDetialsPermission> selectByRoleName(String commonRoleName);
 }

@@ -7,6 +7,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+import org.springframework.security.config.annotation.web.builders.WebSecurity;
+import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -18,6 +20,7 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
  * @description:
  */
 @Configuration
+@EnableWebSecurity
 public class SpringSecurityConf extends WebSecurityConfigurerAdapter {
 
 
@@ -48,6 +51,14 @@ public class SpringSecurityConf extends WebSecurityConfigurerAdapter {
 //        auth.authenticationProvider(provider);
         auth.userDetailsService(userDetailsService).passwordEncoder(new BCryptPasswordEncoder());
     }
+
+    @Override
+    public void configure(WebSecurity web) throws Exception {
+//        //解决静态资源被拦截的问题
+//        web.ignoring().antMatchers(
+//                "/myblog/webjars/**").pe;
+    }
+
     @Override
     protected void configure(HttpSecurity http) throws Exception {
 
@@ -60,15 +71,14 @@ public class SpringSecurityConf extends WebSecurityConfigurerAdapter {
 
                 .and()
                 .authorizeRequests()//定义哪些URL需要被保护、哪些不需要被保护
-                .antMatchers("/myblog/user/**", "/myblog/login")
-                .permitAll()
-                .anyRequest()//任何请求,登录后可以访问
+                .antMatchers("/v2/api-docs", "/configuration/ui", "/swagger-resources", "/configuration/security", "/swagger-ui.html", "/webjars/**","/swagger-resources/configuration/ui","/swagge‌​r-ui.html").permitAll()
+                .anyRequest()
                 .access("@rbacauthorityservice.hasPermission(request,authentication)") // RBAC 动态 url 认证
 
                 .and()
                 .formLogin()  //开启登录, 定义当需要用户登录时候，转到的登录页面
 //                .loginPage("/test/login.html")
-//                .loginProcessingUrl("/login")
+                .loginProcessingUrl("/login")
                 .successHandler(authenticationSuccessHandler) // 登录成功
                 .failureHandler(authenticationFailureHandler) // 登录失败
                 .permitAll()
@@ -81,7 +91,7 @@ public class SpringSecurityConf extends WebSecurityConfigurerAdapter {
 
         // 记住我
         http.rememberMe().rememberMeParameter("remember-me")
-                .userDetailsService(userDetailsService).tokenValiditySeconds(1000);
+                .userDetailsService(userDetailsService).tokenValiditySeconds(3600);
 
         http.exceptionHandling().accessDeniedHandler(accessDeniedHandler); // 无权访问 JSON 格式的数据
         http.addFilterBefore(jwtAuthenticationTokenFilter, UsernamePasswordAuthenticationFilter.class); // JWT Filter

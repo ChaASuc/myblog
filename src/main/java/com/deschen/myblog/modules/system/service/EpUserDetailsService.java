@@ -36,13 +36,12 @@ public class EpUserDetailsService implements UserDetailsService {
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
 
         //通过username查询用户
-//        EpUserDetails user = userMapper.selectByUsername(username);
-//        if(user == null){
-//            //仍需要细化处理
-//            throw new UsernameNotFoundException("该用户不存在");
-//        }
+        EpUserDetails user = userMapper.selectByUsername(username);
+        if(user == null){
+            //仍需要细化处理
+            throw new UsernameNotFoundException("该用户不存在");
+        }
 //
-//        return user;
-        return null;
+        return user;
     }
 }
